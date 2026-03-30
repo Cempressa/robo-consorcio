@@ -19,8 +19,9 @@ def lead():
         print(f"Erro no Make: {e}")
 
     mensagem = f"Olá! Vim pelo site e quero simular um consórcio de {dados.get('produto', 'Imóvel')}."
-    link_wa = f"https://wa.me/{MEU_WHATSAPP}?text={mensagem}"
-    
+    # Versão mais forte para redirecionamento de robôs
+    link_wa = f"https://api.whatsapp.com/send?phone={MEU_WHATSAPP}&text={mensagem}"
+        
     return redirect(link_wa)
 
 if __name__ == '__main__':
