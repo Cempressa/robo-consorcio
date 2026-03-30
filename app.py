@@ -1,26 +1,31 @@
 from flask import Flask, request, redirect
 import requests
+import os
 
 app = Flask(__name__)
 
+# CONFIGURAÇÕES - AJUSTADAS PARA VOCÊ
+MEU_WHATSAPP = "5519993283883"  # Seu número corrigido
+MAKE_URL = "https://hook.us2.make.com/3uqyvy539qkyqsli7wg5uqvebxryf" # Seu link do Make
+
 @app.route('/lead', methods=['POST'])
 def lead():
-    # Pega os dados do formulário
+    # Pega os dados do formulário do site
     dados = request.form.to_dict()
-    print(f"Lead Recebido: {dados}")
     
-    # ENVIAR PARA O MAKE (Cole o seu link entre as aspas abaixo)
-    make_url = "https://hook.us2.make.com/3uqyvy539qkyqsli7wg5uqvebxrytya3"
+    # 1. Envia os dados para a Planilha via Make
     try:
-        requests.post(make_url, json=dados)
-    except:
-        print("Erro ao enviar para o Make")
+        requests.post(MAKE_URL, json=dados)
+    except Exception as e:
+        print(f"Erro ao enviar para o Make: {e}")
 
-    # Redireciona para o seu WhatsApp
-    meu_whatsapp = "5519993283883" # Já coloquei o seu número do print!
-    return redirect(f"https://wa.me/{meu_whatsapp}?text=Olá! Vim pelo site e gostaria de uma simulação de consórcio para {dados.get('produto')}.")
+    # 2. Redireciona o cliente para o seu WhatsApp com mensagem personalizada
+    mensagem = f"Olá! Vim pelo site e quero simular um consórcio de {dados.get('produto', 'Imóvel')}."
+    link_wa = f"https://wa.me/{MEU_WHATSAPP}?text={mensagem}"
     
+    return redirect(link_wa)
 
 if __name__ == '__main__':
-    print("🚀 Robô ligado e aguardando leads...")
-    app.run(port=5000, debug=True)
+    # Configuração vital para o Render
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
