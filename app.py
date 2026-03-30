@@ -5,8 +5,8 @@ import os
 app = Flask(__name__)
 
 # CONFIGURAÇÕES - AJUSTADAS PARA VOCÊ
-MEU_WHATSAPP = "5519993283883"  # Seu número corrigido
-MAKE_URL = "https://hook.us2.make.com/3uqyvy539qkyqsli7wg5uqvebxryf" # Seu link do Make
+MEU_WHATSAPP = "353832097328"  # Seu número corrigido
+MAKE_URL = "https://hook.us2.make.com/3uqyvy539qkyqsli7wg5uqvebxrytya3" # Seu link do Make
 
 @app.route('/lead', methods=['POST'])
 def lead():
