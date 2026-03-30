@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 # CONFIGURAÇÕES
-MEU_WHATSAPP = "353832097328""  # Corrigi para Ireland
+MEU_WHATSAPP = "353832097328"
 MAKE_URL = "https://hook.us2.make.com/3uqyvy539qkyqsli7wg5uqvebxrytya3"
 
 @app.route('/lead', methods=['POST'])
