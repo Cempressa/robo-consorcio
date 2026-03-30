@@ -15,7 +15,7 @@ def lead():
     
     # 1. Envia os dados para a Planilha via Make
     try:
-        requests.post(MAKE_URL, json=dados)
+        requests.post(MAKE_URL, data=dados)
     except Exception as e:
         print(f"Erro ao enviar para o Make: {e}")
 
