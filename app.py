@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # CONFIGURAÇÕES
 MEU_WHATSAPP = "353832097328"
-MAKE_URL = "https://hook.us2.make.com/rcpjpdtr18o84ib1g0rn1iypl9nv4ir6"
+MAKE_URL = "https://hook.us2.make.com/2nyg3x5v07l1arfgg8k36bsorrem4hru"
 
 def obter_credenciais():
     """Tenta carregar as credenciais do Google da variável de ambiente ou do arquivo local"""
