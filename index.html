@@ -1,33 +1,63 @@
-index.html
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Consórcio - Ademicon</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #002d62; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); width: 350px; text-align: center; }
-        h2 { color: #002d62; margin-bottom: 20px; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #0047ab; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        button:hover { background: #003580; }
-    </style>
-</head>
-<body>
-    <div class="card">
-        <h2>Simule seu Consórcio</h2>
-        <form action="https://robo-consorcio.onrender.com/lead" method="POST">
-            <input type="text" name="nome" placeholder="Nome Completo" required>
-            <input type="text" name="celular" placeholder="WhatsApp (DDD + Número)" required>
-            <input type="email" name="email" placeholder="Seu melhor E-mail" required>
-            <select name="produto">
-                <option value="Imovel">Imóvel</option>
-                <option value="Automovel">Automóvel</option>
-                <option value="Pesados">Pesados (Caminhão/Agro)</option>
-            </select>
-            <button type="submit">QUERO SIMULAR AGORA</button>
-        </form>
-    </div>
-</body>
-</html>
+<script>
+    const btn = document.getElementById('btnSubmit');
+    const form = document.getElementById('leadForm');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Bloqueio visual para evitar cliques duplos
+        btn.innerText = "Preparando sua simulação...";
+        btn.disabled = true;
+
+        const dados = {
+            nome: document.getElementById('nome').value.trim(),
+            celular: document.getElementById('celular').value.replace(/\D/g, ''), // Limpa caracteres não numéricos
+            email: document.getElementById('email').value.trim(),
+            produto: document.getElementById('produto').value
+        };
+
+        // Validação básica de segurança
+        if (dados.celular.length < 10) {
+            alert("Por favor, insira um WhatsApp válido com DDD.");
+            resetBtn();
+            return;
+        }
+
+        try {
+            // Timeout manual de 60 segundos para esperar o Render acordar
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), 60000);
+
+            const response = await fetch('https://robo-consorcio.onrender.com/lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dados),
+                signal: controller.signal
+            });
+
+            clearTimeout(id);
+
+            if (response.ok) {
+                const resData = await response.json();
+                // Redirecionamento suave
+                window.location.href = resData.redirect_url;
+            } else {
+                throw new Error("Erro na resposta do servidor");
+            }
+
+        } catch (error) {
+            console.error("Erro:", error);
+            if (error.name === 'AbortError') {
+                alert("O servidor está demorando a responder (comum na primeira ativação). Tentando novamente...");
+            } else {
+                alert("Quase lá! O sistema está terminando de carregar. Por favor, clique novamente em 10 segundos.");
+            }
+            resetBtn();
+        }
+    });
+
+    function resetBtn() {
+        btn.innerText = "QUERO SIMULAR AGORA";
+        btn.disabled = false;
+    }
+</script>
