@@ -1,34 +1,114 @@
-<!-- Dentro do seu body -->
-<form id="leadForm">
-    <input type="text" id="nome" placeholder="Nome Completo" required>
-    <input type="text" id="celular" placeholder="WhatsApp (DDD + Número)" required>
-    <input type="email" id="email" placeholder="Seu melhor E-mail" required>
-    
-    <select id="produto">
-        <option value="Automóvel">Automóvel</option>
-        <option value="Pesados (Caminhão/Agro)">Pesados (Caminhão/Agro)</option>
-        <option value="Imóvel">Imóvel</option>
-        <option value="Serviços">Serviços (Viagem/Reforma)</option>
-    </select>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Consórcio</title>
+    <style>
+        /* Estilo para restaurar o layout original */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #003366; /* Azul escuro do fundo */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    <button type="submit" id="btnSubmit">QUERO SIMULAR AGORA</button>
-</form>
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #003366;
+            margin-bottom: 25px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box; /* Garante que o padding não quebre a largura */
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #0052cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #003d99;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Simule seu Consórcio</h2>
+    <form id="leadForm">
+        <input type="text" id="nome" placeholder="Nome Completo" required>
+        <input type="text" id="celular" placeholder="WhatsApp (DDD + Número)" required>
+        <input type="email" id="email" placeholder="Seu melhor E-mail" required>
+        
+        <select id="produto" required>
+            <option value="" disabled selected>Selecione o Produto</option>
+            <optgroup label="Imóveis">
+                <option value="Imóvel (Aquisição/Construção)">Aquisição e Construção</option>
+                <option value="Imóvel (Reforma/Melhoria)">Reforma e Melhoria</option>
+                <option value="Quitação de Financiamento">Quitação de Financiamento</option>
+            </optgroup>
+            <optgroup label="Veículos e Pesados">
+                <option value="Automóvel (Carro/Moto)">Carros e Motos</option>
+                <option value="Pesados (Caminhão/Agro)">Caminhão e Maquinário Agro</option>
+                <option value="Náutico/Aéreo">Barcos e Aeronaves</option>
+            </optgroup>
+            <optgroup label="Serviços">
+                <option value="Serviços (Estética/Saúde)">Cirurgias e Saúde</option>
+                <option value="Serviços (Viagens/Festas)">Viagens e Eventos</option>
+            </optgroup>
+            <optgroup label="Investimentos">
+                <option value="Alavancagem Financeira">Alavancagem Financeira</option>
+                <option value="Home Equity">Home Equity / Car Equity</option>
+                <option value="Cotas Contempladas">Cotas Contempladas</option>
+            </optgroup>
+        </select>
+
+        <button type="submit" id="btnSubmit">QUERO SIMULAR AGORA</button>
+    </form>
+</div>
 
 <script>
-    // Usamos DOMContentLoaded para garantir que o HTML carregou antes do JS rodar
     document.addEventListener('DOMContentLoaded', () => {
         const btn = document.getElementById('btnSubmit');
         const form = document.getElementById('leadForm');
 
-        if (!form) {
-            console.error("Erro: Formulário 'leadForm' não encontrado!");
-            return;
-        }
-
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            btn.innerText = "Preparando sua simulação...";
+            btn.innerText = "Processando...";
             btn.disabled = true;
 
             const dados = {
@@ -38,25 +118,12 @@
                 produto: document.getElementById('produto').value
             };
 
-            if (dados.celular.length < 10) {
-                alert("Por favor, insira um WhatsApp válido com DDD.");
-                btn.innerText = "QUERO SIMULAR AGORA";
-                btn.disabled = false;
-                return;
-            }
-
             try {
-                const controller = new AbortController();
-                const id = setTimeout(() => controller.abort(), 60000);
-
                 const response = await fetch('https://robo-consorcio.onrender.com/lead', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dados),
-                    signal: controller.signal
+                    body: JSON.stringify(dados)
                 });
-
-                clearTimeout(id);
 
                 if (response.ok) {
                     const resData = await response.json();
@@ -66,10 +133,13 @@
                 }
             } catch (error) {
                 console.error("Erro:", error);
-                alert("O sistema está inicializando. Por favor, aguarde 10 segundos e clique novamente.");
+                alert("O servidor está acordando. Clique novamente em 10 segundos.");
                 btn.innerText = "QUERO SIMULAR AGORA";
                 btn.disabled = false;
             }
         });
     });
 </script>
+
+</body>
+</html>
