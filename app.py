@@ -1,12 +1,11 @@
-from flask import Flask, request, jsonify, redirect
-from flask_cors import CORS # Importante para evitar erros de domínio
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import requests
 import os
-import json
 import re
 
 app = Flask(__name__)
-CORS(app) # Permite que seu site fale com o servidor sem bloqueios
+CORS(app) # Permite que o GitHub Pages envie dados para o Render
 
 # CONFIGURAÇÕES
 MEU_WHATSAPP = "353832097328"
@@ -14,39 +13,33 @@ MAKE_URL = "https://hook.us2.make.com/2nyg3x5v07l1arfgg8k36bsorrem4hru"
 
 @app.route('/lead', methods=['POST'])
 def lead():
-    # 1. Tenta pegar dados via JSON (do Fetch/JS) ou via Form (Tradicional)
+    # Detecta se os dados vieram via JSON ou Formulário
     if request.is_json:
         dados = request.get_json()
     else:
         dados = request.form.to_dict()
 
     if not dados:
-        return jsonify({"error": "Dados não recebidos"}), 400
+        return jsonify({"error": "Dados vazios"}), 400
 
-    # 2. Limpeza extra do Celular (Garantia de segurança)
-    celular_bruto = dados.get('celular', '')
-    celular_limpo = re.sub(r'\D', '', celular_bruto)
+    # Limpeza do celular para o Make
+    celular_limpo = re.sub(r'\D', '', dados.get('celular', ''))
     dados['celular_limpo'] = celular_limpo
 
-    # 3. Envia os dados para o Make (Planilha/CRM)
+    # 1. Envia para o Make (Planilha)
     try:
-        requests.post(MAKE_URL, json=dados, timeout=8)
+        requests.post(MAKE_URL, json=dados, timeout=10)
     except Exception as e:
-        print(f"Erro ao enviar para o Make: {e}")
+        print(f"Erro Make: {e}")
 
-    # 4. Prepara as variáveis para o Redirecionamento
+    # 2. Prepara Redirecionamento
     produto = dados.get('produto', 'Consórcio')
     nome = dados.get('nome', 'Cliente')
     
-    # Mensagem personalizada para o seu WhatsApp
     mensagem = f"Olá! Sou {nome}, vim pelo site e quero simular um {produto}."
-    
-    # Criamos a URL de redirecionamento
-    # DICA: Se você usa Typebot, pode trocar o link_wa pelo link do bot
     link_wa = f"https://api.whatsapp.com/send?phone={MEU_WHATSAPP}&text={mensagem.replace(' ', '%20')}"
 
-    # 5. RETORNO PARA O JAVASCRIPT
-    # Como seu JS espera um JSON com a URL, respondemos assim:
+    # Retorna o link para o JavaScript fazer o redirecionamento
     return jsonify({"redirect_url": link_wa}), 200
 
 if __name__ == '__main__':
