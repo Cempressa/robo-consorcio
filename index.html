@@ -1,63 +1,75 @@
+<!-- Dentro do seu body -->
+<form id="leadForm">
+    <input type="text" id="nome" placeholder="Nome Completo" required>
+    <input type="text" id="celular" placeholder="WhatsApp (DDD + Número)" required>
+    <input type="email" id="email" placeholder="Seu melhor E-mail" required>
+    
+    <select id="produto">
+        <option value="Automóvel">Automóvel</option>
+        <option value="Pesados (Caminhão/Agro)">Pesados (Caminhão/Agro)</option>
+        <option value="Imóvel">Imóvel</option>
+        <option value="Serviços">Serviços (Viagem/Reforma)</option>
+    </select>
+
+    <button type="submit" id="btnSubmit">QUERO SIMULAR AGORA</button>
+</form>
+
 <script>
-    const btn = document.getElementById('btnSubmit');
-    const form = document.getElementById('leadForm');
+    // Usamos DOMContentLoaded para garantir que o HTML carregou antes do JS rodar
+    document.addEventListener('DOMContentLoaded', () => {
+        const btn = document.getElementById('btnSubmit');
+        const form = document.getElementById('leadForm');
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        // Bloqueio visual para evitar cliques duplos
-        btn.innerText = "Preparando sua simulação...";
-        btn.disabled = true;
-
-        const dados = {
-            nome: document.getElementById('nome').value.trim(),
-            celular: document.getElementById('celular').value.replace(/\D/g, ''), // Limpa caracteres não numéricos
-            email: document.getElementById('email').value.trim(),
-            produto: document.getElementById('produto').value
-        };
-
-        // Validação básica de segurança
-        if (dados.celular.length < 10) {
-            alert("Por favor, insira um WhatsApp válido com DDD.");
-            resetBtn();
+        if (!form) {
+            console.error("Erro: Formulário 'leadForm' não encontrado!");
             return;
         }
 
-        try {
-            // Timeout manual de 60 segundos para esperar o Render acordar
-            const controller = new AbortController();
-            const id = setTimeout(() => controller.abort(), 60000);
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            btn.innerText = "Preparando sua simulação...";
+            btn.disabled = true;
 
-            const response = await fetch('https://robo-consorcio.onrender.com/lead', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dados),
-                signal: controller.signal
-            });
+            const dados = {
+                nome: document.getElementById('nome').value.trim(),
+                celular: document.getElementById('celular').value.replace(/\D/g, ''),
+                email: document.getElementById('email').value.trim(),
+                produto: document.getElementById('produto').value
+            };
 
-            clearTimeout(id);
-
-            if (response.ok) {
-                const resData = await response.json();
-                // Redirecionamento suave
-                window.location.href = resData.redirect_url;
-            } else {
-                throw new Error("Erro na resposta do servidor");
+            if (dados.celular.length < 10) {
+                alert("Por favor, insira um WhatsApp válido com DDD.");
+                btn.innerText = "QUERO SIMULAR AGORA";
+                btn.disabled = false;
+                return;
             }
 
-        } catch (error) {
-            console.error("Erro:", error);
-            if (error.name === 'AbortError') {
-                alert("O servidor está demorando a responder (comum na primeira ativação). Tentando novamente...");
-            } else {
-                alert("Quase lá! O sistema está terminando de carregar. Por favor, clique novamente em 10 segundos.");
+            try {
+                const controller = new AbortController();
+                const id = setTimeout(() => controller.abort(), 60000);
+
+                const response = await fetch('https://robo-consorcio.onrender.com/lead', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados),
+                    signal: controller.signal
+                });
+
+                clearTimeout(id);
+
+                if (response.ok) {
+                    const resData = await response.json();
+                    window.location.href = resData.redirect_url;
+                } else {
+                    throw new Error("Erro no servidor");
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                alert("O sistema está inicializando. Por favor, aguarde 10 segundos e clique novamente.");
+                btn.innerText = "QUERO SIMULAR AGORA";
+                btn.disabled = false;
             }
-            resetBtn();
-        }
+        });
     });
-
-    function resetBtn() {
-        btn.innerText = "QUERO SIMULAR AGORA";
-        btn.disabled = false;
-    }
 </script>
