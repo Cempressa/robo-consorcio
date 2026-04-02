@@ -9,7 +9,7 @@ CORS(app) # Permite que o GitHub Pages envie dados para o Render
 
 # CONFIGURAÇÕES
 MEU_WHATSAPP = "353832097328"
-MAKE_URL = "https://hook.us2.make.com/2nyg3x5v07l1arfgg8k36bsorrem4hru"
+MAKE_URL = "https://hook.us2.make.com/c4edcl8ia2ggai52xi3igwxvor1qywxm"
 
 @app.route('/lead', methods=['POST'])
 def lead():
