@@ -7,46 +7,59 @@ from urllib.parse import quote
 
 app = Flask(__name__)
 
-# Configuração robusta de CORS
-CORS(app, resources={r"/*": {"origins": "*"}})
+# CONFIGURAÇÃO DE CORS
+# Permitir apenas o seu domínio é mais seguro que "*"
+# Se o seu site estiver no GitHub Pages ou Vercel, coloque a URL aqui
+CORS(app, resources={r"/*": {
+    "origins": "*", 
+    "methods": ["POST", "OPTIONS"],
+    "allow_headers": ["Content-Type"]
+}})
 
 # CONFIGURAÇÕES
-MEU_WHATSAPP = "55353832097328" 
+MEU_WHATSAPP = "5535383209732" # Ajustado para padrão brasileiro (DDI+DDD+NÚMERO)
 MAKE_URL = "https://hook.us2.make.com/c4edcl8ia2ggai52xi3igwxvor1qywxm"
 
 @app.route('/lead', methods=['POST', 'OPTIONS'])
 def lead():
-    # Responde ao 'preflight' do navegador para evitar erro de CORS
+    # 1. Tratamento de Preflight (CORS)
     if request.method == 'OPTIONS':
         return jsonify({"status": "ok"}), 200
 
+    # 2. Captura e Verificação de Dados
     if request.is_json:
         dados = request.get_json()
     else:
         dados = request.form.to_dict()
 
     if not dados:
-        return jsonify({"error": "Dados vazios"}), 400
+        return jsonify({"error": "Nenhum dado recebido"}), 400
 
-    # Tratamento de dados
-    celular_raw = dados.get('celular', '')
+    # 3. Tratamento do Celular (Garantindo String e Limpeza)
+    # O uso de str() aqui evita erro caso o JSON envie o número como inteiro
+    celular_raw = str(dados.get('celular', ''))
     celular_limpo = re.sub(r'\D', '', celular_raw)
     dados['celular_limpo'] = celular_limpo
 
-    # 1. Envio para o Make (Planilha)
+    # 4. Envio para o Make (Automação)
     try:
-        requests.post(MAKE_URL, json=dados, timeout=5)
+        # Enviamos os dados originais + o celular limpo
+        requests.post(MAKE_URL, json=dados, timeout=8)
     except Exception as e:
-        print(f"Erro Make: {e}")
+        print(f"Erro ao disparar webhook: {e}")
 
-    # 2. Link do WhatsApp
-    produto = dados.get('produto', 'Consórcio')
+    # 5. Preparação da Resposta e Link do Zap
     nome = dados.get('nome', 'Cliente')
-    mensagem = f"Olá! Sou {nome}, vim pelo site e quero simular um {produto}."
+    produto = dados.get('produto', 'Consórcio')
     
+    # Escapa caracteres especiais para a URL
+    mensagem = f"Olá! Sou {nome}, vim pelo site e quero simular um {produto}."
     link_wa = f"https://api.whatsapp.com/send?phone={MEU_WHATSAPP}&text={quote(mensagem)}"
 
-    return jsonify({"whatsapp_url": link_wa}), 200
+    return jsonify({
+        "status": "success",
+        "whatsapp_url": link_wa
+    }), 200
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
