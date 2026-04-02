@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
+app = Flask(__name__)
 from flask_cors import CORS
 import requests
 import os
 import re
 
-app = Flask(__name__)
+
 # Permite que qualquer site acesse (ajuste para o seu github.io se quiser mais segurança depois)
 CORS(app) 
 
