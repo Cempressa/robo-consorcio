@@ -3,127 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Consórcio Ademicon</title>
+    <title>Simulador Consórcio</title>
     <style>
-        /* RESET E DEFINIÇÕES GERAIS */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        body { 
-            background: #002b5c; 
-            color: white; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            padding: 20px; 
-        }
-
-        .main-container { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 40px; 
-            max-width: 1100px; 
-            width: 100%; 
-            justify-content: center; 
-            align-items: flex-start;
-        }
-
-        /* CAIXA BRANCA (FORMULÁRIO) */
-        .card-white { 
-            background: white; 
-            color: #333; 
-            padding: 35px; 
-            border-radius: 15px; 
-            width: 100%;
-            max-width: 400px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
-        }
-
-        .card-white h2 { 
-            color: #002b5c; 
-            margin-bottom: 25px; 
-            text-align: center; 
-            font-size: 1.6rem;
-        }
-
-        .input-group { margin-bottom: 18px; }
-
-        .input-group label { 
-            display: block; 
-            font-size: 0.9rem; 
-            font-weight: 600; 
-            margin-bottom: 8px; 
-            color: #444; 
-        }
-
-        input, select { 
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            font-size: 1rem; 
-            transition: border-color 0.3s;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #0056b3;
-        }
-
-        .btn-submit { 
-            width: 100%; 
-            padding: 16px; 
-            background: #0056b3; 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-size: 1.1rem; 
-            transition: background 0.3s, transform 0.2s; 
-            margin-top: 10px;
-        }
-
-        .btn-submit:hover { background: #003d82; transform: translateY(-2px); }
-        .btn-submit:active { transform: translateY(0); }
-
-        /* CAIXA INFORMATIVA (LADO DIREITO) */
-        .card-info { 
-            background: rgba(255,255,255,0.08); 
-            padding: 40px; 
-            border-radius: 15px; 
-            width: 100%;
-            max-width: 350px; 
-            border: 1px solid rgba(255,255,255,0.15); 
-            backdrop-filter: blur(8px); 
-        }
-
-        .card-info h3 { 
-            color: #4da6ff; 
-            margin-bottom: 20px; 
-            font-size: 1.8rem; 
-            border-bottom: 2px solid rgba(77, 166, 255, 0.3);
-            padding-bottom: 10px;
-        }
-
-        .card-info p { 
-            line-height: 1.7; 
-            color: #f0f0f0; 
-            font-size: 1.1rem; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: #002b5c; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .main-container { display: flex; flex-wrap: wrap; gap: 40px; max-width: 1100px; width: 100%; justify-content: center; }
+        .card-white { background: white; color: #333; padding: 30px; border-radius: 12px; width: 350px; }
+        .input-group { margin-bottom: 12px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-top: 5px; }
+        .btn-submit { width: 100%; padding: 12px; background: #0056b3; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .card-info { background: rgba(255,255,255,0.1); padding: 25px; border-radius: 12px; width: 300px; border: 1px solid rgba(255,255,255,0.2); }
+        .card-info h3 { color: #4da6ff; margin-bottom: 10px; font-size: 1.5rem; }
+        .card-info p { line-height: 1.5; color: #eee; }
     </style>
 </head>
 <body>
 
     <div class="main-container">
-        <!-- FORMULÁRIO -->
         <div class="card-white">
             <h2>Simulação</h2>
             <form id="form-consorcio">
                 <div class="input-group">
-                    <label for="nome">Nome Completo</label>
-                    <input type="text" id="nome" name="nome" placeholder="Ex: Marcos Luiz" required>
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" autocomplete="name" required>
                 </div>
                 <div class="input-group">
                     <label for="whatsapp">WhatsApp</label>
-                    <input type="tel" id="whatsapp" name
+                    <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" autocomplete="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="selecaoServico">Serviço</label>
+                    <!-- O ID aqui deve ser exatamente 'selecaoServico' -->
+                    <select id="selecaoServico" name="servico">
+                        <option value="imoveis">Imóveis</option>
+                        <option value="alavancagem">Alavancagem</option>
+                        <option value="veiculos">Veículos</option>
+                    </select>
+                </div>
+                <button type="submit" id="btn-enviar" class="btn-submit">ENVIAR AGORA</button>
+            </form>
+        </div>
+
+        <!-- QUADRO QUE DEVE MUDAR -->
+        <div class="card-info">
+            <h3 id="info-titulo">Imóveis</h3>
+            <p id="info-texto">Compra planejada para terrenos, casas ou construção.</p>
+        </div>
+    </div>
+
+    <script>
+        // Objeto com os textos que serão trocados
+        const conteudos = {
+            imoveis: {
+                titulo: "Imóveis",
+                texto: "Compra planejada para terrenos, casas ou construção. Ideal para fugir dos juros."
+            },
+            alavancagem: {
+                titulo: "Alavancagem",
+                texto: "Estratégia financeira para multiplicar patrimônio sem usar capital de giro próprio."
+            },
+            veiculos: {
+                titulo: "Veículos",
+                texto: "Renovação de frota ou carro novo com as menores taxas do mercado especializado."
+            }
+        };
+
+        const selectElement = document.getElementById('selecaoServico');
+        const tituloElement = document.getElementById('info-titulo');
+        const textoElement = document.getElementById('info-texto');
+
+        // FUNÇÃO QUE FAZ A MUDANÇA
+        selectElement.addEventListener('change', function() {
+            const valorSelecionado = this.value; // Pega 'imoveis', 'alavancagem' ou 'veiculos'
+            
+            // Atualiza os elementos na tela
+            tituloElement.innerText = conteudos[valorSelecionado].titulo;
+            textoElement.innerText = conteudos[valorSelecionado].texto;
+        });
+
+        // Lógica de envio (Mantenha seu link do Sheet.best aqui)
+        document.getElementById('form-consorcio').onsubmit = async (e) => {
+            e.preventDefault();
+            const URL_API = "COLE_AQUI_SEU_LINK_DO_SHEET_BEST";
+            
+            if(URL_API.includes("COLE_AQUI")) {
+                alert("Configure o link da planilha no código!");
+                return;
+            }
+
+            const btn = document.getElementById('btn-enviar');
+            btn.innerText = "ENVIANDO...";
+            
+            try {
+                await fetch(URL_API, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        nome: document.getElementById('nome').value,
+                        whatsapp: document.getElementById('whatsapp').value,
+                        email: document.getElementById('email').value,
+                        servico: selectElement.value
+                    })
+                });
+                alert("Dados enviados!");
+                e.target.reset();
+            } catch (err) {
+                alert("Erro no envio.");
+            } finally {
+                btn.innerText = "ENVIAR AGORA";
+            }
+        };
+    </script>
+</body>
+</html>
