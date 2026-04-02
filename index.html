@@ -3,182 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Consórcio</title>
+    <title>Simulação de Consórcio - Planejamento</title>
     <style>
-        body {
+        /* RESET BÁSICO */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #003366;
+        }
+
+        body {
+            background-color: #002b5c; /* Cor do fundo da sua aplicação */
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
-            padding: 20px;
         }
 
-        .main-wrapper {
+        /* CONTAINER PRINCIPAL (O PAI DE TODOS) */
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start; /* Alinha texto e blocos pelo topo */
+            gap: 60px; /* Espaço entre o texto e os quadros */
+            max-width: 1200px;
+            width: 90%;
+            padding: 40px 0;
+        }
+
+        /* LADO ESQUERDO - SUA REFLEXÃO */
+        .text-content {
+            flex: 1;
+            max-width: 450px;
+            padding-top: 10px; /* Ajuste fino para alinhar com o título do form */
+        }
+
+        .text-content h1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .text-content .white-text {
+            color: #ffffff;
+        }
+
+        .text-content .blue-light-text {
+            color: #4da6ff; /* Azul claro para destaque */
+        }
+
+        .text-content p {
+            font-size: 1.1rem;
+            color: #b0c4de;
+            line-height: 1.6;
+        }
+
+        /* LADO DIREITO - QUADROS */
+        .cards-wrapper {
             display: flex;
             flex-direction: row;
             gap: 20px;
-            max-width: 850px;
-            width: 100%;
+            align-items: flex-start;
         }
 
-        .container {
-            background-color: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            flex: 1;
+        /* QUADRO BRANCO (FORMULÁRIO) */
+        .card-white {
+            background-color: #ffffff;
+            color: #333;
+            padding: 40px 30px;
+            border-radius: 15px;
+            width: 380px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .card-white h2 {
             text-align: center;
+            color: #002b5c;
+            margin-bottom: 25px;
+            font-size: 1.6rem;
         }
 
-        /* Painel Lateral de Informação */
-        .info-panel {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            flex: 0.8;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            transition: all 0.3s ease;
+        .input-group {
+            margin-bottom: 15px;
         }
 
-        h2 { color: #003366; margin-bottom: 25px; }
-        h3 { margin-top: 0; color: #4db8ff; }
-        p { line-height: 1.6; font-size: 14px; }
-
-        input, select {
+        .input-group input, .input-group select {
             width: 100%;
             padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
         }
 
-        button {
+        .btn-submit {
             width: 100%;
             padding: 15px;
-            background-color: #0052cc;
+            background-color: #0056b3;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 1rem;
             cursor: pointer;
-            margin-top: 15px;
+            transition: background 0.3s;
+            margin-top: 10px;
         }
 
-        button:disabled { background-color: #cccccc; }
+        .btn-submit:hover {
+            background-color: #003d82;
+        }
 
-        /* Ajuste para Mobile */
-        @media (max-width: 768px) {
-            .main-wrapper { flex-direction: column; }
-            .info-panel { order: 2; }
+        /* QUADRO TRANSPARENTE (IMÓVEIS) */
+        .card-info {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 40px 25px;
+            border-radius: 15px;
+            width: 280px;
+            backdrop-filter: blur(5px);
+        }
+
+        .card-info h3 {
+            color: #4da6ff;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .card-info p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #ffffff;
+        }
+
+        /* RESPONSIVIDADE (PARA CELULAR) */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .cards-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+            .text-content {
+                margin-bottom: 40px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="header-simulacao">
-    <h1>Oportunidades acontecem todos os dias. <br> <span>As melhores, só quem planeja aproveita.</span></h1>
-    <p>Transforme sua visão em estratégia e conquiste o amanhã, começando hoje.</p>
-</div>
 
-<!-- Aqui começa sua estrutura atual de blocos -->
-<div class="container-blocos">
-    <!-- Bloco 1 (Formulário) -->
-    <!-- Bloco 2 (Mente Programada) -->
-</div>
-<div class="main-wrapper">
-    <div class="container">
-        <h2>Simule seu Consórcio</h2>
-        <form id="leadForm">
-            <input type="text" id="nome" placeholder="Nome Completo" required>
-            <input type="text" id="celular" placeholder="WhatsApp (DDD + Número)" required>
-            <input type="email" id="email" placeholder="Seu melhor E-mail" required>
+    <div class="main-container">
+        
+        <!-- SEÇÃO DE TEXTO -->
+        <div class="text-content">
+            <h1>
+                <span class="white-text">Oportunidades acontecem todos os dias.</span><br>
+                <span class="blue-light-text">As melhores, só quem planeja aproveita.</span>
+            </h1>
+            <p>
+                Transforme sua visão em estratégia e conquiste o amanhã, começando hoje.
+            </p>
+        </div>
+
+        <!-- SEÇÃO DE BLOCOS -->
+        <div class="cards-wrapper">
             
-            <select id="produto" required onchange="atualizarInfo()">
-                <option value="" disabled selected>Selecione o Produto</option>
-                <optgroup label="Imóveis">
-                    <option value="imovel">Aquisição e Construção</option>
-                    <option value="reforma">Reforma e Melhoria</option>
-                    <option value="quitacao">Quitação de Financiamento</option>
-                </optgroup>
-                <optgroup label="Veículos">
-                    <option value="auto">Carros e Motos</option>
-                    <option value="pesados">Caminhão e Agro</option>
-                </optgroup>
-                <optgroup label="Estratégias">
-                    <option value="alavancagem">Alavancagem Financeira</option>
-                    <option value="equity">Home Equity</option>
-                </optgroup>
-            </select>
+            <!-- BLOCO 1: FORMULÁRIO -->
+            <div class="card-white">
+                <h2>Simule seu Consórcio</h2>
+                <form>
+                    <div class="input-group">
+                        <input type="text" placeholder="Nome Completo">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" placeholder="WhatsApp (DDD + Número)">
+                    </div>
+                    <div class="input-group">
+                        <input type="email" placeholder="Seu melhor E-mail">
+                    </div>
+                    <div class="input-group">
+                        <select>
+                            <option>Aquisição e Construção</option>
+                            <option>Alavancagem Financeira</option>
+                            <option>Veículos</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit">QUERO SIMULAR AGORA</button>
+                </form>
+            </div>
 
-            <button type="submit" id="btnSubmit">QUERO SIMULAR AGORA</button>
-        </form>
-    </div>
+            <!-- BLOCO 2: INFORMAÇÃO -->
+            <div class="card-info">
+                <h3>Imóveis</h3>
+                <p>
+                    A compra planejada. Use para adquirir terrenos, casas ou construir. 
+                    Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido.
+                </p>
+            </div>
 
-    <!-- Painel Lateral Dinâmico -->
-    <div class="info-panel" id="infoPanel">
-        <h3 id="infoTitle">Mente Programada</h3>
-        <p id="infoDesc">Selecione um produto ao lado para ver como nossa estratégia consultiva pode acelerar seus planos sem os juros do financiamento.</p>
-    </div>
-</div>
+        </div> <!-- Fim cards-wrapper -->
 
-<script>
-    const descricoes = {
-        "imovel": { title: "Imóveis", desc: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio." },
-        "reforma": { title: "Reforma e Closet", desc: "Sabe aquele closet ou área gourmet que a esposa aguarda? Programe a reforma da sua residência com parcelas suaves." },
-        "quitacao": { title: "Quitação de Dívida", desc: "Use o consórcio estrategicamente para quitar um financiamento imobiliário caro e reduzir drasticamente o custo do seu bem." },
-        "auto": { title: "Automóveis", desc: "Troca de frota ou o carro da família. Com taxas administrativas reduzidas, você preserva seu capital para outros investimentos." },
-        "pesados": { title: "Caminhão e Agro", desc: "Aumente sua produtividade. Maquinários e frotas essenciais para o crescimento do seu negócio logístico ou agrícola." },
-        "alavancagem": { title: "Alavancagem", desc: "Estratégia para investidores. Use a contemplação para gerar lucro na venda ou criar renda passiva com aluguel." },
-        "equity": { title: "Home Equity", desc: "Transforme o valor do seu imóvel ou veículo em liquidez imediata para novos negócios ou quitação de dívidas críticas." }
-    };
-
-    function atualizarInfo() {
-        const prod = document.getElementById('produto').value;
-        if(descricoes[prod]) {
-            document.getElementById('infoTitle').innerText = descricoes[prod].title;
-            document.getElementById('infoDesc').innerText = descricoes[prod].desc;
-        }
-    }
-
-    document.getElementById('leadForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('btnSubmit');
-        btn.innerText = "Processando...";
-        btn.disabled = true;
-
-        const dados = {
-            nome: document.getElementById('nome').value.trim(),
-            celular: document.getElementById('celular').value.replace(/\D/g, ''),
-            email: document.getElementById('email').value.trim(),
-            produto: document.getElementById('produto').value
-        };
-
-        try {
-            const response = await fetch('https://robo-consorcio.onrender.com/lead', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dados)
-            });
-            if (response.ok) {
-                const resData = await response.json();
-                window.location.href = resData.redirect_url;
-            } else { throw new Error(); }
-        } catch (error) {
-            alert("O servidor está iniciando. Tente novamente em alguns segundos.");
-            btn.innerText = "QUERO SIMULAR AGORA";
-            btn.disabled = false;
-        }
-    });
-</script>
+    </div> <!-- Fim main-container -->
 
 </body>
 </html>
