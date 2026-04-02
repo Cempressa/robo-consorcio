@@ -1,181 +1,53 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulação Dinâmica</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-        
-        body {
-            background-color: #002b5c;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import requests
+import os
+import re
+from urllib.parse import quote
 
-        .main-container {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 50px;
-            max-width: 1200px;
-            width: 100%;
-        }
+app = Flask(__name__)
 
-        /* Texto da Reflexão */
-        .text-content {
-            flex: 1;
-            max-width: 400px;
-            padding-top: 20px;
-        }
-        .text-content h1 { font-size: 2.5rem; margin-bottom: 20px; line-height: 1.1; }
-        .blue-light { color: #4da6ff; }
-        .sub-text { color: #b0c4de; font-size: 1rem; opacity: 0.8; }
+# Configuração robusta de CORS
+CORS(app, resources={r"/*": {"origins": "*"}})
 
-        /* Container dos Cards */
-        .cards-wrapper { display: flex; gap: 20px; align-items: flex-start; }
+# CONFIGURAÇÕES
+MEU_WHATSAPP = "55353832097328" 
+MAKE_URL = "https://hook.us2.make.com/c4edcl8ia2ggai52xi3igwxvor1qywxm"
 
-        /* Card Formulário */
-        .card-white {
-            background: white;
-            color: #333;
-            padding: 40px;
-            border-radius: 15px;
-            width: 380px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .card-white h2 { color: #002b5c; text-align: center; margin-bottom: 20px; }
-        input, select {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .btn {
-            width: 100%;
-            padding: 15px;
-            background: #0056b3;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+@app.route('/lead', methods=['POST', 'OPTIONS'])
+def lead():
+    # Responde ao 'preflight' do navegador para evitar erro de CORS
+    if request.method == 'OPTIONS':
+        return jsonify({"status": "ok"}), 200
 
-        /* Card Informativo Dinâmico */
-        .card-info {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 30px;
-            border-radius: 15px;
-            width: 280px;
-            min-height: 250px; /* Mantém o tamanho fixo para não "pular" */
-        }
-        .card-info h3 { color: #4da6ff; margin-bottom: 15px; font-size: 1.4rem; }
-        .card-info p { font-size: 0.95rem; line-height: 1.6; }
+    if request.is_json:
+        dados = request.get_json()
+    else:
+        dados = request.form.to_dict()
 
-        @media (max-width: 1000px) {
-            .main-container, .cards-wrapper { flex-direction: column; align-items: center; text-align: center; }
-        }
-    </style>
-</head>
-<body>
+    if not dados:
+        return jsonify({"error": "Dados vazios"}), 400
 
-    <div class="main-container">
-        
-        <div class="text-content">
-            <h1>Oportunidades acontecem todos os dias. <br>
-            <span class="blue-light">As melhores, só quem planeja aproveita.</span></h1>
-            <p class="sub-text">Transforme sua visão em estratégia e conquiste o amanhã, começando hoje.</p>
-        </div>
+    # Tratamento de dados
+    celular_raw = dados.get('celular', '')
+    celular_limpo = re.sub(r'\D', '', celular_raw)
+    dados['celular_limpo'] = celular_limpo
 
-        <div class="cards-wrapper">
-    <!-- SUBSTITUA O SEU FORMULÁRIO POR ESTE -->
-<div class="card-white">
-    <h2>Simule seu Consórcio</h2>
-    <form id="leadForm">
-        <input type="text" id="nome" placeholder="Nome Completo" autocomplete="name" required>
-        <input type="text" id="celular" placeholder="WhatsApp (DDD + Número)" autocomplete="tel" required>
-        <input type="email" id="email" placeholder="Seu melhor E-mail" autocomplete="email" required>
-        
-        <select id="opcao-select">
-            <option value="imoveis">Imóveis</option>
-            <option value="veiculos">Veículos</option>
-            <option value="alavancagem">Alavancagem Financeira</option>
-            <option value="maquinas">Máquinas e Equipamentos</option>
-        </select>
-        
-        <!-- Adicionei o type="submit" -->
-        <button type="submit" class="btn" id="btnEnviar">QUERO SIMULAR AGORA</button>
-    </form>
-</div>
+    # 1. Envio para o Make (Planilha)
+    try:
+        requests.post(MAKE_URL, json=dados, timeout=5)
+    except Exception as e:
+        print(f"Erro Make: {e}")
 
-<script>
-    // 1. Lógica do Quadro Informativo (Sua lógica original que já funciona)
-    const conteudos = {
-        imoveis: { titulo: "Imóveis", texto: "A compra planejada..." },
-        veiculos: { titulo: "Veículos", texto: "Troque de carro..." },
-        alavancagem: { titulo: "Alavancagem", texto: "Use a estratégia da Mente Programada..." },
-        maquinas: { titulo: "Máquinas", texto: "Aumente a produtividade..." }
-    };
+    # 2. Link do WhatsApp
+    produto = dados.get('produto', 'Consórcio')
+    nome = dados.get('nome', 'Cliente')
+    mensagem = f"Olá! Sou {nome}, vim pelo site e quero simular um {produto}."
+    
+    link_wa = f"https://api.whatsapp.com/send?phone={MEU_WHATSAPP}&text={quote(mensagem)}"
 
-    const selectOpcao = document.getElementById('opcao-select');
-    const infoTitulo = document.getElementById('info-titulo');
-    const infoTexto = document.getElementById('info-texto');
+    return jsonify({"whatsapp_url": link_wa}), 200
 
-    selectOpcao.addEventListener('change', function() {
-        const conteudo = conteudos[this.value];
-        if (conteudo) {
-            infoTitulo.innerText = conteudo.titulo;
-            infoTexto.innerText = conteudo.texto;
-        }
-    });
-
-    // 2. NOVA LÓGICA: ENVIO DE DADOS (O que estava faltando!)
-    document.getElementById('leadForm').addEventListener('submit', async function(e) {
-        e.preventDefault(); // Impede a página de recarregar
-        
-        const btn = document.getElementById('btnEnviar');
-        btn.innerText = "PROCESSANDO...";
-        btn.disabled = true;
-
-        const dados = {
-            nome: document.getElementById('nome').value,
-            celular: document.getElementById('celular').value,
-            email: document.getElementById('email').value,
-            produto: document.getElementById('opcao-select').value
-        };
-
-        console.log("Enviando envelope:", dados);
-
-        try {
-            // ATENÇÃO: Substitua pela sua URL do Render
-            const response = await fetch('https://robo-consorcio.onrender.com', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dados)
-            });
-
-            const result = await response.json();
-
-            if (result.whatsapp_url) {
-                console.log("Sucesso! Redirecionando...");
-                window.location.href = result.whatsapp_url;
-            } else {
-                alert("Erro ao processar. Tente novamente.");
-            }
-        } catch (error) {
-            console.error("Erro na comunicação:", error);
-            alert("Servidor acordando... Clique novamente em 30 segundos.");
-        } finally {
-            btn.innerText = "QUERO SIMULAR AGORA";
-            btn.disabled = false;
-        }
-    });
-</script>       
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
