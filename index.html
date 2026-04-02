@@ -6,79 +6,20 @@
     <title>Simulador de Consórcio</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        
-        body { 
-            background-color: #002b5c; 
-            color: white; 
-            min-height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            padding: 20px;
-        }
-
-        .main-container { 
-            display: flex; 
-            flex-direction: row; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 40px; 
-            max-width: 1200px; 
-            width: 100%;
-        }
-
+        body { background-color: #002b5c; color: white; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .main-container { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 40px; max-width: 1200px; width: 100%; }
         .text-content { flex: 1; max-width: 400px; }
         .text-content h1 { font-size: 3rem; line-height: 1.1; margin-bottom: 20px; }
         .blue-light { color: #4da6ff; }
-        .text-content p { font-size: 1.1rem; opacity: 0.9; }
-
-        .card-white { 
-            background: white; 
-            color: #333; 
-            padding: 40px; 
-            border-radius: 20px; 
-            width: 420px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            text-align: center;
-        }
+        .card-white { background: white; color: #333; padding: 40px; border-radius: 20px; width: 420px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); text-align: center; }
         .card-white h2 { color: #002b5c; margin-bottom: 30px; font-size: 1.8rem; }
-        
-        input, select { 
-            width: 100%; 
-            padding: 16px; 
-            margin-bottom: 20px; 
-            border: 1px solid #ddd; 
-            border-radius: 10px; 
-            font-size: 1rem; 
-        }
-
-        .btn-submit { 
-            width: 100%; 
-            padding: 20px; 
-            background: #0056b3; 
-            color: white; 
-            border: none; 
-            border-radius: 10px; 
-            font-weight: bold; 
-            font-size: 1.1rem;
-            cursor: pointer;
-        }
-        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
-
-        .card-info { 
-            background: rgba(255, 255, 255, 0.1); 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            padding: 30px; 
-            border-radius: 15px; 
-            width: 320px; 
-            min-height: 220px;
-        }
+        input, select { width: 100%; padding: 16px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; }
+        .btn-submit { width: 100%; padding: 20px; background: #0056b3; color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
+        .btn-submit:disabled { background: #ccc; }
+        .card-info { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 30px; border-radius: 15px; width: 320px; min-height: 220px; }
         .card-info h3 { color: #4da6ff; margin-bottom: 15px; font-size: 1.5rem; }
         .card-info p { font-size: 1rem; line-height: 1.5; color: #d1e3ff; }
-
-        @media (max-width: 1050px) {
-            .main-container { flex-direction: column; text-align: center; }
-        }
+        @media (max-width: 1050px) { .main-container { flex-direction: column; text-align: center; } }
     </style>
 </head>
 <body>
@@ -120,23 +61,36 @@
         };
 
         const select = document.getElementById('selecaoServico');
+
+        // --- FUNÇÃO PARA LER A URL (O que estava faltando na sua imagem) ---
+        function capturarParametrosURL() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('nome')) document.getElementById('nome').value = params.get('nome');
+            if (params.has('whatsapp')) document.getElementById('whatsapp').value = params.get('whatsapp');
+            if (params.has('email')) document.getElementById('email').value = params.get('email');
+            
+            const servico = params.get('servico');
+            if (servico && conteudos[servico]) {
+                select.value = servico;
+                document.getElementById('info-titulo').innerText = conteudos[servico].t;
+                document.getElementById('info-texto').innerText = conteudos[servico].d;
+            }
+        }
+
+        window.onload = capturarParametrosURL;
+
         select.addEventListener('change', function() {
             const item = conteudos[this.value];
             document.getElementById('info-titulo').innerText = item.t;
             document.getElementById('info-texto').innerText = item.d;
         });
 
-        // FUNÇÃO DE ENVIO REAL PARA O SHEET.BEST
+        // --- ENVIO PARA SHEET.BEST ---
         document.getElementById('form-consorcio').onsubmit = async (e) => {
             e.preventDefault();
+            const URL_API = "COLE_AQUI_SEU_LINK_DO_SHEET_BEST"; // <--- COLOQUE SEU LINK AQUI
 
-            // COLE SEU LINK DO SHEET.BEST ENTRE AS ASPAS ABAIXO
-            const URL_API = "COLE_AQUI_SEU_LINK_DO_SHEET_BEST";
-
-            if(URL_API.includes("COLE_AQUI")) {
-                alert("Por favor, insira o seu link da API do Sheet.best no código!");
-                return;
-            }
+            if(URL_API.includes("COLE_AQUI")) return alert("Insira o link da sua API!");
 
             const btn = document.getElementById('btn-enviar');
             btn.innerText = "ENVIANDO...";
@@ -156,12 +110,9 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-
                 if(response.ok) {
-                    alert("✅ Sucesso! Dados salvos na planilha.");
+                    alert("✅ Sucesso!");
                     e.target.reset();
-                } else {
-                    alert("❌ Erro ao salvar. Verifique a URL da sua API.");
                 }
             } catch (err) {
                 alert("❌ Erro de conexão.");
