@@ -90,7 +90,7 @@
                 "e-mail": document.getElementById('email').value,
                 "produto": selectElement.value
             };
-
+            const URL_API = "https://script.google.com/macros/s/AKfycbwwZSIXrm5uv3TlsAlZ2E8NRxtNdNbR8o5rQ8fFfaGRd-XC2zaYgxD7ECq_80c51T2T/exec";
             try {
                 const response = await fetch(URL_API, {
                     method: 'POST',
