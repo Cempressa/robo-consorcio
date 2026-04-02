@@ -14,31 +14,33 @@
         .input-group label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #555; }
         input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
         .btn-submit { width: 100%; padding: 15px; background: #0056b3; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; }
-        .card-info { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; width: 300px; border: 1px solid rgba(255,255,255,0.2); }
-        .card-info h3 { color: #4da6ff; margin-bottom: 15px; }
+        .card-info { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; width: 320px; border: 1px solid rgba(255,255,255,0.2); }
+        .card-info h3 { color: #4da6ff; margin-bottom: 15px; font-size: 1.5rem; }
+        .card-info p { line-height: 1.6; color: #e0e0e0; }
     </style>
 </head>
 <body>
 
     <div class="main-container">
+        <!-- Lado Esquerdo: Formulário -->
         <div class="card-white">
             <h2>Simule seu Consórcio</h2>
             <form id="form-consorcio">
                 <div class="input-group">
-                    <label for="nome">Nome Completo</label>
-                    <input type="text" id="nome" name="nome" autocomplete="name" required>
+                    <label>Nome Completo</label>
+                    <input type="text" id="nome" autocomplete="name" required>
                 </div>
                 <div class="input-group">
-                    <label for="whatsapp">WhatsApp (DDD + Número)</label>
-                    <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel" required>
+                    <label>WhatsApp</label>
+                    <input type="tel" id="whatsapp" autocomplete="tel" required>
                 </div>
                 <div class="input-group">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" autocomplete="email" required>
+                    <label>E-mail</label>
+                    <input type="email" id="email" autocomplete="email" required>
                 </div>
                 <div class="input-group">
-                    <label for="selecaoServico">O que deseja simular?</label>
-                    <select id="selecaoServico" name="servico">
+                    <label>O que deseja simular?</label>
+                    <select id="selecaoServico">
                         <option value="Imóveis">Imóveis</option>
                         <option value="Alavancagem">Alavancagem</option>
                         <option value="Veículos">Veículos</option>
@@ -48,18 +50,19 @@
             </form>
         </div>
 
+        <!-- Lado Direito: Bloco Informativo (O que sumiu) -->
         <div class="card-info">
             <h3 id="info-titulo">Imóveis</h3>
-            <p id="info-texto">A compra planejada. Use para adquirir terrenos, casas ou construir.</p>
+            <p id="info-texto">A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido.</p>
         </div>
     </div>
 
     <script>
-        // Lógica visual do quadro lateral
+        // 1. Restaurando a lógica das caixas de texto
         const conteudos = {
-            "Imóveis": { t: "Imóveis", d: "A compra planejada. Ideal para fugir dos juros bancários." },
-            "Alavancagem": { t: "Alavancagem", d: "Estratégia para ampliar capital sem descapitalizar seu caixa." },
-            "Veículos": { t: "Veículos", d: "Renove sua frota ou conquiste seu carro novo com planejamento." }
+            "Imóveis": { t: "Imóveis", d: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários." },
+            "Alavancagem": { t: "Alavancagem", d: "Estratégia financeira para multiplicar patrimônio sem usar capital de giro próprio." },
+            "Veículos": { t: "Veículos", d: "Renove sua frota ou conquiste seu carro novo com planejamento inteligente e parcelas reduzidas." }
         };
 
         const selectElement = document.getElementById('selecaoServico');
@@ -69,20 +72,17 @@
             document.getElementById('info-texto').innerText = item.d;
         });
 
-        // Envio para o Google Sheets via Sheet.best
+        // 2. Envio para o Google Script
         document.getElementById('form-consorcio').onsubmit = async (e) => {
             e.preventDefault();
             
-            // SUBSTITUA O LINK ABAIXO PELO SEU DO SHEET.BEST
-            const URL_API = "COLE_AQUI_SEU_LINK_DO_SHEET_BEST";
-
-            if(URL_API.includes("COLE_AQUI")) return alert("Cole o link da sua API!");
+            // O SEU LINK QUE VOCÊ COPIOU NA IMAGEM ANTERIOR:
+            const URL_API = "https://script.google.com/macros/s/AKfycbwwZSIXrm5uv3TlsAlZ2E8NRxtNdNbR8o5rQ8fFfaGRd-XC2zaYgxD7ECq_80c51T2T/exec";
 
             const btn = document.getElementById('btn-enviar');
             btn.innerText = "ENVIANDO...";
             btn.disabled = true;
 
-            // MONTAGEM DOS DADOS (Chaves idênticas aos rótulos da sua imagem)
             const payload = {
                 "data/Hora": new Date().toLocaleString("pt-BR"),
                 "nome": document.getElementById('nome').value,
@@ -90,22 +90,20 @@
                 "e-mail": document.getElementById('email').value,
                 "produto": selectElement.value
             };
-            const URL_API = "https://script.google.com/macros/s/AKfycbwwZSIXrm5uv3TlsAlZ2E8NRxtNdNbR8o5rQ8fFfaGRd-XC2zaYgxD7ECq_80c51T2T/exec";
+
             try {
                 const response = await fetch(URL_API, {
                     method: 'POST',
+                    mode: 'no-cors', // Adicionado para evitar erro de redirecionamento do Google
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(payload)
                 });
 
-                if(response.ok) {
-                    alert("✅ Sucesso! Dados salvos na planilha.");
-                    e.target.reset();
-                } else {
-                    alert("❌ Erro ao salvar. Verifique o link da API.");
-                }
+                alert("✅ Simulação enviada com sucesso!");
+                e.target.reset();
             } catch (err) {
-                alert("❌ Erro de conexão.");
+                alert("❌ Erro ao enviar dados.");
+                console.error(err);
             } finally {
                 btn.innerText = "QUERO SIMULAR AGORA";
                 btn.disabled = false;
