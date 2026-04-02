@@ -3,40 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consórcio - Planejamento e Estratégia</title>
+    <title>Consórcio Planejado</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background-color: #002b5c; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        
         .main-container { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 40px; max-width: 1200px; width: 100%; }
-        
-        /* Reflexão à Esquerda */
         .text-content { flex: 1; min-width: 300px; max-width: 450px; }
         .text-content h1 { font-size: 2.5rem; line-height: 1.2; margin-bottom: 20px; }
         .blue-light { color: #4da6ff; }
         .sub-text { color: #b0c4de; font-size: 1.1rem; line-height: 1.6; }
-
-        /* Blocos à Direita */
         .cards-wrapper { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        
         .card-white { background: white; color: #333; padding: 35px; border-radius: 15px; width: 380px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .card-white h2 { color: #002b5c; text-align: center; margin-bottom: 25px; }
-
-        .input-group { margin-bottom: 15px; text-align: left; }
-        .input-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: bold; color: #555; }
-        
-        /* Aplicando o padrão da imagem (id e name) */
-        .input-group input, .input-group select { 
-            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; outline: none;
-        }
-
-        .btn-submit { width: 100%; padding: 15px; background: #0056b3; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; font-weight: bold; color: #666; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; outline: none; }
+        .btn-submit { width: 100%; padding: 15px; background: #0056b3; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; transition: 0.3s; }
         .btn-submit:hover { background: #003d82; }
-
-        /* Quadro de Informação */
         .card-info { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 30px; border-radius: 15px; width: 280px; backdrop-filter: blur(8px); min-height: 280px; }
         .card-info h3 { color: #4da6ff; margin-bottom: 15px; }
-        .card-info p { font-size: 0.95rem; line-height: 1.6; }
+        @media (max-width: 1024px) { .main-container { flex-direction: column; align-items: center; text-align: center; } }
     </style>
 </head>
 <body>
@@ -52,25 +38,27 @@
             <div class="card-white">
                 <h2>Simule seu Consórcio</h2>
                 
-                <!-- FORMULÁRIO COM ID E NAME EM CADA CAMPO -->
                 <form id="form-consorcio">
                     <div class="input-group">
                         <label for="nome">Nome Completo</label>
-                        <input type="text" id="nome" name="nome" placeholder="Ex: João Silva" required>
+                        <!-- Adicionado autocomplete="name" -->
+                        <input type="text" id="nome" name="nome" placeholder="Ex: João Silva" autocomplete="name" required>
                     </div>
                     
                     <div class="input-group">
                         <label for="whatsapp">WhatsApp</label>
-                        <input type="text" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" required>
+                        <!-- Adicionado autocomplete="tel" -->
+                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" autocomplete="tel" required>
                     </div>
                     
                     <div class="input-group">
                         <label for="email">E-mail</label>
-                        <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                        <!-- Adicionado autocomplete="email" -->
+                        <input type="email" id="email" name="email" placeholder="seu@email.com" autocomplete="email" required>
                     </div>
                     
                     <div class="input-group">
-                        <label for="selecaoServico">Produto</label>
+                        <label for="selecaoServico">Produto de Interesse</label>
                         <select id="selecaoServico" name="servico">
                             <option value="imoveis">Aquisição e Construção</option>
                             <option value="alavancagem">Alavancagem Financeira</option>
@@ -84,17 +72,17 @@
 
             <div class="card-info">
                 <h3 id="info-titulo">Imóveis</h3>
-                <p id="info-texto">A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido.</p>
+                <p id="info-texto">A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // 1. Lógica de troca de texto do quadro lateral
+        // Lógica dos quadros laterais
         const dados = {
             imoveis: { t: "Imóveis", d: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários." },
-            alavancagem: { t: "Alavancagem", d: "Aumente seu capital sem descapitalizar seu caixa. Estratégia pura para investidores de alta performance." },
-            veiculos: { t: "Veículos", d: "Conquiste sua frota ou veículo próprio com taxas significativamente menores que o financiamento tradicional." }
+            alavancagem: { t: "Alavancagem", d: "Estratégia para investidores. Use o consórcio para ampliar seu patrimônio sem imobilizar seu capital de giro." },
+            veiculos: { t: "Veículos", d: "Troque de carro ou aumente sua frota com parcelas que cabem no planejamento da sua empresa ou família." }
         };
 
         const select = document.getElementById('selecaoServico');
@@ -104,28 +92,43 @@
             document.getElementById('info-texto').innerText = item.d;
         });
 
-        // 2. Lógica de Envio para a Planilha (Action)
+        // Lógica de envio para o Sheet.best
         document.getElementById('form-consorcio').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // --- COLOQUE SUA URL DO SHEET.BEST ABAIXO ---
+            const URL_SHEET_BEST = "SUA_URL_AQUI"; 
+            
+            if(URL_SHEET_BEST === "SUA_URL_AQUI") {
+                alert("Por favor, configure a URL do Sheet.best no código!");
+                return;
+            }
+
             const btn = document.getElementById('btn-enviar');
             btn.innerText = "ENVIANDO...";
+            btn.disabled = true;
 
-            // Aqui você deve colocar a URL da sua Planilha/API
-            const URL_WEBHOOK = "SUA_URL_AQUI"; 
-
-            fetch(URL_WEBHOOK, {
+            fetch(URL_SHEET_BEST, {
                 method: 'POST',
-                body: new FormData(this)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nome: document.getElementById('nome').value,
+                    whatsapp: document.getElementById('whatsapp').value,
+                    email: document.getElementById('email').value,
+                    servico: document.getElementById('selecaoServico').value
+                })
             })
             .then(res => {
-                alert("Simulação enviada com sucesso!");
-                btn.innerText = "QUERO SIMULAR AGORA";
+                alert("Dados enviados para a planilha com sucesso!");
                 this.reset();
             })
             .catch(err => {
+                alert("Erro ao enviar dados. Verifique sua conexão.");
                 console.error(err);
-                alert("Erro ao enviar. Verifique a URL da sua planilha.");
+            })
+            .finally(() => {
                 btn.innerText = "QUERO SIMULAR AGORA";
+                btn.disabled = false;
             });
         });
     </script>
