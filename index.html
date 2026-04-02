@@ -3,118 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Consórcio</title>
+    <title>Simulador Ademicon</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: #002b5c; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         .main-container { display: flex; flex-wrap: wrap; gap: 40px; max-width: 1100px; width: 100%; justify-content: center; }
-        .card-white { background: white; color: #333; padding: 30px; border-radius: 12px; width: 350px; }
-        .input-group { margin-bottom: 12px; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-top: 5px; }
-        .btn-submit { width: 100%; padding: 12px; background: #0056b3; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .card-info { background: rgba(255,255,255,0.1); padding: 25px; border-radius: 12px; width: 300px; border: 1px solid rgba(255,255,255,0.2); }
-        .card-info h3 { color: #4da6ff; margin-bottom: 10px; font-size: 1.5rem; }
-        .card-info p { line-height: 1.5; color: #eee; }
+        
+        /* Caixa do Formulário */
+        .card-white { background: white; color: #333; padding: 30px; border-radius: 12px; width: 380px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .card-white h2 { color: #002b5c; margin-bottom: 20px; text-align: center; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #555; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+        .btn-submit { width: 100%; padding: 15px; background: #0056b3; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.3s; }
+        .btn-submit:hover { background: #003d82; }
+
+        /* A PRIMEIRA CAIXA (QUE TINHA SUMIDO) */
+        .card-info { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; width: 320px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); }
+        .card-info h3 { color: #4da6ff; margin-bottom: 15px; font-size: 1.8rem; }
+        .card-info p { line-height: 1.6; color: #e0e0e0; font-size: 1.1rem; }
     </style>
 </head>
 <body>
 
     <div class="main-container">
+        <!-- FORMULÁRIO -->
         <div class="card-white">
-            <h2>Simulação</h2>
+            <h2>Simule seu Consórcio</h2>
             <form id="form-consorcio">
                 <div class="input-group">
-                    <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome" autocomplete="name" required>
+                    <label>Nome Completo</label>
+                    <input type="text" id="nome" autocomplete="name" required>
                 </div>
                 <div class="input-group">
-                    <label for="whatsapp">WhatsApp</label>
-                    <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel" required>
+                    <label>WhatsApp (DDD + Número)</label>
+                    <input type="tel" id="whatsapp" autocomplete="tel" required>
                 </div>
                 <div class="input-group">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" autocomplete="email" required>
+                    <label>E-mail</label>
+                    <input type="email" id="email" autocomplete="email" required>
                 </div>
                 <div class="input-group">
-                    <label for="selecaoServico">Serviço</label>
-                    <!-- O ID aqui deve ser exatamente 'selecaoServico' -->
-                    <select id="selecaoServico" name="servico">
-                        <option value="imoveis">Imóveis</option>
-                        <option value="alavancagem">Alavancagem</option>
-                        <option value="veiculos">Veículos</option>
+                    <label>O que deseja simular?</label>
+                    <select id="selecaoServico">
+                        <option value="Imóveis">Imóveis</option>
+                        <option value="Alavancagem">Alavancagem</option>
+                        <option value="Veículos">Veículos</option>
                     </select>
                 </div>
-                <button type="submit" id="btn-enviar" class="btn-submit">ENVIAR AGORA</button>
+                <button type="submit" id="btn-enviar" class="btn-submit">QUERO SIMULAR AGORA</button>
             </form>
         </div>
 
-        <!-- QUADRO QUE DEVE MUDAR -->
+        <!-- ESTA É A CAIXA QUE VOLTOU -->
         <div class="card-info">
             <h3 id="info-titulo">Imóveis</h3>
-            <p id="info-texto">Compra planejada para terrenos, casas ou construção.</p>
+            <p id="info-texto">A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido.</p>
         </div>
     </div>
 
     <script>
-        // Objeto com os textos que serão trocados
+        // LÓGICA PARA MUDAR OS TEXTOS DA CAIXA INFORMATIVA
         const conteudos = {
-            imoveis: {
-                titulo: "Imóveis",
-                texto: "Compra planejada para terrenos, casas ou construção. Ideal para fugir dos juros."
+            "Imóveis": { 
+                t: "Imóveis", 
+                d: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido." 
             },
-            alavancagem: {
-                titulo: "Alavancagem",
-                texto: "Estratégia financeira para multiplicar patrimônio sem usar capital de giro próprio."
+            "Alavancagem": { 
+                t: "Alavancagem", 
+                d: "Estratégia financeira para multiplicar patrimônio sem usar capital de giro próprio. Ideal para investidores." 
             },
-            veiculos: {
-                titulo: "Veículos",
-                texto: "Renovação de frota ou carro novo com as menores taxas do mercado especializado."
+            "Veículos": { 
+                t: "Veículos", 
+                d: "Renove sua frota ou conquiste seu carro novo com planejamento inteligente e as menores taxas do mercado." 
             }
         };
 
         const selectElement = document.getElementById('selecaoServico');
-        const tituloElement = document.getElementById('info-titulo');
-        const textoElement = document.getElementById('info-texto');
-
-        // FUNÇÃO QUE FAZ A MUDANÇA
+        
+        // Função que troca o texto quando você muda o Select
         selectElement.addEventListener('change', function() {
-            const valorSelecionado = this.value; // Pega 'imoveis', 'alavancagem' ou 'veiculos'
-            
-            // Atualiza os elementos na tela
-            tituloElement.innerText = conteudos[valorSelecionado].titulo;
-            textoElement.innerText = conteudos[valorSelecionado].texto;
+            const item = conteudos[this.value];
+            document.getElementById('info-titulo').innerText = item.t;
+            document.getElementById('info-texto').innerText = item.d;
         });
 
-        // Lógica de envio (Mantenha seu link do Sheet.best aqui)
+        // ENVIO PARA A PLANILHA (GOOGLE APPS SCRIPT)
         document.getElementById('form-consorcio').onsubmit = async (e) => {
             e.preventDefault();
-            const URL_API = "COLE_AQUI_SEU_LINK_DO_SHEET_BEST";
             
-            if(URL_API.includes("COLE_AQUI")) {
-                alert("Configure o link da planilha no código!");
-                return;
-            }
+            // Seu link oficial do Google Script
+            const URL_API = "https://script.google.com/macros/s/AKfycbwwZSIXrm5uv3TlsAlZ2E8NRxtNdNbR8o5rQ8fFfaGRd-XC2zaYgxD7ECq_80c51T2T/exec";
 
             const btn = document.getElementById('btn-enviar');
             btn.innerText = "ENVIANDO...";
-            
+            btn.disabled = true;
+
+            // Dados idênticos às colunas da sua planilha (minúsculas)
+            const payload = {
+                "data/Hora": new Date().toLocaleString("pt-BR"),
+                "nome": document.getElementById('nome').value,
+                "whatsApp": document.getElementById('whatsapp').value,
+                "e-mail": document.getElementById('email').value,
+                "produto": selectElement.value
+            };
+
             try {
+                // O mode 'no-cors' é necessário para o Google Apps Script não dar erro de travamento
                 await fetch(URL_API, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        nome: document.getElementById('nome').value,
-                        whatsapp: document.getElementById('whatsapp').value,
-                        email: document.getElementById('email').value,
-                        servico: selectElement.value
-                    })
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
-                alert("Dados enviados!");
+
+                alert("✅ Simulação enviada! Verifique sua planilha.");
                 e.target.reset();
             } catch (err) {
-                alert("Erro no envio.");
+                alert("❌ Erro ao enviar. Verifique sua conexão.");
+                console.error(err);
             } finally {
-                btn.innerText = "ENVIAR AGORA";
+                btn.innerText = "QUERO SIMULAR AGORA";
+                btn.disabled = false;
             }
         };
     </script>
