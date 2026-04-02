@@ -17,10 +17,9 @@
             padding: 20px;
         }
 
-        /* ESTE É O CONTAINER QUE ALINHA OS 3 ELEMENTOS */
         .main-container { 
             display: flex; 
-            flex-direction: row; /* Coloca um ao lado do outro */
+            flex-direction: row; 
             align-items: center; 
             justify-content: center; 
             gap: 30px; 
@@ -28,25 +27,21 @@
             width: 100%;
         }
 
-        /* 1. TEXTO DA ESQUERDA */
-        .text-content { 
-            flex: 1; 
-            max-width: 400px; 
-        }
+        .text-content { flex: 1; max-width: 400px; }
         .text-content h1 { font-size: 3rem; line-height: 1.1; margin-bottom: 15px; }
         .blue-light { color: #4da6ff; }
 
-        /* 2. CARD DO FORMULÁRIO (CENTRO) */
         .card-white { 
             background: white; 
             color: #333; 
             padding: 40px; 
             border-radius: 20px; 
-            width: 400px; /* Largura fixa para não achatar */
+            width: 400px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             text-align: center;
         }
         .card-white h2 { color: #002b5c; margin-bottom: 25px; font-size: 1.8rem; }
+        
         input, select { 
             width: 100%; 
             padding: 15px; 
@@ -55,6 +50,7 @@
             border-radius: 10px; 
             font-size: 1rem; 
         }
+
         .btn-submit { 
             width: 100%; 
             padding: 18px; 
@@ -63,10 +59,11 @@
             border: none; 
             border-radius: 10px; 
             font-weight: bold; 
-            cursor: pointer; 
+            cursor: pointer;
+            transition: 0.3s;
         }
+        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
 
-        /* 3. CARD DE INFORMAÇÃO (DIREITA) */
         .card-info { 
             background: rgba(255, 255, 255, 0.1); 
             border: 1px solid rgba(255, 255, 255, 0.2); 
@@ -78,7 +75,6 @@
         .card-info h3 { color: #4da6ff; margin-bottom: 15px; font-size: 1.4rem; }
         .card-info p { font-size: 1rem; line-height: 1.4; color: #d1e3ff; }
 
-        /* Responsividade para celular */
         @media (max-width: 1000px) {
             .main-container { flex-direction: column; text-align: center; }
             .card-white { width: 100%; }
@@ -107,7 +103,7 @@
                     <option value="Alavancagem">Alavancagem Financeira</option>
                 </select>
                 
-                <button type="submit" class="btn-submit">QUERO SIMULAR AGORA</button>
+                <button type="submit" id="btn-enviar" class="btn-submit">QUERO SIMULAR AGORA</button>
             </form>
         </div>
 
@@ -119,7 +115,6 @@
     </div>
 
     <script>
-        // Lógica para trocar o texto da direita ao mudar o select
         const conteudos = {
             "Imóveis": { t: "Imóveis", d: "A compra planejada. Ideal para quem quer fugir dos juros bancários e construir patrimônio sólido." },
             "Veículos": { t: "Veículos", d: "Troque de frota ou conquiste seu carro novo com parcelas que cabem no seu bolso." },
@@ -130,14 +125,4 @@
         select.addEventListener('change', function() {
             const item = conteudos[this.value];
             document.getElementById('info-titulo').innerText = item.t;
-            document.getElementById('info-texto').innerText = item.d;
-        });
-
-        // Bloqueio de envio apenas para teste de layout (remova o alert depois)
-        document.getElementById('form-consorcio').onsubmit = (e) => {
-            e.preventDefault();
-            alert("Layout ok! Agora cole o link da sua API no código para enviar os dados.");
-        };
-    </script>
-</body>
-</html>
+            document.getElementById('info
