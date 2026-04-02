@@ -5,21 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de Consórcio</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #002b5c; color: white; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        
         .main-container { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 40px; max-width: 1200px; width: 100%; }
+        
         .text-content { flex: 1; max-width: 400px; }
         .text-content h1 { font-size: 3rem; line-height: 1.1; margin-bottom: 20px; }
         .blue-light { color: #4da6ff; }
+        .text-content p { font-size: 1.1rem; opacity: 0.9; line-height: 1.5; }
+
         .card-white { background: white; color: #333; padding: 40px; border-radius: 20px; width: 420px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); text-align: center; }
         .card-white h2 { color: #002b5c; margin-bottom: 30px; font-size: 1.8rem; }
-        input, select { width: 100%; padding: 16px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; }
-        .btn-submit { width: 100%; padding: 20px; background: #0056b3; color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
-        .btn-submit:disabled { background: #ccc; }
+        
+        input, select { width: 100%; padding: 16px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; outline: none; }
+        
+        .btn-submit { width: 100%; padding: 20px; background: #0056b3; color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
+        .btn-submit:hover { background: #004494; }
+        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
+
         .card-info { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 30px; border-radius: 15px; width: 320px; min-height: 220px; }
         .card-info h3 { color: #4da6ff; margin-bottom: 15px; font-size: 1.5rem; }
         .card-info p { font-size: 1rem; line-height: 1.5; color: #d1e3ff; }
-        @media (max-width: 1050px) { .main-container { flex-direction: column; text-align: center; } }
+
+        @media (max-width: 1050px) { .main-container { flex-direction: column; text-align: center; } .card-white, .card-info { width: 100%; max-width: 450px; } }
     </style>
 </head>
 <body>
@@ -33,94 +42,11 @@
         <div class="card-white">
             <h2>Simule seu Futuro</h2>
             <form id="form-consorcio">
-                <input type="text" id="nome" placeholder="Seu Nome Completo" required>
-                <input type="tel" id="whatsapp" placeholder="WhatsApp (DDD + Número)" required>
-                <input type="email" id="email" placeholder="Seu melhor E-mail" required>
+                <input type="text" name="Nome" id="nome" placeholder="Seu Nome Completo" required>
+                <input type="tel" name="WhatsApp" id="whatsapp" placeholder="WhatsApp (DDD + Número)" required>
+                <input type="email" name="Email" id="email" placeholder="Seu melhor E-mail" required>
                 
-                <select id="selecaoServico">
+                <select name="Produto" id="selecaoServico">
                     <option value="Imóveis">Consórcio de Imóveis</option>
                     <option value="Veículos">Consórcio de Veículos</option>
-                    <option value="Alavancagem">Alavancagem Financeira</option>
-                </select>
-                
-                <button type="submit" id="btn-enviar" class="btn-submit">QUERO SIMULAR AGORA</button>
-            </form>
-        </div>
-
-        <div class="card-info">
-            <h3 id="info-titulo">Imóveis</h3>
-            <p id="info-texto">A compra planejada. Ideal para quem quer fugir dos juros bancários e construir patrimônio sólido.</p>
-        </div>
-    </div>
-
-    <script>
-        const conteudos = {
-            "Imóveis": { t: "Imóveis", d: "A compra planejada. Ideal para quem quer fugir dos juros bancários e construir patrimônio sólido." },
-            "Veículos": { t: "Veículos", d: "Troque de frota ou conquiste seu carro novo com parcelas que cabem no seu bolso." },
-            "Alavancagem": { t: "Alavancagem", d: "Estratégia avançada: use o consórcio para multiplicar capital e gerar renda passiva." }
-        };
-
-        const select = document.getElementById('selecaoServico');
-
-        // --- FUNÇÃO PARA LER A URL (O que estava faltando na sua imagem) ---
-        function capturarParametrosURL() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.has('nome')) document.getElementById('nome').value = params.get('nome');
-            if (params.has('whatsapp')) document.getElementById('whatsapp').value = params.get('whatsapp');
-            if (params.has('email')) document.getElementById('email').value = params.get('email');
-            
-            const servico = params.get('servico');
-            if (servico && conteudos[servico]) {
-                select.value = servico;
-                document.getElementById('info-titulo').innerText = conteudos[servico].t;
-                document.getElementById('info-texto').innerText = conteudos[servico].d;
-            }
-        }
-
-        window.onload = capturarParametrosURL;
-
-        select.addEventListener('change', function() {
-            const item = conteudos[this.value];
-            document.getElementById('info-titulo').innerText = item.t;
-            document.getElementById('info-texto').innerText = item.d;
-        });
-
-        // --- ENVIO PARA SHEET.BEST ---
-        document.getElementById('form-consorcio').onsubmit = async (e) => {
-            e.preventDefault();
-            const URL_API = "COLE_AQUI_SEU_LINK_DO_SHEET_BEST"; // <--- COLOQUE SEU LINK AQUI
-
-            if(URL_API.includes("COLE_AQUI")) return alert("Insira o link da sua API!");
-
-            const btn = document.getElementById('btn-enviar');
-            btn.innerText = "ENVIANDO...";
-            btn.disabled = true;
-
-            const payload = {
-                "Data": new Date().toLocaleString("pt-BR"),
-                "Nome": document.getElementById('nome').value,
-                "WhatsApp": document.getElementById('whatsapp').value,
-                "Email": document.getElementById('email').value,
-                "Produto": select.value
-            };
-
-            try {
-                const response = await fetch(URL_API, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if(response.ok) {
-                    alert("✅ Sucesso!");
-                    e.target.reset();
-                }
-            } catch (err) {
-                alert("❌ Erro de conexão.");
-            } finally {
-                btn.innerText = "QUERO SIMULAR AGORA";
-                btn.disabled = false;
-            }
-        };
-    </script>
-</body>
-</html>
+                    <option value="Alavanc
