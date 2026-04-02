@@ -5,29 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador Ademicon</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { background: #002b5c; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         .main-container { display: flex; flex-wrap: wrap; gap: 40px; max-width: 1100px; width: 100%; justify-content: center; }
-        
-        /* Caixa do Formulário */
         .card-white { background: white; color: #333; padding: 30px; border-radius: 12px; width: 380px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
         .card-white h2 { color: #002b5c; margin-bottom: 20px; text-align: center; }
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #555; }
         input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
-        .btn-submit { width: 100%; padding: 15px; background: #0056b3; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.3s; }
-        .btn-submit:hover { background: #003d82; }
-
-        /* A PRIMEIRA CAIXA (QUE TINHA SUMIDO) */
-        .card-info { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; width: 320px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); }
-        .card-info h3 { color: #4da6ff; margin-bottom: 15px; font-size: 1.8rem; }
-        .card-info p { line-height: 1.6; color: #e0e0e0; font-size: 1.1rem; }
+        .btn-submit { width: 100%; padding: 15px; background: #0056b3; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; }
+        .card-info { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; width: 320px; border: 1px solid rgba(255,255,255,0.2); }
+        .card-info h3 { color: #4da6ff; margin-bottom: 15px; font-size: 1.5rem; }
+        .card-info p { line-height: 1.6; color: #e0e0e0; }
     </style>
 </head>
 <body>
 
     <div class="main-container">
-        <!-- FORMULÁRIO -->
+        <!-- Lado Esquerdo: Formulário -->
         <div class="card-white">
             <h2>Simule seu Consórcio</h2>
             <form id="form-consorcio">
@@ -36,7 +31,7 @@
                     <input type="text" id="nome" autocomplete="name" required>
                 </div>
                 <div class="input-group">
-                    <label>WhatsApp (DDD + Número)</label>
+                    <label>WhatsApp</label>
                     <input type="tel" id="whatsapp" autocomplete="tel" required>
                 </div>
                 <div class="input-group">
@@ -55,7 +50,7 @@
             </form>
         </div>
 
-        <!-- ESTA É A CAIXA QUE VOLTOU -->
+        <!-- Lado Direito: Bloco Informativo (O que sumiu) -->
         <div class="card-info">
             <h3 id="info-titulo">Imóveis</h3>
             <p id="info-texto">A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido.</p>
@@ -63,43 +58,31 @@
     </div>
 
     <script>
-        // LÓGICA PARA MUDAR OS TEXTOS DA CAIXA INFORMATIVA
+        // 1. Restaurando a lógica das caixas de texto
         const conteudos = {
-            "Imóveis": { 
-                t: "Imóveis", 
-                d: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido." 
-            },
-            "Alavancagem": { 
-                t: "Alavancagem", 
-                d: "Estratégia financeira para multiplicar patrimônio sem usar capital de giro próprio. Ideal para investidores." 
-            },
-            "Veículos": { 
-                t: "Veículos", 
-                d: "Renove sua frota ou conquiste seu carro novo com planejamento inteligente e as menores taxas do mercado." 
-            }
+            "Imóveis": { t: "Imóveis", d: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários." },
+            "Alavancagem": { t: "Alavancagem", d: "Estratégia financeira para multiplicar patrimônio sem usar capital de giro próprio." },
+            "Veículos": { t: "Veículos", d: "Renove sua frota ou conquiste seu carro novo com planejamento inteligente e parcelas reduzidas." }
         };
 
         const selectElement = document.getElementById('selecaoServico');
-        
-        // Função que troca o texto quando você muda o Select
         selectElement.addEventListener('change', function() {
             const item = conteudos[this.value];
             document.getElementById('info-titulo').innerText = item.t;
             document.getElementById('info-texto').innerText = item.d;
         });
 
-        // ENVIO PARA A PLANILHA (GOOGLE APPS SCRIPT)
+        // 2. Envio para o Google Script
         document.getElementById('form-consorcio').onsubmit = async (e) => {
             e.preventDefault();
             
-            // Seu link oficial do Google Script
+            // O SEU LINK QUE VOCÊ COPIOU NA IMAGEM ANTERIOR:
             const URL_API = "https://script.google.com/macros/s/AKfycbwwZSIXrm5uv3TlsAlZ2E8NRxtNdNbR8o5rQ8fFfaGRd-XC2zaYgxD7ECq_80c51T2T/exec";
 
             const btn = document.getElementById('btn-enviar');
             btn.innerText = "ENVIANDO...";
             btn.disabled = true;
 
-            // Dados idênticos às colunas da sua planilha (minúsculas)
             const payload = {
                 "data/Hora": new Date().toLocaleString("pt-BR"),
                 "nome": document.getElementById('nome').value,
@@ -109,18 +92,17 @@
             };
 
             try {
-                // O mode 'no-cors' é necessário para o Google Apps Script não dar erro de travamento
-                await fetch(URL_API, {
+                const response = await fetch(URL_API, {
                     method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'no-cors', // Adicionado para evitar erro de redirecionamento do Google
+                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(payload)
                 });
 
-                alert("✅ Simulação enviada! Verifique sua planilha.");
+                alert("✅ Simulação enviada com sucesso!");
                 e.target.reset();
             } catch (err) {
-                alert("❌ Erro ao enviar. Verifique sua conexão.");
+                alert("❌ Erro ao enviar dados.");
                 console.error(err);
             } finally {
                 btn.innerText = "QUERO SIMULAR AGORA";
