@@ -86,6 +86,7 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
+            outline: none;
         }
 
         .btn-submit {
@@ -110,7 +111,7 @@
             border-radius: 15px;
             width: 280px;
             backdrop-filter: blur(5px);
-            min-height: 250px;
+            min-height: 280px; /* Evita que o quadro mude de tamanho */
         }
 
         .card-info h3 { color: #4da6ff; margin-bottom: 20px; font-size: 1.4rem; }
@@ -136,19 +137,19 @@
         <div class="cards-wrapper">
             <div class="card-white">
                 <h2>Simule seu Consórcio</h2>
-                <form>
+                <form id="meuFormulario">
                     <div class="input-group">
-                        <input type="text" placeholder="Nome Completo">
+                        <input type="text" placeholder="Nome Completo" required>
                     </div>
                     <div class="input-group">
-                        <input type="text" placeholder="WhatsApp (DDD + Número)">
+                        <input type="text" placeholder="WhatsApp (DDD + Número)" required>
                     </div>
                     <div class="input-group">
-                        <input type="email" placeholder="Seu melhor E-mail">
+                        <input type="email" placeholder="Seu melhor E-mail" required>
                     </div>
                     <div class="input-group">
-                        <!-- ADICIONADO O ID PARA O SCRIPT FUNCIONAR -->
-                        <select id="tipo-consorcio">
+                        <!-- O ID 'selecaoServico' é a chave para o funcionamento -->
+                        <select id="selecaoServico">
                             <option value="imoveis">Aquisição e Construção</option>
                             <option value="alavancagem">Alavancagem Financeira</option>
                             <option value="veiculos">Veículos</option>
@@ -158,38 +159,44 @@
                 </form>
             </div>
 
-            <div class="card-info" id="box-info">
-                <h3 id="titulo-info">Imóveis</h3>
-                <p id="texto-info">A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido.</p>
+            <div class="card-info">
+                <h3 id="info-titulo">Imóveis</h3>
+                <p id="info-texto">A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido.</p>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT PARA TROCA DINÂMICA -->
     <script>
-        const infoData = {
+        // Dados que serão trocados
+        const dadosDinamicos = {
             imoveis: {
                 titulo: "Imóveis",
                 texto: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido."
             },
             alavancagem: {
                 titulo: "Alavancagem",
-                texto: "Multiplique seu capital utilizando o poder do consórcio. Ideal para investidores que buscam rentabilidade e ampliação de patrimônio sem descapitalizar."
+                texto: "Acelere seu crescimento financeiro. Utilize o consórcio como ferramenta estratégica para ampliar seu capital e investir no que realmente importa."
             },
             veiculos: {
                 titulo: "Veículos",
-                texto: "Conquiste seu carro novo ou renove sua frota com parcelas reduzidas. A forma mais barata de adquirir seu veículo sem as taxas do financiamento tradicional."
+                texto: "Renove sua frota ou conquiste seu carro novo sem as taxas abusivas do financiamento. Planejamento inteligente para sua mobilidade e conforto."
             }
         };
 
-        const select = document.getElementById('tipo-consorcio');
-        const titulo = document.getElementById('titulo-info');
-        const texto = document.getElementById('texto-info');
+        // Captura os elementos
+        const selectServico = document.getElementById('selecaoServico');
+        const campoTitulo = document.getElementById('info-titulo');
+        const campoTexto = document.getElementById('info-texto');
 
-        select.addEventListener('change', (e) => {
-            const selected = e.target.value;
-            titulo.innerText = infoData[selected].titulo;
-            texto.innerText = infoData[selected].texto;
+        // Escuta a mudança no select
+        selectServico.addEventListener('change', function() {
+            const opcaoSelecionada = this.value;
+            const informacao = dadosDinamicos[opcaoSelecionada];
+
+            if (informacao) {
+                campoTitulo.innerText = informacao.titulo;
+                campoTexto.innerText = informacao.texto;
+            }
         });
     </script>
 
