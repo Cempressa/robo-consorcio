@@ -41,19 +41,16 @@
                 <form id="form-consorcio">
                     <div class="input-group">
                         <label for="nome">Nome Completo</label>
-                        <!-- Adicionado autocomplete="name" -->
                         <input type="text" id="nome" name="nome" placeholder="Ex: João Silva" autocomplete="name" required>
                     </div>
                     
                     <div class="input-group">
                         <label for="whatsapp">WhatsApp</label>
-                        <!-- Adicionado autocomplete="tel" -->
                         <input type="tel" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" autocomplete="tel" required>
                     </div>
                     
                     <div class="input-group">
                         <label for="email">E-mail</label>
-                        <!-- Adicionado autocomplete="email" -->
                         <input type="email" id="email" name="email" placeholder="seu@email.com" autocomplete="email" required>
                     </div>
                     
@@ -78,59 +75,7 @@
     </div>
 
     <script>
-        // Lógica dos quadros laterais
+        // 1. Troca os textos conforme o select muda
         const dados = {
             imoveis: { t: "Imóveis", d: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários." },
-            alavancagem: { t: "Alavancagem", d: "Estratégia para investidores. Use o consórcio para ampliar seu patrimônio sem imobilizar seu capital de giro." },
-            veiculos: { t: "Veículos", d: "Troque de carro ou aumente sua frota com parcelas que cabem no planejamento da sua empresa ou família." }
-        };
-
-        const select = document.getElementById('selecaoServico');
-        select.addEventListener('change', function() {
-            const item = dados[this.value];
-            document.getElementById('info-titulo').innerText = item.t;
-            document.getElementById('info-texto').innerText = item.d;
-        });
-
-        // Lógica de envio para o Sheet.best
-        document.getElementById('form-consorcio').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // --- COLOQUE SUA URL DO SHEET.BEST ABAIXO ---
-            const URL_SHEET_BEST = "SUA_URL_AQUI"; 
-            
-            if(URL_SHEET_BEST === "SUA_URL_AQUI") {
-                alert("Por favor, configure a URL do Sheet.best no código!");
-                return;
-            }
-
-            const btn = document.getElementById('btn-enviar');
-            btn.innerText = "ENVIANDO...";
-            btn.disabled = true;
-
-            fetch(URL_SHEET_BEST, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    nome: document.getElementById('nome').value,
-                    whatsapp: document.getElementById('whatsapp').value,
-                    email: document.getElementById('email').value,
-                    servico: document.getElementById('selecaoServico').value
-                })
-            })
-            .then(res => {
-                alert("Dados enviados para a planilha com sucesso!");
-                this.reset();
-            })
-            .catch(err => {
-                alert("Erro ao enviar dados. Verifique sua conexão.");
-                console.error(err);
-            })
-            .finally(() => {
-                btn.innerText = "QUERO SIMULAR AGORA";
-                btn.disabled = false;
-            });
-        });
-    </script>
-</body>
-</html>
+            alavancagem: {
