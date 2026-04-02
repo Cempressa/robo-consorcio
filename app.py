@@ -1,21 +1,26 @@
 from flask import Flask, request, jsonify
-app = Flask(__name__)
 from flask_cors import CORS
 import requests
 import os
 import re
+from urllib.parse import quote
 
+app = Flask(__name__)
 
-# Permite que qualquer site acesse (ajuste para o seu github.io se quiser mais segurança depois)
-CORS(app) 
+# 1. MELHORIA NO CORS: Configuração explícita para evitar o erro de 'preflight'
+CORS(app, resources={r"/*": {"origins": "*"}}) 
 
 # CONFIGURAÇÕES
-# Verifique se o número está correto (DDI + DDD + Numero)
-MEU_WHATSAPP = "55353832097328" # Exemplo: 55 para Brasil
+MEU_WHATSAPP = "55353832097328" 
 MAKE_URL = "https://hook.us2.make.com/c4edcl8ia2ggai52xi3igwxvor1qywxm"
 
-@app.route('/lead', methods=['POST'])
+# 2. ROTA ATUALIZADA: Adicionado 'OPTIONS' para responder ao teste de segurança do navegador
+@app.route('/lead', methods=['POST', 'OPTIONS'])
 def lead():
+    # Responde automaticamente ao teste 'OPTIONS' do navegador
+    if request.method == 'OPTIONS':
+        return jsonify({"status": "ok"}), 200
+
     # Detecta os dados
     if request.is_json:
         dados = request.get_json()
@@ -30,9 +35,8 @@ def lead():
     celular_limpo = re.sub(r'\D', '', celular_raw)
     dados['celular_limpo'] = celular_limpo
 
-    # 1. Envia para o Make (Planilha) - Sem travar o usuário
+    # 1. Envia para o Make (Planilha)
     try:
-        # Enviamos os dados originais + o celular limpo
         requests.post(MAKE_URL, json=dados, timeout=5)
     except Exception as e:
         print(f"Erro ao avisar o Make: {e}")
@@ -41,16 +45,12 @@ def lead():
     produto = dados.get('produto', 'Consórcio')
     nome = dados.get('nome', 'Cliente')
     
-    # Criamos a mensagem amigável
     mensagem = f"Olá! Sou {nome}, vim pelo site e quero simular um {produto}."
-    
-    # Montamos o link final (usando quote para caracteres especiais)
-    from urllib.parse import quote
     link_wa = f"https://api.whatsapp.com/send?phone={MEU_WHATSAPP}&text={quote(mensagem)}"
 
-    # O JavaScript espera "whatsapp_url" para fazer o redirecionamento
     return jsonify({"whatsapp_url": link_wa}), 200
 
 if __name__ == '__main__':
+    # O Render usa a variável de ambiente PORT
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
