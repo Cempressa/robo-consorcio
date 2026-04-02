@@ -3,62 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulação de Consórcio - Planejamento</title>
+    <title>Consórcio - Planejamento e Estratégia</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background-color: #002b5c; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .main-container { display: flex; flex-direction: row; justify-content: center; align-items: flex-start; gap: 60px; max-width: 1200px; width: 100%; }
-        .text-content { flex: 1; max-width: 450px; padding-top: 10px; }
-        .text-content h1 { font-size: 2.5rem; line-height: 1.2; margin-bottom: 20px; font-weight: 700; }
-        .white-text { color: #ffffff; }
-        .blue-light-text { color: #4da6ff; }
-        .text-content p { font-size: 1.1rem; color: #b0c4de; line-height: 1.6; }
-        .cards-wrapper { display: flex; flex-direction: row; gap: 20px; align-items: flex-start; }
-        .card-white { background-color: #ffffff; color: #333; padding: 40px 30px; border-radius: 15px; width: 380px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .card-white h2 { text-align: center; color: #002b5c; margin-bottom: 25px; font-size: 1.6rem; }
-        .input-group { margin-bottom: 15px; }
-        .input-group input, .input-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; outline: none; }
-        .btn-submit { width: 100%; padding: 15px; background-color: #0056b3; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
-        .btn-submit:hover { background-color: #003d82; }
-        .card-info { background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); padding: 40px 25px; border-radius: 15px; width: 280px; backdrop-filter: blur(5px); min-height: 280px; }
-        .card-info h3 { color: #4da6ff; margin-bottom: 20px; font-size: 1.4rem; }
-        .card-info p { font-size: 0.95rem; line-height: 1.5; color: #ffffff; }
-        @media (max-width: 1024px) { .main-container, .cards-wrapper { flex-direction: column; align-items: center; text-align: center; } .text-content { margin-bottom: 40px; } }
+        
+        .main-container { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 40px; max-width: 1200px; width: 100%; }
+        
+        /* Reflexão à Esquerda */
+        .text-content { flex: 1; min-width: 300px; max-width: 450px; }
+        .text-content h1 { font-size: 2.5rem; line-height: 1.2; margin-bottom: 20px; }
+        .blue-light { color: #4da6ff; }
+        .sub-text { color: #b0c4de; font-size: 1.1rem; line-height: 1.6; }
+
+        /* Blocos à Direita */
+        .cards-wrapper { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        
+        .card-white { background: white; color: #333; padding: 35px; border-radius: 15px; width: 380px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .card-white h2 { color: #002b5c; text-align: center; margin-bottom: 25px; }
+
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: bold; color: #555; }
+        
+        /* Aplicando o padrão da imagem (id e name) */
+        .input-group input, .input-group select { 
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; outline: none;
+        }
+
+        .btn-submit { width: 100%; padding: 15px; background: #0056b3; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+        .btn-submit:hover { background: #003d82; }
+
+        /* Quadro de Informação */
+        .card-info { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 30px; border-radius: 15px; width: 280px; backdrop-filter: blur(8px); min-height: 280px; }
+        .card-info h3 { color: #4da6ff; margin-bottom: 15px; }
+        .card-info p { font-size: 0.95rem; line-height: 1.6; }
     </style>
 </head>
 <body>
 
     <div class="main-container">
         <div class="text-content">
-            <h1>
-                <span class="white-text">Oportunidades acontecem todos os dias.</span><br>
-                <span class="blue-light-text">As melhores, só quem planeja aproveita.</span>
-            </h1>
-            <p>Transforme sua visão em estratégia e conquiste o amanhã, começando hoje.</p>
+            <h1>Oportunidades acontecem todos os dias. <br> 
+            <span class="blue-light">As melhores, só quem planeja aproveita.</span></h1>
+            <p class="sub-text">Transforme sua visão em estratégia e conquiste o amanhã, começando hoje.</p>
         </div>
 
         <div class="cards-wrapper">
             <div class="card-white">
                 <h2>Simule seu Consórcio</h2>
-                <!-- IMPORTANTE: Verifique o ACTION do seu formulário abaixo -->
-                <form id="form-consorcio" action="COLOQUE_AQUI_O_LINK_DA_SUA_PLANILHA_OU_API" method="POST">
+                
+                <!-- FORMULÁRIO COM ID E NAME EM CADA CAMPO -->
+                <form id="form-consorcio">
                     <div class="input-group">
-                        <input type="text" id="nome" name="nome" placeholder="Nome Completo" required>
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" id="nome" name="nome" placeholder="Ex: João Silva" required>
                     </div>
+                    
                     <div class="input-group">
-                        <input type="text" id="whatsapp" name="whatsapp" placeholder="WhatsApp (DDD + Número)" required>
+                        <label for="whatsapp">WhatsApp</label>
+                        <input type="text" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" required>
                     </div>
+                    
                     <div class="input-group">
-                        <input type="email" id="email" name="email" placeholder="Seu melhor E-mail" required>
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="seu@email.com" required>
                     </div>
+                    
                     <div class="input-group">
+                        <label for="selecaoServico">Produto</label>
                         <select id="selecaoServico" name="servico">
                             <option value="imoveis">Aquisição e Construção</option>
                             <option value="alavancagem">Alavancagem Financeira</option>
                             <option value="veiculos">Veículos</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn-submit">QUERO SIMULAR AGORA</button>
+                    
+                    <button type="submit" class="btn-submit" id="btn-enviar">QUERO SIMULAR AGORA</button>
                 </form>
             </div>
 
@@ -70,22 +90,43 @@
     </div>
 
     <script>
-        const dadosDinamicos = {
-            imoveis: { titulo: "Imóveis", texto: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido." },
-            alavancagem: { titulo: "Alavancagem", texto: "Acelere seu crescimento financeiro. Utilize o consórcio como ferramenta estratégica para ampliar seu capital." },
-            veiculos: { titulo: "Veículos", texto: "Renove sua frota ou conquiste seu carro novo sem as taxas abusivas do financiamento. Planejamento inteligente." }
+        // 1. Lógica de troca de texto do quadro lateral
+        const dados = {
+            imoveis: { t: "Imóveis", d: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários." },
+            alavancagem: { t: "Alavancagem", d: "Aumente seu capital sem descapitalizar seu caixa. Estratégia pura para investidores de alta performance." },
+            veiculos: { t: "Veículos", d: "Conquiste sua frota ou veículo próprio com taxas significativamente menores que o financiamento tradicional." }
         };
 
-        const selectServico = document.getElementById('selecaoServico');
-        const campoTitulo = document.getElementById('info-titulo');
-        const campoTexto = document.getElementById('info-texto');
+        const select = document.getElementById('selecaoServico');
+        select.addEventListener('change', function() {
+            const item = dados[this.value];
+            document.getElementById('info-titulo').innerText = item.t;
+            document.getElementById('info-texto').innerText = item.d;
+        });
 
-        selectServico.addEventListener('change', function() {
-            const informacao = dadosDinamicos[this.value];
-            if (informacao) {
-                campoTitulo.innerText = informacao.titulo;
-                campoTexto.innerText = informacao.texto;
-            }
+        // 2. Lógica de Envio para a Planilha (Action)
+        document.getElementById('form-consorcio').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-enviar');
+            btn.innerText = "ENVIANDO...";
+
+            // Aqui você deve colocar a URL da sua Planilha/API
+            const URL_WEBHOOK = "SUA_URL_AQUI"; 
+
+            fetch(URL_WEBHOOK, {
+                method: 'POST',
+                body: new FormData(this)
+            })
+            .then(res => {
+                alert("Simulação enviada com sucesso!");
+                btn.innerText = "QUERO SIMULAR AGORA";
+                this.reset();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Erro ao enviar. Verifique a URL da sua planilha.");
+                btn.innerText = "QUERO SIMULAR AGORA";
+            });
         });
     </script>
 </body>
