@@ -3,41 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulação de Consórcio</title>
+    <title>Simulador de Consórcio</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #002b5c; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         
-        .main-container { display: flex; gap: 40px; max-width: 1100px; width: 100%; align-items: center; flex-wrap: wrap; justify-content: center; }
-        
-        /* Lado Esquerdo: Texto de Impacto */
-        .text-content { flex: 1; min-width: 300px; max-width: 450px; }
-        .text-content h1 { font-size: 2.8rem; margin-bottom: 20px; line-height: 1.1; }
+        body { 
+            background-color: #002b5c; 
+            color: white; 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px;
+        }
+
+        /* ESTE É O CONTAINER QUE ALINHA OS 3 ELEMENTOS */
+        .main-container { 
+            display: flex; 
+            flex-direction: row; /* Coloca um ao lado do outro */
+            align-items: center; 
+            justify-content: center; 
+            gap: 30px; 
+            max-width: 1200px; 
+            width: 100%;
+        }
+
+        /* 1. TEXTO DA ESQUERDA */
+        .text-content { 
+            flex: 1; 
+            max-width: 400px; 
+        }
+        .text-content h1 { font-size: 3rem; line-height: 1.1; margin-bottom: 15px; }
         .blue-light { color: #4da6ff; }
-        .text-content p { opacity: 0.8; font-size: 1.1rem; line-height: 1.5; }
 
-        /* Centro: Formulário Branco */
-        .card-white { background: white; color: #333; padding: 35px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
-        .card-white h2 { color: #002b5c; text-align: center; margin-bottom: 25px; font-size: 1.6rem; }
-        
-        input, select { width: 100%; padding: 14px; margin-bottom: 18px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; outline: none; transition: 0.3s; }
-        input:focus { border-color: #0056b3; box-shadow: 0 0 5px rgba(0,86,179,0.2); }
-        
-        .btn { width: 100%; padding: 18px; background: #0056b3; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: background 0.3s; }
-        .btn:hover { background: #004494; }
-        .btn:disabled { background: #a0a0a0; cursor: not-allowed; }
+        /* 2. CARD DO FORMULÁRIO (CENTRO) */
+        .card-white { 
+            background: white; 
+            color: #333; 
+            padding: 40px; 
+            border-radius: 20px; 
+            width: 400px; /* Largura fixa para não achatar */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        .card-white h2 { color: #002b5c; margin-bottom: 25px; font-size: 1.8rem; }
+        input, select { 
+            width: 100%; 
+            padding: 15px; 
+            margin-bottom: 15px; 
+            border: 1px solid #ccc; 
+            border-radius: 10px; 
+            font-size: 1rem; 
+        }
+        .btn-submit { 
+            width: 100%; 
+            padding: 18px; 
+            background: #0056b3; 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            cursor: pointer; 
+        }
 
-        /* Lado Direito: Info Dinâmica */
-        .card-info { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 25px; border-radius: 15px; width: 100%; max-width: 300px; }
-        .card-info h3 { color: #4da6ff; margin-bottom: 12px; font-size: 1.3rem; }
-        .card-info p { font-size: 0.95rem; line-height: 1.5; color: #d1e3ff; }
+        /* 3. CARD DE INFORMAÇÃO (DIREITA) */
+        .card-info { 
+            background: rgba(255, 255, 255, 0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            padding: 25px; 
+            border-radius: 15px; 
+            width: 300px; 
+            min-height: 200px;
+        }
+        .card-info h3 { color: #4da6ff; margin-bottom: 15px; font-size: 1.4rem; }
+        .card-info p { font-size: 1rem; line-height: 1.4; color: #d1e3ff; }
 
-        @media (max-width: 992px) { .main-container { flex-direction: column; text-align: center; } }
+        /* Responsividade para celular */
+        @media (max-width: 1000px) {
+            .main-container { flex-direction: column; text-align: center; }
+            .card-white { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
     <div class="main-container">
+        
         <div class="text-content">
             <h1>Oportunidades acontecem. <br><span class="blue-light">Planeje e aproveite.</span></h1>
             <p>Transforme seus sonhos em patrimônio real com a estratégia certa.</p>
@@ -45,19 +96,18 @@
 
         <div class="card-white">
             <h2>Simule seu Futuro</h2>
-            <form id="leadForm">
+            <form id="form-consorcio">
                 <input type="text" id="nome" placeholder="Seu Nome Completo" required>
                 <input type="tel" id="whatsapp" placeholder="WhatsApp (DDD + Número)" required>
                 <input type="email" id="email" placeholder="Seu melhor E-mail" required>
                 
-                <select id="opcao-select">
+                <select id="selecaoServico">
                     <option value="Imóveis">Consórcio de Imóveis</option>
                     <option value="Veículos">Consórcio de Veículos</option>
                     <option value="Alavancagem">Alavancagem Financeira</option>
-                    <option value="Máquinas">Máquinas e Equipamentos</option>
                 </select>
                 
-                <button type="submit" class="btn" id="btnEnviar">QUERO SIMULAR AGORA</button>
+                <button type="submit" class="btn-submit">QUERO SIMULAR AGORA</button>
             </form>
         </div>
 
@@ -65,82 +115,29 @@
             <h3 id="info-titulo">Imóveis</h3>
             <p id="info-texto">A compra planejada. Ideal para quem quer fugir dos juros bancários e construir patrimônio sólido.</p>
         </div>
+
     </div>
 
     <script>
+        // Lógica para trocar o texto da direita ao mudar o select
         const conteudos = {
             "Imóveis": { t: "Imóveis", d: "A compra planejada. Ideal para quem quer fugir dos juros bancários e construir patrimônio sólido." },
             "Veículos": { t: "Veículos", d: "Troque de frota ou conquiste seu carro novo com parcelas que cabem no seu bolso." },
-            "Alavancagem": { t: "Alavancagem", d: "Estratégia avançada: use o consórcio para multiplicar capital e gerar renda passiva." },
-            "Máquinas": { t: "Máquinas", d: "Modernize sua produção com equipamentos sem descapitalizar sua empresa." }
+            "Alavancagem": { t: "Alavancagem", d: "Estratégia avançada: use o consórcio para multiplicar capital e gerar renda passiva." }
         };
 
-        const selectOpcao = document.getElementById('opcao-select');
-
-        // 1. CAPTURA DADOS DA URL (Igual ao que você tem na imagem 1)
-        function carregarDadosURL() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.has('nome')) document.getElementById('nome').value = params.get('nome');
-            if (params.has('whatsapp')) document.getElementById('whatsapp').value = params.get('whatsapp');
-            if (params.has('email')) document.getElementById('email').value = params.get('email');
-            
-            const servico = params.get('servico');
-            if (servico && conteudos[servico]) {
-                selectOpcao.value = servico;
-                atualizarInfo(servico);
-            }
-        }
-
-        function atualizarInfo(chave) {
-            const c = conteudos[chave];
-            document.getElementById('info-titulo').innerText = c.t;
-            document.getElementById('info-texto').innerText = c.d;
-        }
-
-        selectOpcao.addEventListener('change', (e) => atualizarInfo(e.target.value));
-        window.onload = carregarDadosURL;
-
-        // 2. ENVIO PARA SHEET.BEST
-        document.getElementById('leadForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // SUBSTITUA PELO SEU LINK DO SHEET.BEST
-            const URL_API = "COLE_AQUI_SEU_LINK_DO_SHEET_BEST";
-
-            if(URL_API.includes("COLE_AQUI")) return alert("Por favor, configure o link da sua API do Sheet.best no código.");
-
-            const btn = document.getElementById('btnEnviar');
-            btn.innerText = "ENVIANDO...";
-            btn.disabled = true;
-
-            const dados = {
-                "Data": new Date().toLocaleString("pt-BR"),
-                "Nome": document.getElementById('nome').value,
-                "WhatsApp": document.getElementById('whatsapp').value,
-                "Email": document.getElementById('email').value,
-                "Produto": selectOpcao.value
-            };
-
-            try {
-                const response = await fetch(URL_API, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dados)
-                });
-
-                if (response.ok) {
-                    alert("✅ Sucesso! Seus dados foram salvos.");
-                    e.target.reset();
-                } else {
-                    alert("❌ Erro ao salvar os dados.");
-                }
-            } catch (error) {
-                alert("❌ Erro de conexão.");
-            } finally {
-                btn.innerText = "QUERO SIMULAR AGORA";
-                btn.disabled = false;
-            }
+        const select = document.getElementById('selecaoServico');
+        select.addEventListener('change', function() {
+            const item = conteudos[this.value];
+            document.getElementById('info-titulo').innerText = item.t;
+            document.getElementById('info-texto').innerText = item.d;
         });
+
+        // Bloqueio de envio apenas para teste de layout (remova o alert depois)
+        document.getElementById('form-consorcio').onsubmit = (e) => {
+            e.preventDefault();
+            alert("Layout ok! Agora cole o link da sua API no código para enviar os dados.");
+        };
     </script>
 </body>
 </html>
