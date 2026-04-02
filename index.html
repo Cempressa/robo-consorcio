@@ -14,7 +14,7 @@
         }
 
         body {
-            background-color: #002b5c; /* Cor do fundo da sua aplicação */
+            background-color: #002b5c; 
             color: white;
             display: flex;
             justify-content: center;
@@ -22,23 +22,21 @@
             min-height: 100vh;
         }
 
-        /* CONTAINER PRINCIPAL (O PAI DE TODOS) */
         .main-container {
             display: flex;
             flex-direction: row;
             justify-content: center;
-            align-items: flex-start; /* Alinha texto e blocos pelo topo */
-            gap: 60px; /* Espaço entre o texto e os quadros */
+            align-items: flex-start; 
+            gap: 60px; 
             max-width: 1200px;
             width: 90%;
             padding: 40px 0;
         }
 
-        /* LADO ESQUERDO - SUA REFLEXÃO */
         .text-content {
             flex: 1;
             max-width: 450px;
-            padding-top: 10px; /* Ajuste fino para alinhar com o título do form */
+            padding-top: 10px;
         }
 
         .text-content h1 {
@@ -48,13 +46,8 @@
             font-weight: 700;
         }
 
-        .text-content .white-text {
-            color: #ffffff;
-        }
-
-        .text-content .blue-light-text {
-            color: #4da6ff; /* Azul claro para destaque */
-        }
+        .text-content .white-text { color: #ffffff; }
+        .text-content .blue-light-text { color: #4da6ff; }
 
         .text-content p {
             font-size: 1.1rem;
@@ -62,7 +55,6 @@
             line-height: 1.6;
         }
 
-        /* LADO DIREITO - QUADROS */
         .cards-wrapper {
             display: flex;
             flex-direction: row;
@@ -70,7 +62,6 @@
             align-items: flex-start;
         }
 
-        /* QUADRO BRANCO (FORMULÁRIO) */
         .card-white {
             background-color: #ffffff;
             color: #333;
@@ -87,9 +78,7 @@
             font-size: 1.6rem;
         }
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+        .input-group { margin-bottom: 15px; }
 
         .input-group input, .input-group select {
             width: 100%;
@@ -107,17 +96,13 @@
             border: none;
             border-radius: 8px;
             font-weight: bold;
-            font-size: 1rem;
             cursor: pointer;
             transition: background 0.3s;
-            margin-top: 10px;
         }
 
-        .btn-submit:hover {
-            background-color: #003d82;
-        }
+        .btn-submit:hover { background-color: #003d82; }
 
-        /* QUADRO TRANSPARENTE (IMÓVEIS) */
+        /* QUADRO DINÂMICO */
         .card-info {
             background-color: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -125,56 +110,30 @@
             border-radius: 15px;
             width: 280px;
             backdrop-filter: blur(5px);
+            min-height: 250px;
         }
 
-        .card-info h3 {
-            color: #4da6ff;
-            margin-bottom: 20px;
-            font-size: 1.4rem;
-        }
+        .card-info h3 { color: #4da6ff; margin-bottom: 20px; font-size: 1.4rem; }
+        .card-info p { font-size: 0.95rem; line-height: 1.5; color: #ffffff; }
 
-        .card-info p {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: #ffffff;
-        }
-
-        /* RESPONSIVIDADE (PARA CELULAR) */
         @media (max-width: 1024px) {
-            .main-container {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            .cards-wrapper {
-                flex-direction: column;
-                align-items: center;
-            }
-            .text-content {
-                margin-bottom: 40px;
-            }
+            .main-container, .cards-wrapper { flex-direction: column; align-items: center; text-align: center; }
+            .text-content { margin-bottom: 40px; }
         }
     </style>
 </head>
 <body>
 
     <div class="main-container">
-        
-        <!-- SEÇÃO DE TEXTO -->
         <div class="text-content">
             <h1>
                 <span class="white-text">Oportunidades acontecem todos os dias.</span><br>
                 <span class="blue-light-text">As melhores, só quem planeja aproveita.</span>
             </h1>
-            <p>
-                Transforme sua visão em estratégia e conquiste o amanhã, começando hoje.
-            </p>
+            <p>Transforme sua visão em estratégia e conquiste o amanhã, começando hoje.</p>
         </div>
 
-        <!-- SEÇÃO DE BLOCOS -->
         <div class="cards-wrapper">
-            
-            <!-- BLOCO 1: FORMULÁRIO -->
             <div class="card-white">
                 <h2>Simule seu Consórcio</h2>
                 <form>
@@ -188,28 +147,51 @@
                         <input type="email" placeholder="Seu melhor E-mail">
                     </div>
                     <div class="input-group">
-                        <select>
-                            <option>Aquisição e Construção</option>
-                            <option>Alavancagem Financeira</option>
-                            <option>Veículos</option>
+                        <!-- ADICIONADO O ID PARA O SCRIPT FUNCIONAR -->
+                        <select id="tipo-consorcio">
+                            <option value="imoveis">Aquisição e Construção</option>
+                            <option value="alavancagem">Alavancagem Financeira</option>
+                            <option value="veiculos">Veículos</option>
                         </select>
                     </div>
                     <button type="submit" class="btn-submit">QUERO SIMULAR AGORA</button>
                 </form>
             </div>
 
-            <!-- BLOCO 2: INFORMAÇÃO -->
-            <div class="card-info">
-                <h3>Imóveis</h3>
-                <p>
-                    A compra planejada. Use para adquirir terrenos, casas ou construir. 
-                    Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido.
-                </p>
+            <div class="card-info" id="box-info">
+                <h3 id="titulo-info">Imóveis</h3>
+                <p id="texto-info">A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido.</p>
             </div>
+        </div>
+    </div>
 
-        </div> <!-- Fim cards-wrapper -->
+    <!-- SCRIPT PARA TROCA DINÂMICA -->
+    <script>
+        const infoData = {
+            imoveis: {
+                titulo: "Imóveis",
+                texto: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido."
+            },
+            alavancagem: {
+                titulo: "Alavancagem",
+                texto: "Multiplique seu capital utilizando o poder do consórcio. Ideal para investidores que buscam rentabilidade e ampliação de patrimônio sem descapitalizar."
+            },
+            veiculos: {
+                titulo: "Veículos",
+                texto: "Conquiste seu carro novo ou renove sua frota com parcelas reduzidas. A forma mais barata de adquirir seu veículo sem as taxas do financiamento tradicional."
+            }
+        };
 
-    </div> <!-- Fim main-container -->
+        const select = document.getElementById('tipo-consorcio');
+        const titulo = document.getElementById('titulo-info');
+        const texto = document.getElementById('texto-info');
+
+        select.addEventListener('change', (e) => {
+            const selected = e.target.value;
+            titulo.innerText = infoData[selected].titulo;
+            texto.innerText = infoData[selected].texto;
+        });
+    </script>
 
 </body>
 </html>
