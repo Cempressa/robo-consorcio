@@ -1,66 +1,123 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import requests
-import os
-import re
-from urllib.parse import quote
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de Consórcio - Mente Programada</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #002b5c; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .main-container { display: flex; gap: 40px; max-width: 1100px; width: 100%; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .text-content { flex: 1; min-width: 300px; max-width: 450px; }
+        .text-content h1 { font-size: 2.8rem; margin-bottom: 20px; line-height: 1.1; }
+        .blue-light { color: #4da6ff; }
+        .card-white { background: white; color: #333; padding: 35px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+        .card-white h2 { color: #002b5c; text-align: center; margin-bottom: 25px; font-size: 1.6rem; }
+        input, select { width: 100%; padding: 14px; margin-bottom: 18px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; outline: none; }
+        input:focus { border-color: #0056b3; box-shadow: 0 0 5px rgba(0,86,179,0.2); }
+        .btn { width: 100%; padding: 18px; background: #0056b3; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: background 0.3s; }
+        .btn:hover { background: #004494; }
+        .btn:disabled { background: #a0a0a0; cursor: not-allowed; }
+        .card-info { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 25px; border-radius: 15px; width: 100%; max-width: 300px; }
+        .card-info h3 { color: #4da6ff; margin-bottom: 12px; font-size: 1.3rem; }
+        .card-info p { font-size: 0.95rem; line-height: 1.5; color: #d1e3ff; }
+        @media (max-width: 768px) { .main-container { flex-direction: column; text-align: center; } }
+    </style>
+</head>
+<body>
 
-app = Flask(__name__)
+    <div class="main-container">
+        <!-- Lado Esquerdo: Texto de Impacto -->
+        <div class="text-content">
+            <h1>Oportunidades acontecem. <br><span class="blue-light">Planeje e aproveite.</span></h1>
+            <p style="opacity: 0.8; font-size: 1.1rem;">Transforme seus sonhos em patrimônio real com a estratégia certa.</p>
+        </div>
 
-# CONFIGURAÇÃO DE CORS
-# Permitir apenas o seu domínio é mais seguro que "*"
-# Se o seu site estiver no GitHub Pages ou Vercel, coloque a URL aqui
-CORS(app, resources={r"/*": {
-    "origins": "*", 
-    "methods": ["POST", "OPTIONS"],
-    "allow_headers": ["Content-Type"]
-}})
+        <!-- Centro: Formulário -->
+        <div class="card-white">
+            <h2>Simule seu Futuro</h2>
+            <form id="leadForm">
+                <input type="text" id="nome" placeholder="Seu Nome Completo" required>
+                <input type="tel" id="celular" placeholder="WhatsApp (DDD + Número)" required>
+                <input type="email" id="email" placeholder="Seu melhor E-mail" required>
+                
+                <select id="opcao-select">
+                    <option value="imoveis">Consórcio de Imóveis</option>
+                    <option value="veiculos">Consórcio de Veículos</option>
+                    <option value="alavancagem">Alavancagem Financeira</option>
+                    <option value="maquinas">Máquinas e Equipamentos</option>
+                </select>
+                
+                <button type="submit" class="btn" id="btnEnviar">QUERO SIMULAR AGORA</button>
+            </form>
+        </div>
 
-# CONFIGURAÇÕES
-MEU_WHATSAPP = "5535383209732" # Ajustado para padrão brasileiro (DDI+DDD+NÚMERO)
-MAKE_URL = "https://hook.us2.make.com/c4edcl8ia2ggai52xi3igwxvor1qywxm"
+        <!-- Lado Direito: Info Dinâmica -->
+        <div class="card-info">
+            <h3 id="info-titulo">Imóveis</h3>
+            <p id="info-texto">A compra planejada. Ideal para quem quer fugir dos juros bancários e construir patrimônio.</p>
+        </div>
+    </div>
 
-@app.route('/lead', methods=['POST', 'OPTIONS'])
-def lead():
-    # 1. Tratamento de Preflight (CORS)
-    if request.method == 'OPTIONS':
-        return jsonify({"status": "ok"}), 200
+    <script>
+        // 1. Lógica do Quadro Informativo Dinâmico
+        const conteudos = {
+            imoveis: { titulo: "Imóveis", texto: "A compra planejada. Ideal para quem quer fugir dos juros bancários e construir patrimônio sólido." },
+            veiculos: { titulo: "Veículos", texto: "Troque de frota ou conquiste seu carro novo com parcelas que cabem no seu bolso." },
+            alavancagem: { titulo: "Alavancagem", texto: "Estratégia avançada: use o consórcio para multiplicar capital e gerar renda passiva." },
+            maquinas: { titulo: "Máquinas", texto: "Modernize sua produção com equipamentos industriais ou agrícolas sem descapitalizar sua empresa." }
+        };
 
-    # 2. Captura e Verificação de Dados
-    if request.is_json:
-        dados = request.get_json()
-    else:
-        dados = request.form.to_dict()
+        const selectOpcao = document.getElementById('opcao-select');
+        selectOpcao.addEventListener('change', function() {
+            const c = conteudos[this.value];
+            document.getElementById('info-titulo').innerText = c.titulo;
+            document.getElementById('info-texto').innerText = c.texto;
+        });
 
-    if not dados:
-        return jsonify({"error": "Nenhum dado recebido"}), 400
+        // 2. Lógica de Envio Integrada com seu Render
+        document.getElementById('leadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('btnEnviar');
+            const statusOriginal = btn.innerText;
+            
+            btn.innerText = "PROCESSANDO...";
+            btn.disabled = true;
 
-    # 3. Tratamento do Celular (Garantindo String e Limpeza)
-    # O uso de str() aqui evita erro caso o JSON envie o número como inteiro
-    celular_raw = str(dados.get('celular', ''))
-    celular_limpo = re.sub(r'\D', '', celular_raw)
-    dados['celular_limpo'] = celular_limpo
+            // Captura os dados do formulário
+            const dados = {
+                nome: document.getElementById('nome').value,
+                celular: document.getElementById('celular').value,
+                email: document.getElementById('email').value,
+                produto: document.getElementById('opcao-select').options[document.getElementById('opcao-select').selectedIndex].text
+            };
 
-    # 4. Envio para o Make (Automação)
-    try:
-        # Enviamos os dados originais + o celular limpo
-        requests.post(MAKE_URL, json=dados, timeout=8)
-    except Exception as e:
-        print(f"Erro ao disparar webhook: {e}")
+            try {
+                // AQUI ESTÁ A CONEXÃO COM O SEU RENDER
+                const response = await fetch('https://robo-consorcio.onrender.com/lead', { 
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json' 
+                    },
+                    body: JSON.stringify(dados)
+                });
 
-    # 5. Preparação da Resposta e Link do Zap
-    nome = dados.get('nome', 'Cliente')
-    produto = dados.get('produto', 'Consórcio')
-    
-    # Escapa caracteres especiais para a URL
-    mensagem = f"Olá! Sou {nome}, vim pelo site e quero simular um {produto}."
-    link_wa = f"https://api.whatsapp.com/send?phone={MEU_WHATSAPP}&text={quote(mensagem)}"
+                if (!response.ok) throw new Error('Erro na resposta do servidor');
 
-    return jsonify({
-        "status": "success",
-        "whatsapp_url": link_wa
-    }), 200
+                const result = await response.json();
 
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+                // Se o servidor devolveu o link do WhatsApp, redireciona
+                if (result.whatsapp_url) {
+                    window.location.href = result.whatsapp_url;
+                } else {
+                    alert("Ops! Houve um problema ao gerar seu link. Tente novamente.");
+                }
+
+            } catch (error) {
+                console.error("Erro no envio:", error);
+                alert("O servidor está acordando... Por favor, clique novamente em 15 segundos.");
+            } finally {
+                btn.innerText = statusOriginal;
+                btn.disabled = false;
+            }
