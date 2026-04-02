@@ -5,122 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulação de Consórcio - Planejamento</title>
     <style>
-        /* RESET BÁSICO */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #002b5c; 
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .main-container {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: flex-start; 
-            gap: 60px; 
-            max-width: 1200px;
-            width: 90%;
-            padding: 40px 0;
-        }
-
-        .text-content {
-            flex: 1;
-            max-width: 450px;
-            padding-top: 10px;
-        }
-
-        .text-content h1 {
-            font-size: 2.5rem;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        .text-content .white-text { color: #ffffff; }
-        .text-content .blue-light-text { color: #4da6ff; }
-
-        .text-content p {
-            font-size: 1.1rem;
-            color: #b0c4de;
-            line-height: 1.6;
-        }
-
-        .cards-wrapper {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-            align-items: flex-start;
-        }
-
-        .card-white {
-            background-color: #ffffff;
-            color: #333;
-            padding: 40px 30px;
-            border-radius: 15px;
-            width: 380px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .card-white h2 {
-            text-align: center;
-            color: #002b5c;
-            margin-bottom: 25px;
-            font-size: 1.6rem;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #002b5c; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .main-container { display: flex; flex-direction: row; justify-content: center; align-items: flex-start; gap: 60px; max-width: 1200px; width: 100%; }
+        .text-content { flex: 1; max-width: 450px; padding-top: 10px; }
+        .text-content h1 { font-size: 2.5rem; line-height: 1.2; margin-bottom: 20px; font-weight: 700; }
+        .white-text { color: #ffffff; }
+        .blue-light-text { color: #4da6ff; }
+        .text-content p { font-size: 1.1rem; color: #b0c4de; line-height: 1.6; }
+        .cards-wrapper { display: flex; flex-direction: row; gap: 20px; align-items: flex-start; }
+        .card-white { background-color: #ffffff; color: #333; padding: 40px 30px; border-radius: 15px; width: 380px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .card-white h2 { text-align: center; color: #002b5c; margin-bottom: 25px; font-size: 1.6rem; }
         .input-group { margin-bottom: 15px; }
-
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 15px;
-            background-color: #0056b3;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
+        .input-group input, .input-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; outline: none; }
+        .btn-submit { width: 100%; padding: 15px; background-color: #0056b3; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
         .btn-submit:hover { background-color: #003d82; }
-
-        /* QUADRO DINÂMICO */
-        .card-info {
-            background-color: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 40px 25px;
-            border-radius: 15px;
-            width: 280px;
-            backdrop-filter: blur(5px);
-            min-height: 280px; /* Evita que o quadro mude de tamanho */
-        }
-
+        .card-info { background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); padding: 40px 25px; border-radius: 15px; width: 280px; backdrop-filter: blur(5px); min-height: 280px; }
         .card-info h3 { color: #4da6ff; margin-bottom: 20px; font-size: 1.4rem; }
         .card-info p { font-size: 0.95rem; line-height: 1.5; color: #ffffff; }
-
-        @media (max-width: 1024px) {
-            .main-container, .cards-wrapper { flex-direction: column; align-items: center; text-align: center; }
-            .text-content { margin-bottom: 40px; }
-        }
+        @media (max-width: 1024px) { .main-container, .cards-wrapper { flex-direction: column; align-items: center; text-align: center; } .text-content { margin-bottom: 40px; } }
     </style>
 </head>
 <body>
@@ -137,19 +40,19 @@
         <div class="cards-wrapper">
             <div class="card-white">
                 <h2>Simule seu Consórcio</h2>
-                <form id="meuFormulario">
+                <!-- IMPORTANTE: Verifique o ACTION do seu formulário abaixo -->
+                <form id="form-consorcio" action="COLOQUE_AQUI_O_LINK_DA_SUA_PLANILHA_OU_API" method="POST">
                     <div class="input-group">
-                        <input type="text" placeholder="Nome Completo" required>
+                        <input type="text" id="nome" name="nome" placeholder="Nome Completo" required>
                     </div>
                     <div class="input-group">
-                        <input type="text" placeholder="WhatsApp (DDD + Número)" required>
+                        <input type="text" id="whatsapp" name="whatsapp" placeholder="WhatsApp (DDD + Número)" required>
                     </div>
                     <div class="input-group">
-                        <input type="email" placeholder="Seu melhor E-mail" required>
+                        <input type="email" id="email" name="email" placeholder="Seu melhor E-mail" required>
                     </div>
                     <div class="input-group">
-                        <!-- O ID 'selecaoServico' é a chave para o funcionamento -->
-                        <select id="selecaoServico">
+                        <select id="selecaoServico" name="servico">
                             <option value="imoveis">Aquisição e Construção</option>
                             <option value="alavancagem">Alavancagem Financeira</option>
                             <option value="veiculos">Veículos</option>
@@ -167,38 +70,23 @@
     </div>
 
     <script>
-        // Dados que serão trocados
         const dadosDinamicos = {
-            imoveis: {
-                titulo: "Imóveis",
-                texto: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido."
-            },
-            alavancagem: {
-                titulo: "Alavancagem",
-                texto: "Acelere seu crescimento financeiro. Utilize o consórcio como ferramenta estratégica para ampliar seu capital e investir no que realmente importa."
-            },
-            veiculos: {
-                titulo: "Veículos",
-                texto: "Renove sua frota ou conquiste seu carro novo sem as taxas abusivas do financiamento. Planejamento inteligente para sua mobilidade e conforto."
-            }
+            imoveis: { titulo: "Imóveis", texto: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido." },
+            alavancagem: { titulo: "Alavancagem", texto: "Acelere seu crescimento financeiro. Utilize o consórcio como ferramenta estratégica para ampliar seu capital." },
+            veiculos: { titulo: "Veículos", texto: "Renove sua frota ou conquiste seu carro novo sem as taxas abusivas do financiamento. Planejamento inteligente." }
         };
 
-        // Captura os elementos
         const selectServico = document.getElementById('selecaoServico');
         const campoTitulo = document.getElementById('info-titulo');
         const campoTexto = document.getElementById('info-texto');
 
-        // Escuta a mudança no select
         selectServico.addEventListener('change', function() {
-            const opcaoSelecionada = this.value;
-            const informacao = dadosDinamicos[opcaoSelecionada];
-
+            const informacao = dadosDinamicos[this.value];
             if (informacao) {
                 campoTitulo.innerText = informacao.titulo;
                 campoTexto.innerText = informacao.texto;
             }
         });
     </script>
-
 </body>
 </html>
