@@ -5,77 +5,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consórcio Planejado</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #002b5c; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .main-container { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 40px; max-width: 1200px; width: 100%; }
-        .text-content { flex: 1; min-width: 300px; max-width: 450px; }
-        .text-content h1 { font-size: 2.5rem; line-height: 1.2; margin-bottom: 20px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: #002b5c; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .main-container { display: flex; flex-wrap: wrap; gap: 40px; max-width: 1100px; width: 100%; justify-content: center; }
+        .text-content { flex: 1; min-width: 300px; }
+        .text-content h1 { font-size: 2.2rem; margin-bottom: 15px; }
         .blue-light { color: #4da6ff; }
-        .sub-text { color: #b0c4de; font-size: 1.1rem; line-height: 1.6; }
-        .cards-wrapper { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .card-white { background: white; color: #333; padding: 35px; border-radius: 15px; width: 380px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .card-white h2 { color: #002b5c; text-align: center; margin-bottom: 25px; }
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; font-weight: bold; color: #666; }
-        .input-group input, .input-group select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; outline: none; }
-        .btn-submit { width: 100%; padding: 15px; background: #0056b3; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; transition: 0.3s; }
-        .btn-submit:hover { background: #003d82; }
-        .card-info { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 30px; border-radius: 15px; width: 280px; backdrop-filter: blur(8px); min-height: 280px; }
-        .card-info h3 { color: #4da6ff; margin-bottom: 15px; }
-        @media (max-width: 1024px) { .main-container { flex-direction: column; align-items: center; text-align: center; } }
+        .cards-wrapper { display: flex; flex-wrap: wrap; gap: 20px; }
+        .card-white { background: white; color: #333; padding: 30px; border-radius: 12px; width: 350px; }
+        .card-white h2 { color: #002b5c; margin-bottom: 20px; text-align: center; }
+        .input-group { margin-bottom: 12px; }
+        .input-group label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
+        .btn-submit { width: 100%; padding: 12px; background: #0056b3; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .card-info { background: rgba(255,255,255,0.1); padding: 25px; border-radius: 12px; width: 260px; border: 1px solid rgba(255,255,255,0.2); }
+        .card-info h3 { color: #4da6ff; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
     <div class="main-container">
         <div class="text-content">
-            <h1>Oportunidades acontecem todos os dias. <br> 
-            <span class="blue-light">As melhores, só quem planeja aproveita.</span></h1>
-            <p class="sub-text">Transforme sua visão em estratégia e conquiste o amanhã, começando hoje.</p>
+            <h1>Oportunidades acontecem.<br><span class="blue-light">Planeje e conquiste.</span></h1>
+            <p>Transforme sua visão em estratégia real.</p>
         </div>
 
         <div class="cards-wrapper">
             <div class="card-white">
-                <h2>Simule seu Consórcio</h2>
-                
+                <h2>Simulação</h2>
                 <form id="form-consorcio">
                     <div class="input-group">
-                        <label for="nome">Nome Completo</label>
-                        <input type="text" id="nome" name="nome" placeholder="Ex: João Silva" autocomplete="name" required>
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" name="nome" autocomplete="name" required>
                     </div>
-                    
                     <div class="input-group">
                         <label for="whatsapp">WhatsApp</label>
-                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" autocomplete="tel" required>
+                        <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel" required>
                     </div>
-                    
                     <div class="input-group">
                         <label for="email">E-mail</label>
-                        <input type="email" id="email" name="email" placeholder="seu@email.com" autocomplete="email" required>
+                        <input type="email" id="email" name="email" autocomplete="email" required>
                     </div>
-                    
                     <div class="input-group">
-                        <label for="selecaoServico">Produto de Interesse</label>
-                        <select id="selecaoServico" name="servico">
-                            <option value="imoveis">Aquisição e Construção</option>
-                            <option value="alavancagem">Alavancagem Financeira</option>
+                        <label for="servico">Serviço</label>
+                        <select id="servico" name="servico">
+                            <option value="imoveis">Imóveis</option>
+                            <option value="alavancagem">Alavancagem</option>
                             <option value="veiculos">Veículos</option>
                         </select>
                     </div>
-                    
-                    <button type="submit" class="btn-submit" id="btn-enviar">QUERO SIMULAR AGORA</button>
+                    <button type="submit" id="btn-enviar" class="btn-submit">ENVIAR AGORA</button>
                 </form>
             </div>
 
             <div class="card-info">
                 <h3 id="info-titulo">Imóveis</h3>
-                <p id="info-texto">A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários.</p>
+                <p id="info-texto">Compra planejada para terrenos, casas ou construção.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // 1. Troca os textos conforme o select muda
         const dados = {
-            imoveis: { t: "Imóveis", d: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários." },
-            alavancagem: {
+            imoveis: ["Imóveis", "Compra planejada para terrenos, casas ou construção."],
+            alavancagem: ["Alavancagem", "Estratégia para multiplicar patrimônio sem descapitalizar."],
+            veiculos: ["Veículos", "Renovação de frota ou carro novo com taxas reduzidas."]
+        };
+
+        const sel = document.getElementById('servico');
+        sel.onchange = () => {
+            document.getElementById('info-titulo').innerText = dados[sel.value][0];
+            document.getElementById('info-texto').innerText = dados[sel.value][1];
+        };
+
+        document.getElementById('form-consorcio').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-enviar');
+            
+            // SUBSTITUA O LINK ABAIXO PELO SEU DO SHEET.BEST
+            const URL = "COLE_AQUI_SEU_LINK_DO_SHEET_BEST"; 
+
+            if(URL.includes("COLE_AQUI")) return alert("Falta o link do Sheet.best!");
+
+            btn.innerText = "ENVIANDO...";
+            btn.disabled = true;
+
+            try {
+                await fetch(URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        nome: document.getElementById('nome').value,
+                        whatsapp: document.getElementById('whatsapp').value,
+                        email: document.getElementById('email').value,
+                        servico: sel.value
+                    })
+                });
+                alert("Sucesso! Dados salvos.");
+                e.target.reset();
+            } catch (err) {
+                alert("Erro ao enviar.");
+            } finally {
+                btn.innerText = "ENVIAR AGORA";
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>
