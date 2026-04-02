@@ -3,156 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulação de Consórcio - Planejamento</title>
+    <title>Simulação Dinâmica</title>
     <style>
-        /* RESET BÁSICO */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        
         body {
-            background-color: #002b5c; /* Cor do fundo da sua aplicação */
+            background-color: #002b5c;
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 20px;
         }
 
-        /* CONTAINER PRINCIPAL (O PAI DE TODOS) */
         .main-container {
             display: flex;
             flex-direction: row;
             justify-content: center;
-            align-items: flex-start; /* Alinha texto e blocos pelo topo */
-            gap: 60px; /* Espaço entre o texto e os quadros */
+            align-items: flex-start;
+            gap: 50px;
             max-width: 1200px;
-            width: 90%;
-            padding: 40px 0;
+            width: 100%;
         }
 
-        /* LADO ESQUERDO - SUA REFLEXÃO */
+        /* Texto da Reflexão */
         .text-content {
             flex: 1;
-            max-width: 450px;
-            padding-top: 10px; /* Ajuste fino para alinhar com o título do form */
+            max-width: 400px;
+            padding-top: 20px;
         }
+        .text-content h1 { font-size: 2.5rem; margin-bottom: 20px; line-height: 1.1; }
+        .blue-light { color: #4da6ff; }
+        .sub-text { color: #b0c4de; font-size: 1rem; opacity: 0.8; }
 
-        .text-content h1 {
-            font-size: 2.5rem;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
+        /* Container dos Cards */
+        .cards-wrapper { display: flex; gap: 20px; align-items: flex-start; }
 
-        .text-content .white-text {
-            color: #ffffff;
-        }
-
-        .text-content .blue-light-text {
-            color: #4da6ff; /* Azul claro para destaque */
-        }
-
-        .text-content p {
-            font-size: 1.1rem;
-            color: #b0c4de;
-            line-height: 1.6;
-        }
-
-        /* LADO DIREITO - QUADROS */
-        .cards-wrapper {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-            align-items: flex-start;
-        }
-
-        /* QUADRO BRANCO (FORMULÁRIO) */
+        /* Card Formulário */
         .card-white {
-            background-color: #ffffff;
+            background: white;
             color: #333;
-            padding: 40px 30px;
+            padding: 40px;
             border-radius: 15px;
             width: 380px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-
-        .card-white h2 {
-            text-align: center;
-            color: #002b5c;
-            margin-bottom: 25px;
-            font-size: 1.6rem;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group input, .input-group select {
+        .card-white h2 { color: #002b5c; text-align: center; margin-bottom: 20px; }
+        input, select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-
-        .btn-submit {
+        .btn {
             width: 100%;
             padding: 15px;
-            background-color: #0056b3;
+            background: #0056b3;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             font-weight: bold;
-            font-size: 1rem;
             cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 10px;
         }
 
-        .btn-submit:hover {
-            background-color: #003d82;
-        }
-
-        /* QUADRO TRANSPARENTE (IMÓVEIS) */
+        /* Card Informativo Dinâmico */
         .card-info {
-            background-color: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 40px 25px;
+            padding: 30px;
             border-radius: 15px;
             width: 280px;
-            backdrop-filter: blur(5px);
+            min-height: 250px; /* Mantém o tamanho fixo para não "pular" */
         }
+        .card-info h3 { color: #4da6ff; margin-bottom: 15px; font-size: 1.4rem; }
+        .card-info p { font-size: 0.95rem; line-height: 1.6; }
 
-        .card-info h3 {
-            color: #4da6ff;
-            margin-bottom: 20px;
-            font-size: 1.4rem;
-        }
-
-        .card-info p {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: #ffffff;
-        }
-
-        /* RESPONSIVIDADE (PARA CELULAR) */
-        @media (max-width: 1024px) {
-            .main-container {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            .cards-wrapper {
-                flex-direction: column;
-                align-items: center;
-            }
-            .text-content {
-                margin-bottom: 40px;
-            }
+        @media (max-width: 1000px) {
+            .main-container, .cards-wrapper { flex-direction: column; align-items: center; text-align: center; }
         }
     </style>
 </head>
@@ -160,56 +89,77 @@
 
     <div class="main-container">
         
-        <!-- SEÇÃO DE TEXTO -->
         <div class="text-content">
-            <h1>
-                <span class="white-text">Oportunidades acontecem todos os dias.</span><br>
-                <span class="blue-light-text">As melhores, só quem planeja aproveita.</span>
-            </h1>
-            <p>
-                Transforme sua visão em estratégia e conquiste o amanhã, começando hoje.
-            </p>
+            <h1>Oportunidades acontecem todos os dias. <br>
+            <span class="blue-light">As melhores, só quem planeja aproveita.</span></h1>
+            <p class="sub-text">Transforme sua visão em estratégia e conquiste o amanhã, começando hoje.</p>
         </div>
 
-        <!-- SEÇÃO DE BLOCOS -->
         <div class="cards-wrapper">
-            
-            <!-- BLOCO 1: FORMULÁRIO -->
+            <!-- FORMULÁRIO -->
             <div class="card-white">
                 <h2>Simule seu Consórcio</h2>
-                <form>
-                    <div class="input-group">
-                        <input type="text" placeholder="Nome Completo">
-                    </div>
-                    <div class="input-group">
-                        <input type="text" placeholder="WhatsApp (DDD + Número)">
-                    </div>
-                    <div class="input-group">
-                        <input type="email" placeholder="Seu melhor E-mail">
-                    </div>
-                    <div class="input-group">
-                        <select>
-                            <option>Aquisição e Construção</option>
-                            <option>Alavancagem Financeira</option>
-                            <option>Veículos</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn-submit">QUERO SIMULAR AGORA</button>
-                </form>
+                <input type="text" placeholder="Nome Completo">
+                <input type="text" placeholder="WhatsApp (DDD + Número)">
+                <input type="email" placeholder="Seu melhor E-mail">
+                
+                <!-- O ID "opcao-select" é o que usaremos no Script -->
+                <select id="opcao-select">
+                    <option value="imoveis">Imóveis</option>
+                    <option value="veiculos">Veículos</option>
+                    <option value="alavancagem">Alavancagem Financeira</option>
+                    <option value="maquinas">Máquinas e Equipamentos</option>
+                </select>
+                
+                <button class="btn">QUERO SIMULAR AGORA</button>
             </div>
 
-            <!-- BLOCO 2: INFORMAÇÃO -->
-            <div class="card-info">
-                <h3>Imóveis</h3>
-                <p>
-                    A compra planejada. Use para adquirir terrenos, casas ou construir. 
-                    Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido.
-                </p>
+            <!-- QUADRO QUE MUDA -->
+            <div class="card-info" id="quadro-informativo">
+                <h3 id="info-titulo">Imóveis</h3>
+                <p id="info-texto">A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido.</p>
             </div>
+        </div>
 
-        </div> <!-- Fim cards-wrapper -->
+    </div>
 
-    </div> <!-- Fim main-container -->
+    <script>
+        // Mapeamento dos textos para cada opção
+        const conteudos = {
+            imoveis: {
+                titulo: "Imóveis",
+                texto: "A compra planejada. Use para adquirir terrenos, casas ou construir. Ideal para quem quer fugir dos juros bancários e formar patrimônio sólido."
+            },
+            veiculos: {
+                titulo: "Veículos",
+                texto: "Troque de carro ou conquiste sua frota sem pagar as taxas abusivas do financiamento. Planejamento inteligente para sua mobilidade."
+            },
+            alavancagem: {
+                titulo: "Alavancagem",
+                texto: "Use a estratégia da Mente Programada para multiplicar seu capital. Transforme cartas de crédito em lucro e novos investimentos."
+            },
+            maquinas: {
+                titulo: "Máquinas",
+                texto: "Aumente a produtividade do seu negócio. Adquira equipamentos agrícolas ou industriais com parcelas que cabem no seu fluxo de caixa."
+            }
+        };
+
+        const selectOpcao = document.getElementById('opcao-select');
+        const infoTitulo = document.getElementById('info-titulo');
+        const infoTexto = document.getElementById('info-texto');
+
+        // Função que detecta a mudança
+        selectOpcao.addEventListener('change', function() {
+            const valorSelecionado = this.value;
+            const conteudo = conteudos[valorSelecionado];
+
+            if (conteudo) {
+                // Atualiza o texto com um efeito simples de fade (opcional)
+                infoTitulo.innerText = conteudo.titulo;
+                infoTexto.innerText = conteudo.texto;
+            }
+        });
+    </script>
 
 </body>
 </html>
