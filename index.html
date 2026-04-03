@@ -161,6 +161,11 @@ select:focus,input:focus{
 <script>
 /* DADOS DAS OPÇÕES */
 const opcoes = {
+    <script>
+/* =========================
+   DADOS DAS OPÇÕES
+========================= */
+const opcoes = {
     imoveis:{
         "Aquisição e Construção":"Use o consórcio para adquirir ou construir seu imóvel.",
         "Reforma e Melhoria":"Ideal para reformas e ampliações planejadas.",
@@ -201,61 +206,68 @@ const opcoes = {
     }
 };
 
-/* ELEMENTOS */
-const categoriaSelect=document.getElementById("categoriaSelect");
-const opcaoSelect=document.getElementById("opcaoSelect");
-const infoText=document.getElementById("infoText");
+/* =========================
+   ELEMENTOS
+========================= */
+const categoriaSelect = document.getElementById("categoriaSelect");
+const opcaoSelect = document.getElementById("opcaoSelect");
+const infoText = document.getElementById("infoText");
+const btnEnviar = document.getElementById("btnEnviar");
 
-/* QUANDO SELECIONA CATEGORIA */
-categoriaSelect.addEventListener("change",()=>{
-    const categoria=categoriaSelect.value;
+/* =========================
+   SUBMENU FUNCIONAL
+========================= */
+categoriaSelect.addEventListener("change", () => {
+    const categoria = categoriaSelect.value;
 
-    opcaoSelect.innerHTML=`<option disabled selected>Selecione uma opção</option>`;
-    opcaoSelect.style.display="block";
+    opcaoSelect.innerHTML = `<option disabled selected>Selecione uma opção</option>`;
+    opcaoSelect.style.display = "block";
 
-    Object.keys(opcoes[categoria]).forEach(item=>{
-        const opt=document.createElement("option");
-        opt.value=item;
-        opt.textContent=item;
+    Object.keys(opcoes[categoria]).forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item;
+        opt.textContent = item;
         opcaoSelect.appendChild(opt);
     });
 
-    infoText.textContent="Agora selecione uma opção específica.";
+    infoText.textContent = "Agora selecione uma opção específica.";
 });
 
-/* QUANDO SELECIONA A OPÇÃO FINAL */
-opcaoSelect.addEventListener("change",()=>{
-    const categoria=categoriaSelect.value;
-    const opcao=opcaoSelect.value;
-    infoText.textContent=opcoes[categoria][opcao];
+opcaoSelect.addEventListener("change", () => {
+    const categoria = categoriaSelect.value;
+    const opcao = opcaoSelect.value;
+    infoText.textContent = opcoes[categoria][opcao];
 });
-    
-/* ENVIO PARA GOOGLE SHEETS */
-document.getElementById("btnEnviar").addEventListener("click", function () {
 
-    const nome = document.getElementById("nomeCompleto").value.trim();
-    const telefone = document.getElementById("telefone").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const categoria = document.getElementById("categoriaSelect").value;
-    const opcao = document.getElementById("opcaoSelect").value;
+/* =========================
+   ENVIO + WHATSAPP
+========================= */
+btnEnviar.addEventListener("click", () => {
+
+    const nome = nomeCompleto.value.trim();
+    const telefone = telefone.value.trim();
+    const email = email.value.trim();
+    const categoria = categoriaSelect.value;
+    const opcao = opcaoSelect.value;
 
     if(!nome || !telefone || !email || !categoria || !opcao){
-        alert("Por favor, preencha todos os campos antes de enviar.");
+        alert("Preencha todos os campos.");
         return;
     }
 
-    fetch("https://script.google.com/macros/s/AKfycbxYLwfv8r-q1DD1iXq3OOy28J2iqJKzQ1yy0Tx-wSjC4QnvMNo0wh12j9zWKgL51nYq/exec", {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-        nome,
-        telefone,
-        email,
-        categoria,
-        opcao
-    })
-});
+    /* 1️⃣ ABRE WHATSAPP PRIMEIRO (sem bloqueio) */
+    const mensagem = `Olá, me chamo ${nome}. Tenho interesse em ${categoria} - ${opcao}.`;
+    const whatsappURL = `https://wa.me/55${telefone.replace(/\D/g,'')}?text=${encodeURIComponent(mensagem)}`;
+    window.open(whatsappURL, "_blank");
 
+    /* 2️⃣ ENVIA PARA PLANILHA (assíncrono e silencioso) */
+    fetch("https://script.google.com/macros/s/AKfycbxYLwfv8r-q1DD1iXq3OOy28J2iqJKzQ1yy0Tx-wSjC4QnvMNo0wh12j9zWKgL51nYq/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, telefone, email, categoria, opcao })
+    });
+});
+</script>
     alert("Formulário enviado com sucesso!");
 });
