@@ -1,3 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Consórcio Profissional</title>
+
+<style>
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{
+    background:#002b5c;
+    color:white;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+/* LAYOUT PRINCIPAL */
+.main-container{
+    display:flex;
+    gap:40px;
+    max-width:1250px;
+    width:100%;
+}
+
+/* TEXTO ESQUERDA */
+.text-content{
+    flex:1;
+    max-width:420px;
+}
+.text-content h1{
+    font-size:3rem;
+    font-weight:800;
+    margin-bottom:20px;
+}
+.text-content p{
+    font-size:1.2rem;
+    opacity:.9;
+    margin-bottom:30px;
+}
+
+/* CARD CENTRAL */
+.card-white{
+    background:white;
+    color:#333;
+    padding:40px;
+    border-radius:20px;
+    width:420px;
+    box-shadow:0 20px 40px rgba(0,0,0,.4);
+}
+
+/* CAMPOS */
+select,input{
+    width:100%;
+    padding:16px;
+    margin-bottom:20px;
+    border:2px solid #eee;
+    border-radius:12px;
+    background:#f9f9f9;
+    font-size:1rem;
+}
+select:focus,input:focus{
+    border-color:#0056b3;
+    background:white;
+}
+
+/* BOTÃO */
+.btn-submit{
+    width:100%;
+    padding:18px;
+    background:#0056b3;
+    color:white;
+    border:none;
+    border-radius:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+.btn-submit:hover{
+    background:#004494;
+}
+
+/* CARD DIREITA */
+.card-info{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    backdrop-filter:blur(10px);
+    padding:30px;
+    border-radius:20px;
+    width:340px;
+    min-height:250px;
+}
+.card-info h3{
+    color:#4da6ff;
+    margin-bottom:15px;
+}
+
+/* RESPONSIVO */
+@media(max-width:900px){
+    .main-container{
+        flex-direction:column;
+        align-items:center;
+    }
+    .card-white,.card-info{
+        width:100%;
+        max-width:420px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="main-container">
+
+    <!-- TEXTO ESQUERDA -->
+    <div class="text-content">
+        <h1>Oportunidades acontecem.<br>Planeje e aproveite.</h1>
+        <p>Transforme seus sonhos em patrimônio real com a estratégia financeira certa para você ou sua empresa.</p>
+    </div>
+
+    <!-- CARD CENTRAL -->
+    <div class="card-white">
+        <h2>Simule seu Futuro</h2>
+
+        <input type="text" placeholder="Seu Nome Completo" id="nomeCompleto">
+
+        <input type="tel" placeholder="WhatsApp (DDD + Número)" id="telefone">
+
+        <input type="email" placeholder="Seu melhor e-mail" id="email">
+
+        <!-- SELECT PRINCIPAL -->
+        <select id="categoriaSelect">
+            <option value="" disabled selected>Selecione uma categoria</option>
+            <option value="imoveis">Consórcio de Imóveis</option>
+            <option value="veiculos">Consórcio de Veículos</option>
+            <option value="servicos">Consórcio de Serviços</option>
+            <option value="outrosBens">Consórcio de Outros Bens</option>
+            <option value="investimentos">Investimentos & Outros</option>
+        </select>
+
+        <!-- SELECT SECUNDÁRIO -->
+        <select id="opcaoSelect" style="display:none;">
+            <option value="" disabled selected>Selecione uma opção</option>
+        </select>
+
+        <button class="btn-submit">Simular Agora</button>
+    </div>
+
+    <!-- CARD DIREITA -->
+    <div class="card-info">
+        <h3>Informações</h3>
+        <p id="infoText">Selecione uma categoria e uma opção para ver detalhes.</p>
+    </div>
+
+</div>
+
 <script>
 /* DADOS DAS OPÇÕES */
 const opcoes = {
@@ -44,10 +204,9 @@ const opcoes = {
 /* ELEMENTOS */
 const categoriaSelect=document.getElementById("categoriaSelect");
 const opcaoSelect=document.getElementById("opcaoSelect");
-const infoTitulo=document.getElementById("info-titulo");
-const infoTexto=document.getElementById("info-texto");
+const infoText=document.getElementById("infoText");
 
-/* MOSTRAR SUBMENU */
+/* QUANDO SELECIONA CATEGORIA */
 categoriaSelect.addEventListener("change",()=>{
     const categoria=categoriaSelect.value;
 
@@ -61,55 +220,16 @@ categoriaSelect.addEventListener("change",()=>{
         opcaoSelect.appendChild(opt);
     });
 
-    infoTitulo.innerText="Informações";
-    infoTexto.innerText="Agora selecione uma opção específica.";
+    infoText.textContent="Agora selecione uma opção específica.";
 });
 
-/* MOSTRAR TEXTO DA OPÇÃO */
+/* QUANDO SELECIONA A OPÇÃO FINAL */
 opcaoSelect.addEventListener("change",()=>{
     const categoria=categoriaSelect.value;
     const opcao=opcaoSelect.value;
-    infoTitulo.innerText=opcao;
-    infoTexto.innerText=opcoes[categoria][opcao];
-});
-
-/* ENVIO PARA PLANILHA + WHATSAPP */
-const scriptURL="https://script.google.com/macros/s/AKfycbvwZSlXrm5uv3TlsAlZE8NRxtNdNhR8o5rQ8ffFaGRd-XC2zaYgxD7ECq_80c51T2T/exec";
-const numeroEmpresa="353832097328";
-
-document.getElementById('form-consorcio').addEventListener('submit',function(e){
-    e.preventDefault();
-
-    const btn=document.getElementById('btn-enviar');
-    btn.innerText="ENVIANDO...";
-    btn.disabled=true;
-
-    const nome=document.getElementById('nome').value;
-    const whatsapp=document.getElementById('whatsapp').value;
-    const email=document.getElementById('email').value;
-    const categoria=document.getElementById('categoriaSelect').value;
-    const opcao=document.getElementById('opcaoSelect').value;
-
-    fetch(scriptURL,{
-        method:'POST',
-        body:new FormData(this),
-        mode:'no-cors'
-    });
-
-    const mensagem=
-        `Olá, meu nome é ${nome}.%0A`+
-        `Gostaria de simular: ${categoria} - ${opcao}.%0A`+
-        `Meu WhatsApp: ${whatsapp}%0A`+
-        `Meu Email: ${email}`;
-
-    const linkZap=`https://wa.me/${numeroEmpresa}?text=${mensagem}`;
-
-    setTimeout(()=>{
-        window.open(linkZap,"_blank");
-        btn.innerText="QUERO SIMULAR AGORA";
-        btn.disabled=false;
-        document.getElementById('form-consorcio').reset();
-        opcaoSelect.style.display="none";
-    },800);
+    infoText.textContent=opcoes[categoria][opcao];
 });
 </script>
+
+</body>
+</html>
