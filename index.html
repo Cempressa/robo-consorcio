@@ -260,12 +260,19 @@ btnEnviar.addEventListener("click", () => {
     const whatsappURL = `https://wa.me/55${telefone.replace(/\D/g,'')}?text=${encodeURIComponent(mensagem)}`;
     window.open(whatsappURL, "_blank");
 
-    /* PLANILHA */
-    fetch("https://script.google.com/macros/s/AKfycbxYLwfv8r-q1DD1iXq3OOy28J2iqJKzQ1yy0Tx-wSjC4QnvMNo0wh12j9zWKgL51nYq/exec", {
+    /* MAKE WEBHOOK (substitui a planilha direta) */
+    fetch("https://hook.us2.make.com/vn65j0s5ofboyiyb1qv2mrx1piaoq9up", {
         method: "POST",
-        mode: "no-cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome, telefone, email, categoria, opcao })
+        body: JSON.stringify({
+            nome,
+            telefone,
+            email,
+            categoria,
+            opcao
+        })
     });
 });
 </script>
+</body>
+</html>
