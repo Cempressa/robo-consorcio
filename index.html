@@ -231,6 +231,7 @@ opcaoSelect.addEventListener("change",()=>{
 });
 
 /* ENVIO PARA GOOGLE SHEETS */
+/* ENVIO PARA GOOGLE SHEETS */
 document.getElementById("btnEnviar").addEventListener("click", function () {
 
     const nome = document.getElementById("nomeCompleto").value.trim();
@@ -244,7 +245,7 @@ document.getElementById("btnEnviar").addEventListener("click", function () {
         return;
     }
 
-    fetch("https:script.google.com/macros/s/AKfycbxvC4xGABm2XkSv3BUq39pAqoaVqZjdRjkqGRYP6v7c9AIvSa_wWFh4rdvMmicEqM2W/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbxvC4xGABm2XkSv3BUq39pAqoaVqZjdRjkqGRYP6v7c9AIvSa_wWFh4rdvMmicEqM2W/exec", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
@@ -257,9 +258,5 @@ document.getElementById("btnEnviar").addEventListener("click", function () {
         })
     });
 
-    alert("Dados enviados com sucesso!");
+    alert("Formulário enviado com sucesso!");
 });
-</script>
-
-</body>
-</html>
