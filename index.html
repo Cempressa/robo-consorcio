@@ -236,8 +236,8 @@ opcaoSelect.addEventListener("change",()=>{
     infoTexto.innerText=opcoes[categoria][opcao];
 });
 
-/* ENVIO PARA GOOGLE SHEETS + WHATSAPP */
-const scriptURL="https://script.google.com/macros/s/AKfycbwwZSIXrm5uv3TlsAlZ2E8NRxtNdNbR8o5rQ8fFfaGRd-XC2zaYgxD7ECq_80c51T2T/exec";
+/* ENVIO PARA MAKE + WHATSAPP */
+const scriptURL="https://hook.us2.make.com/c4edcl8ia2ggai52xi3igwxvor1qywxm";
 
 document.getElementById('form-consorcio').addEventListener('submit',function(e){
     e.preventDefault();
@@ -254,8 +254,7 @@ document.getElementById('form-consorcio').addEventListener('submit',function(e){
 
     fetch(scriptURL,{
         method:'POST',
-        body:new FormData(this),
-        mode:'no-cors'
+        body:new FormData(this)
     });
 
     const mensagem=
