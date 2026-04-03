@@ -244,18 +244,18 @@ document.getElementById("btnEnviar").addEventListener("click", function () {
         return;
     }
 
-    fetch("https://script.google.com/macros/s/AKfycbxvC4xGABm2XkSv3BUq39pAqoaVqZjdRjkqGRYP6v7c9AIvSa_wWFh4rdvMmicEqM2W/exec", {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            nome,
-            telefone,
-            email,
-            categoria,
-            opcao
-        })
-    });
+    fetch("https://script.google.com/macros/s/AKfycbxYLwfv8r-q1DD1iXq3OOy28J2iqJKzQ1yy0Tx-wSjC4QnvMNo0wh12j9zWKgL51nYq/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+        nome,
+        telefone,
+        email,
+        categoria,
+        opcao
+    })
+});
 
     alert("Formulário enviado com sucesso!");
 });
