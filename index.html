@@ -1,80 +1,118 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulador de Consórcio Profissional</title>
+<script>
+/* OPÇÕES DO SUBMENU */
+const opcoes = {
+    imoveis:{
+        "Aquisição e Construção":"Use o consórcio para adquirir ou construir seu imóvel.",
+        "Reforma e Melhoria":"Ideal para reformas e ampliações planejadas.",
+        "Quitação de financiamento":"Antecipe a quitação do seu financiamento atual."
+    },
+    veiculos:{
+        "Carros e Motos":"Planeje a compra do seu veículo sem juros.",
+        "Barcos e Navios":"Consórcio para embarcações de todos os portes.",
+        "Aviões e Drones":"Ideal para aeronaves leves e drones profissionais.",
+        "Maquinários Agrícolas":"Perfeito para produtores e empresas rurais.",
+        "Outros":"Outros veículos e equipamentos sob consulta."
+    },
+    servicos:{
+        "Implante Capilar":"Procedimentos estéticos financiados sem juros.",
+        "Cirurgias e procedimentos estéticos":"Planeje cirurgias com segurança financeira.",
+        "Viagens":"Viaje com planejamento e economia.",
+        "Festas de casamento e formaturas":"Realize eventos especiais com tranquilidade."
+    },
+    outrosBens:{
+        "Móveis planejados":"Ideal para mobiliar sua casa com qualidade.",
+        "Placas solares":"Economia e sustentabilidade com energia solar.",
+        "Equipamentos para academias":"Monte ou amplie sua academia.",
+        "Equipamentos odontológicos":"Equipamentos modernos para consultórios.",
+        "Equipamentos hospitalares":"Soluções para clínicas e hospitais.",
+        "Equipamentos para escritórios":"Mobília e equipamentos corporativos.",
+        "Outros":"Outros bens e equipamentos sob consulta."
+    },
+    investimentos:{
+        "Aposentadoria Imobiliária":"Construa renda passiva com imóveis.",
+        "Cota Investimento":"Invista em cotas com potencial de valorização.",
+        "Cota Previdência":"Planejamento previdenciário inteligente.",
+        "Alavancagem Financeira":"Multiplique seu capital com estratégia.",
+        "Cotas Contempladas":"Aproveite oportunidades já contempladas.",
+        "Assunção de dívida":"Assuma cotas com saldo reduzido.",
+        "Home Equity":"Use seu imóvel como garantia para crédito.",
+        "Car Equity":"Use seu veículo como garantia.",
+        "Cota Equity":"Estratégia avançada de alavancagem."
+    }
+};
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+/* ELEMENTOS */
+const categoriaSelect=document.getElementById("categoriaSelect");
+const opcaoSelect=document.getElementById("opcaoSelect");
+const infoTitulo=document.getElementById("info-titulo");
+const infoTexto=document.getElementById("info-texto");
 
-body{
-    background:#002b5c;
-    color:white;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-}
+/* MOSTRAR SUBMENU */
+categoriaSelect.addEventListener("change",()=>{
+    const categoria=categoriaSelect.value;
 
-.main-container{
-    display:flex;
-    gap:40px;
-    max-width:1250px;
-    width:100%;
-}
+    // limpa e exibe o submenu
+    opcaoSelect.innerHTML=`<option disabled selected>Selecione uma opção</option>`;
+    opcaoSelect.style.display="block";
 
-.text-content{
-    flex:1;
-    max-width:420px;
-}
-.text-content h1{
-    font-size:3rem;
-    font-weight:800;
-    margin-bottom:20px;
-}
-.text-content p{
-    font-size:1.2rem;
-    opacity:.9;
-    margin-bottom:30px;
-}
+    Object.keys(opcoes[categoria]).forEach(item=>{
+        const opt=document.createElement("option");
+        opt.value=item;
+        opt.textContent=item;
+        opcaoSelect.appendChild(opt);
+    });
 
-.card-white{
-    background:white;
-    color:#333;
-    padding:40px;
-    border-radius:20px;
-    width:420px;
-    box-shadow:0 20px 40px rgba(0,0,0,.4);
-}
+    infoTitulo.innerText="Informações";
+    infoTexto.innerText="Agora selecione uma opção específica.";
+});
 
-select,input{
-    width:100%;
-    padding:16px;
-    margin-bottom:20px;
-    border:2px solid #eee;
-    border-radius:12px;
-    background:#f9f9f9;
-    font-size:1rem;
-}
-select:focus,input:focus{
-    border-color:#0056b3;
-    background:white;
-}
+/* MOSTRAR TEXTO DA OPÇÃO */
+opcaoSelect.addEventListener("change",()=>{
+    const categoria=categoriaSelect.value;
+    const opcao=opcaoSelect.value;
+    infoTitulo.innerText=opcao;
+    infoTexto.innerText=opcoes[categoria][opcao];
+});
 
-.btn-submit{
-    width:100%;
-    padding:18px;
-    background:#0056b3;
-    color:white;
-    border:none;
-    border-radius:12px;
-    font-weight:700;
-    cursor:pointer;
-}
-.btn-submit:hover{
-    background:#004494;
-}
+/* ENVIO PARA PLANILHA + WHATSAPP */
+const scriptURL="https://script.google.com/macros/s/AKfycbvwZSlXrm5uv3TlsAlZE8NRxtNdNhR8o5rQ8ffFaGRd-XC2zaYgxD7ECq_80c51T2T/exec";
+const numeroEmpresa="353832097328";
 
-.card
+document.getElementById('form-consorcio').addEventListener('submit',function(e){
+    e.preventDefault();
+
+    const btn=document.getElementById('btn-enviar');
+    btn.innerText="ENVIANDO...";
+    btn.disabled=true;
+
+    const nome=document.getElementById('nome').value;
+    const whatsapp=document.getElementById('whatsapp').value;
+    const email=document.getElementById('email').value;
+    const categoria=document.getElementById('categoriaSelect').value;
+    const opcao=document.getElementById('opcaoSelect').value;
+
+    fetch(scriptURL,{
+        method:'POST',
+        body:new FormData(this),
+        mode:'no-cors'
+    });
+
+    const mensagem=
+        `Olá, meu nome é ${nome}.%0A`+
+        `Gostaria de simular: ${categoria} - ${opcao}.%0A`+
+        `Meu WhatsApp: ${whatsapp}%0A`+
+        `Meu Email: ${email}`;
+
+    const linkZap=`https://wa.me/${numeroEmpresa}?text=${mensagem}`;
+
+    setTimeout(()=>{
+        window.open(linkZap,"_blank");
+        btn.innerText="QUERO SIMULAR AGORA";
+        btn.disabled=false;
+        document.getElementById('form-consorcio').reset();
+
+        // submenu volta a ficar oculto até escolher categoria
+        opcaoSelect.style.display="none";
+    },800);
+});
+</script>
