@@ -236,15 +236,14 @@ opcaoSelect.addEventListener("change",()=>{
     infoTexto.innerText=opcoes[categoria][opcao];
 });
 
-/* ENVIO PARA MAKE + WHATSAPP + Planilha */
-const scriptURL = "";
-";
+/* ENVIO PARA GOOGLE SHEETS + WHATSAPP */
+const scriptURL="https://script.google.com/macros/s/AKfycbwwZSIXrm5uv3TlsAlZ2E8NRxtNdNbR8o5rQ8fFfaGRd-XC2zaYgxD7ECq_80c51T2T/exec";
 
 document.getElementById('form-consorcio').addEventListener('submit',function(e){
     e.preventDefault();
 
     const btn=document.getElementById('btn-enviar');
-    btn.innerText="ENVIANDO...";https://script.google.com/macros/s/AKfycbwwZSIXrm5uv3TlsAlZ2E8NRxtNdNbR8o5rQ8fFfaGRd-XC2zaYgxD7ECq_80c51T2T/exec
+    btn.innerText="ENVIANDO...";
     btn.disabled=true;
 
     const nome=document.getElementById('nome').value;
@@ -255,7 +254,8 @@ document.getElementById('form-consorcio').addEventListener('submit',function(e){
 
     fetch(scriptURL,{
         method:'POST',
-        body:new FormData(this)
+        body:new FormData(this),
+        mode:'no-cors'
     });
 
     const mensagem=
@@ -264,7 +264,8 @@ document.getElementById('form-consorcio').addEventListener('submit',function(e){
         `Meu WhatsApp: ${whatsapp}%0A`+
         `Meu Email: ${email}`;
 
-    const linkZap=`https://wa.me/55${whatsapp.replace(/\D/g,'')}?text=${mensagem}`;
+    const numeroEmpresa="5519996661688"; // ALTERE PARA O SEU NÚMERO
+    const linkZap=`https://wa.me/${numeroEmpresa}?text=${mensagem}`;
 
     setTimeout(()=>{
         window.open(linkZap,"_blank");
