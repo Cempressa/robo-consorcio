@@ -147,7 +147,7 @@ select:focus,input:focus{
             <option value="" disabled selected>Selecione uma opção</option>
         </select>
 
-        <button class="btn-submit">Simular Agora</button>
+        <button class="btn-submit" id="btnEnviar">Simular Agora</button>
     </div>
 
     <!-- CARD DIREITA -->
@@ -228,6 +228,36 @@ opcaoSelect.addEventListener("change",()=>{
     const categoria=categoriaSelect.value;
     const opcao=opcaoSelect.value;
     infoText.textContent=opcoes[categoria][opcao];
+});
+
+/* ENVIO PARA GOOGLE SHEETS */
+document.getElementById("btnEnviar").addEventListener("click", function () {
+
+    const nome = document.getElementById("nomeCompleto").value.trim();
+    const telefone = document.getElementById("telefone").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const categoria = document.getElementById("categoriaSelect").value;
+    const opcao = document.getElementById("opcaoSelect").value;
+
+    if(!nome || !telefone || !email || !categoria || !opcao){
+        alert("Por favor, preencha todos os campos antes de enviar.");
+        return;
+    }
+
+    fetch("https://script.google.com/macros/s/AKfycbxYLwfr8r-q1DD1iXq3OOy28J2iqJKzQ1yy0Tx-wSjC4QnvMNo0wh12j9zWKgL51nYq/", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            nome,
+            telefone,
+            email,
+            categoria,
+            opcao
+        })
+    });
+
+    alert("Dados enviados com sucesso!");
 });
 </script>
 
