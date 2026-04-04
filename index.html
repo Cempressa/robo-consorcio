@@ -242,10 +242,10 @@ opcaoSelect.addEventListener("change", () => {
 });
 
 // ENVIO WHATSAPP + MAKE
-// ENVIO WHATSAPP + MAKE
 btnEnviar.addEventListener("click", (e) => {
     e.preventDefault();
 
+    // 1. CAPTURA OS VALORES
     const nome = document.getElementById("nomeCompleto").value.trim();
     const telefone = document.getElementById("telefone").value.trim();
     const email = document.getElementById("email").value.trim();
@@ -253,29 +253,29 @@ btnEnviar.addEventListener("click", (e) => {
     const opcao = opcaoSelect.value;
 
     if(!nome || !telefone || !categoria || !opcao){
-        alert("Preencha todos os campos.");
+        alert("Por favor, preencha todos os campos.");
         return;
     }
 
-    // ABRIR WHATSAPP (IRLANDA)
+    // 2. ABRIR WHATSAPP (IRLANDA)
     const mensagem = `Olá! Me chamo ${nome}. Tenho interesse em ${categoria} - ${opcao}.`;
     const whatsappURL = `https://wa.me/353832097328?text=${encodeURIComponent(mensagem)}`;
     window.open(whatsappURL, "_blank");
 
-    // ENVIO MAKE
+    // 3. LIMPAR A TELA NA HORA (Resolve o "congelamento")
+    document.getElementById("nomeCompleto").value = "";
+    document.getElementById("telefone").value = "";
+    document.getElementById("email").value = "";
+    categoriaSelect.selectedIndex = 0;
+    document.getElementById("wrapperOpcao").style.display = "none";
+    infoText.textContent = "Simulação enviada com sucesso!";
+
+    // 4. ENVIAR PARA O MAKE (Já que ele dá sucesso, o link está ok)
     fetch("https://hook.us2.make.com/vn65j0s5ofboyiyb1qv2mrx1piaoq9up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome, telefone, email, categoria, opcao })
     })
-    .catch(err => console.log("Erro no Make"))
-    .finally(() => {
-        // LIMPA OS CAMPOS PARA A TELA NÃO FICAR CONGELADA
-        document.getElementById("nomeCompleto").value = "";
-        document.getElementById("telefone").value = "";
-        document.getElementById("email").value = "";
-        categoriaSelect.selectedIndex = 0;
-        wrapperOpcao.style.display = "none";
-        infoText.textContent = "Simulação enviada com sucesso!";
-    });
+    .then(response => console.log("Make recebeu os dados!"))
+    .catch(err => console.log("Erro no envio de fundo."));
 });
