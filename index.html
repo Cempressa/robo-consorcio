@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de Consórcio Profissional</title>
+
     <style>
-        /* RESET & BASE */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
+        /* RESET */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
         body {
             background: #002b5c;
             color: white;
@@ -18,6 +19,7 @@
             padding: 20px;
         }
 
+        /* LAYOUT PRINCIPAL */
         .main-container {
             display: flex;
             gap: 40px;
@@ -26,9 +28,20 @@
         }
 
         /* TEXTO ESQUERDA */
-        .text-content { flex: 1; max-width: 420px; }
-        .text-content h1 { font-size: 3rem; font-weight: 800; margin-bottom: 20px; line-height: 1.1; }
-        .text-content p { font-size: 1.2rem; opacity: .8; margin-bottom: 30px; }
+        .text-content {
+            flex: 1;
+            max-width: 420px;
+        }
+        .text-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        .text-content p {
+            font-size: 1.2rem;
+            opacity: .9;
+            margin-bottom: 30px;
+        }
 
         /* CARD CENTRAL */
         .card-white {
@@ -39,22 +52,30 @@
             width: 420px;
             box-shadow: 0 20px 40px rgba(0,0,0,.4);
         }
-        .card-white h2 { margin-bottom: 25px; font-size: 1.5rem; color: #002b5c; }
 
-        /* FORMULÁRIO */
-        label { display: block; margin-bottom: 5px; font-size: 0.85rem; font-weight: 600; color: #666; }
+        /* CAMPOS */
         select, input {
             width: 100%;
-            padding: 14px;
-            margin-bottom: 18px;
+            padding: 16px;
+            margin-bottom: 20px;
             border: 2px solid #eee;
-            border-radius: 10px;
+            border-radius: 12px;
             background: #f9f9f9;
             font-size: 1rem;
-            transition: all 0.3s;
+            outline: none;
+            transition: all 0.2s;
         }
-        select:focus, input:focus { outline: none; border-color: #0056b3; background: white; }
+        
+        /* CURSORES ESPECÍFICOS */
+        input { cursor: text; }
+        select { cursor: pointer; }
 
+        select:focus, input:focus {
+            border-color: #0056b3;
+            background: white;
+        }
+
+        /* BOTÃO */
         .btn-submit {
             width: 100%;
             padding: 18px;
@@ -63,13 +84,17 @@
             border: none;
             border-radius: 12px;
             font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background 0.3s;
+            cursor: pointer; /* Mãozinha no cursor */
+            transition: background 0.3s, transform 0.1s;
         }
-        .btn-submit:hover { background: #004494; }
+        .btn-submit:hover {
+            background: #004494;
+        }
+        .btn-submit:active {
+            transform: scale(0.98); /* Efeito de clique */
+        }
 
-        /* CARD DIREITA (DETALHES) */
+        /* CARD DIREITA */
         .card-info {
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.15);
@@ -77,47 +102,59 @@
             padding: 30px;
             border-radius: 20px;
             width: 340px;
-            display: flex;
-            flex-direction: column;
+            min-height: 250px;
         }
-        .card-info h3 { color: #4da6ff; margin-bottom: 15px; font-size: 1.2rem; }
-        .card-info p { line-height: 1.6; opacity: 0.9; }
+        .card-info h3 {
+            color: #4da6ff;
+            margin-bottom: 15px;
+        }
 
         /* RESPONSIVO */
-        @media(max-width: 950px) {
-            .main-container { flex-direction: column; align-items: center; }
-            .card-white, .card-info, .text-content { width: 100%; max-width: 500px; text-align: center; }
-            .text-content h1 { font-size: 2.2rem; }
+        @media(max-width:900px){
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .card-white, .card-info {
+                width: 100%;
+                max-width: 420px;
+            }
         }
     </style>
 </head>
+
 <body>
 
 <div class="main-container">
+
+    <!-- TEXTO ESQUERDA -->
     <div class="text-content">
         <h1>Oportunidades acontecem.<br>Planeje e aproveite.</h1>
-        <p>Transforme seus sonhos em patrimônio real com a estratégia financeira certa.</p>
+        <p>Transforme seus sonhos em patrimônio real com a estratégia financeira certa para você ou sua empresa.</p>
     </div>
 
+    <!-- CARD CENTRAL -->
     <div class="card-white">
         <h2>Simule seu Futuro</h2>
-        
-        <input type="text" id="nomeCompleto" placeholder="Nome Completo">
-        <input type="tel" id="telefone" placeholder="WhatsApp (DDD + Número)" maxlength="15">
-        <input type="email" id="email" placeholder="E-mail principal">
 
-        <label>O que você busca?</label>
+        <input type="text" placeholder="Seu Nome Completo" id="nomeCompleto">
+
+        <input type="tel" placeholder="WhatsApp (DDD + Número)" id="telefone" maxlength="15">
+
+        <input type="email" placeholder="Seu melhor e-mail" id="email">
+
+        <!-- SELECT PRINCIPAL -->
         <select id="categoriaSelect">
             <option value="" disabled selected>Selecione uma categoria</option>
             <option value="imoveis">Consórcio de Imóveis</option>
             <option value="veiculos">Consórcio de Veículos</option>
             <option value="servicos">Consórcio de Serviços</option>
             <option value="outrosBens">Consórcio de Outros Bens</option>
-            <option value="investimentos">Investimentos & Estratégias</option>
+            <option value="investimentos">Investimentos & Outros</option>
         </select>
 
+        <!-- SELECT SECUNDÁRIO -->
         <div id="wrapperOpcao" style="display:none;">
-            <label>Opção específica:</label>
             <select id="opcaoSelect">
                 <option value="" disabled selected>Selecione uma opção</option>
             </select>
@@ -126,111 +163,138 @@
         <button class="btn-submit" id="btnEnviar">Simular Agora</button>
     </div>
 
+    <!-- CARD DIREITA -->
     <div class="card-info">
-        <h3>Detalhes do Plano</h3>
-        <p id="infoText">Escolha uma categoria para ver como podemos ajudar no seu planejamento.</p>
+        <h3>Informações</h3>
+        <p id="infoText">Selecione uma categoria e uma opção para ver detalhes.</p>
     </div>
+
 </div>
 
 <script>
+/* =========================
+   DADOS DAS OPÇÕES
+========================= */
 const opcoes = {
-    imoveis: {
-        "Aquisição e Construção": "Use o consórcio para adquirir ou construir seu imóvel residencial ou comercial.",
-        "Reforma e Melhoria": "Ideal para reformas e ampliações planejadas sem pagar juros bancários.",
-        "Quitação de financiamento": "Use sua carta para quitar saldos devedores de financiamentos caros."
+    imoveis:{
+        "Aquisição e Construção":"Use o consórcio para adquirir ou construir seu imóvel.",
+        "Reforma e Melhoria":"Ideal para reformas e ampliações planejadas.",
+        "Quitação de financiamento":"Antecipe a quitação do seu financiamento atual."
     },
-    veiculos: {
-        "Carros e Motos": "Planeje a troca do seu veículo com parcelas que cabem no bolso.",
-        "Barcos e Navios": "Consórcio para embarcações de todos os portes e motores.",
-        "Maquinários Agrícolas": "Renovação de frota para produtores rurais com taxas administrativas baixas."
+    veiculos:{
+        "Carros e Motos":"Planeje a compra do seu veículo sem juros.",
+        "Barcos e Navios":"Consórcio para embarcações de todos os portes.",
+        "Aviões e Drones":"Ideal para aeronaves leves e drones profissionais.",
+        "Maquinários Agrícolas":"Perfeito para produtores e empresas rurais.",
+        "Outros":"Outros veículos e equipamentos sob consulta."
     },
-    servicos: {
-        "Estética e Saúde": "Cirurgias, implantes e procedimentos estéticos planejados.",
-        "Viagens e Intercâmbio": "Realize a viagem dos sonhos com economia real.",
-        "Eventos": "Casamentos, formaturas e festas corporativas."
+    servicos:{
+        "Implante Capilar":"Procedimentos estéticos financiados sem juros.",
+        "Cirurgias e procedimentos estéticos":"Planeje cirurgias com segurança financeira.",
+        "Viagens":"Viaje com planejamento e economia.",
+        "Festas de casamento e formaturas":"Realize eventos especiais com tranquilidade."
     },
-    outrosBens: {
-        "Placas Solares": "Invista em energia limpa e reduza sua conta de luz drasticamente.",
-        "Móveis Planejados": "Equipe sua casa ou escritório com alto padrão.",
-        "Equipamentos Profissionais": "Soluções para clínicas, consultórios e academias."
+    outrosBens:{
+        "Móveis planejados":"Ideal para mobiliar sua casa com qualidade.",
+        "Placas solares":"Economia e sustentabilidade com energia solar.",
+        "Equipamentos para academias":"Monte ou amplie sua academia.",
+        "Equipamentos odontológicos":"Equipamentos modernos para consultórios.",
+        "Equipamentos hospitalares":"Soluções para clínicas e hospitais.",
+        "Equipamentos para escritórios":"Mobília e equipamentos corporativos.",
+        "Outros":"Outros bens e equipamentos sob consulta."
     },
-    investimentos: {
-        "Alavancagem Financeira": "Estratégia para multiplicar patrimônio usando o poder do grupo.",
-        "Aposentadoria Imobiliária": "Construa uma carteira de aluguéis através do consórcio.",
-        "Cotas Contempladas": "Acesso imediato ao crédito com oportunidades de mercado."
+    investimentos:{
+        "Aposentadoria Imobiliária":"Construa renda passiva com imóveis.",
+        "Cota Investimento":"Invista em cotas com potencial de valorização.",
+        "Cota Previdência":"Planejamento previdenciário inteligente.",
+        "Alavancagem Financeira":"Multiplique seu capital com estratégia.",
+        "Cotas Contempladas":"Aproveite oportunidades já contempladas.",
+        "Assunção de dívida":"Assuma cotas com saldo reduzido.",
+        "Home Equity":"Use seu imóvel como garantia para crédito.",
+        "Car Equity":"Use seu veículo como garantia.",
+        "Cota Equity":"Estratégia avançada de alavancagem."
     }
 };
 
-// Seletores
+/* =========================
+   ELEMENTOS
+========================= */
 const categoriaSelect = document.getElementById("categoriaSelect");
 const opcaoSelect = document.getElementById("opcaoSelect");
 const wrapperOpcao = document.getElementById("wrapperOpcao");
 const infoText = document.getElementById("infoText");
 const btnEnviar = document.getElementById("btnEnviar");
+const nomeInput = document.getElementById("nomeCompleto");
+const telefoneInput = document.getElementById("telefone");
+const emailInput = document.getElementById("email");
 
-// Máscara Simples para Telefone
-document.getElementById('telefone').addEventListener('input', (e) => {
+/* =========================
+   MÁSCARA DE TELEFONE
+========================= */
+telefoneInput.addEventListener('input', (e) => {
     let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
     e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
 });
 
-// Lógica de Submenu
+/* =========================
+   LÓGICA DOS SELECTS
+========================= */
 categoriaSelect.addEventListener("change", () => {
-    const cat = categoriaSelect.value;
-    if (!cat) return;
+    const categoria = categoriaSelect.value;
+    if (!categoria) return;
 
-    opcaoSelect.innerHTML = '<option value="" disabled selected>Selecione uma opção</option>';
+    opcaoSelect.innerHTML = `<option value="" disabled selected>Selecione uma opção</option>`;
     
-    Object.keys(opcoes[cat]).forEach(opt => {
-        const el = document.createElement("option");
-        el.value = opt;
-        el.textContent = opt;
-        opcaoSelect.appendChild(el);
+    Object.keys(opcoes[categoria]).forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item;
+        opt.textContent = item;
+        opcaoSelect.appendChild(opt);
     });
 
     wrapperOpcao.style.display = "block";
-    infoText.textContent = "Excelente escolha. Agora selecione o objetivo específico acima.";
+    infoText.textContent = "Agora selecione uma opção específica acima.";
 });
 
 opcaoSelect.addEventListener("change", () => {
-    const cat = categoriaSelect.value;
-    const opt = opcaoSelect.value;
-    infoText.style.color = "#white";
-    infoText.textContent = opcoes[cat][opt];
+    const categoria = categoriaSelect.value;
+    const opcao = opcaoSelect.value;
+    if(categoria && opcao) {
+        infoText.textContent = opcoes[categoria][opcao];
+    }
 });
 
-// Envio
-btnEnviar.addEventListener("click", async () => {
-    const dados = {
-        nome: document.getElementById("nomeCompleto").value.trim(),
-        telefone: document.getElementById("telefone").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        categoria: categoriaSelect.value,
-        opcao: opcaoSelect.value
-    };
+/* =========================
+   ENVIO + WHATSAPP (CORRIGIDO)
+========================= */
+btnEnviar.addEventListener("click", (e) => {
+    e.preventDefault(); // Impede o refresh da página
 
-    if (Object.values(dados).some(v => !v)) {
-        alert("Por favor, preencha todos os campos antes de simular.");
+    const nome = nomeInput.value.trim();
+    const telefone = telefoneInput.value.trim();
+    const email = emailInput.value.trim();
+    const categoria = categoriaSelect.value;
+    const opcao = opcaoSelect.value;
+
+    if(!nome || !telefone || !email || !categoria || !opcao){
+        alert("Por favor, preencha todos os campos.");
         return;
     }
 
-    // 1. Enviar para o Make (Webhook)
-    try {
-        fetch("https://hook.us2.make.com/vn65j0s5ofboyiyb1qv2mrx1piaoq9up", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(dados)
-        });
-    } catch (e) { console.error("Erro no Webhook"); }
+    // WEBHOOK MAKE
+    fetch("https://hook.us2.make.com/vn65j0s5ofboyiyb1qv2mrx1piaoq9up", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, telefone, email, categoria, opcao })
+    }).catch(err => console.log("Erro ao enviar dados"));
 
-    // 2. Redirecionar para WhatsApp (Substitua pelo SEU número)
-    const seuNumero = "5519999999999"; // <-- COLOQUE SEU NÚMERO AQUI
-    const msg = `Olá! Acabei de fazer uma simulação no site.\n*Nome:* ${dados.nome}\n*Interesse:* ${dados.categoria} (${dados.opcao})`;
-    const url = `https://wa.me/${seuNumero}?text=${encodeURIComponent(msg)}`;
+    // REDIRECIONAR WHATSAPP (Substitua o número abaixo pelo SEU se desejar receber o lead)
+    const meuNumeroParaReceber = "5519999999999"; // Exemplo: 55 + DDD + Número
+    const mensagem = `Olá! Me chamo ${nome}. Fiz uma simulação:\n*Categoria:* ${categoria}\n*Opção:* ${opcao}`;
+    const whatsappURL = `https://wa.me/${meuNumeroParaReceber}?text=${encodeURIComponent(mensagem)}`;
     
-    window.open(url, "_blank");
+    window.open(whatsappURL, "_blank");
 });
 </script>
-
 </body>
 </html>
