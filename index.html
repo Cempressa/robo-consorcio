@@ -7,117 +7,115 @@
 
     <style>
         /* RESET */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
 
-        body {
-            background: #002b5c;
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+        body{
+            background:#002b5c;
+            color:white;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:20px;
         }
 
         /* LAYOUT PRINCIPAL */
-        .main-container {
-            display: flex;
-            gap: 40px;
-            max-width: 1250px;
-            width: 100%;
+        .main-container{
+            display:flex;
+            gap:40px;
+            max-width:1250px;
+            width:100%;
         }
 
         /* TEXTO ESQUERDA */
-        .text-content {
-            flex: 1;
-            max-width: 420px;
+        .text-content{
+            flex:1;
+            max-width:420px;
         }
-        .text-content h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 20px;
+        .text-content h1{
+            font-size:3rem;
+            font-weight:800;
+            margin-bottom:20px;
         }
-        .text-content p {
-            font-size: 1.2rem;
-            opacity: .9;
-            margin-bottom: 30px;
+        .text-content p{
+            font-size:1.2rem;
+            opacity:.9;
+            margin-bottom:30px;
         }
 
         /* CARD CENTRAL */
-        .card-white {
-            background: white;
-            color: #333;
-            padding: 40px;
-            border-radius: 20px;
-            width: 420px;
-            box-shadow: 0 20px 40px rgba(0,0,0,.4);
+        .card-white{
+            background:white;
+            color:#333;
+            padding:40px;
+            border-radius:20px;
+            width:420px;
+            box-shadow:0 20px 40px rgba(0,0,0,.4);
         }
 
         /* CAMPOS */
-        select, input {
-            width: 100%;
-            padding: 16px;
-            margin-bottom: 20px;
-            border: 2px solid #eee;
-            border-radius: 12px;
-            background: #f9f9f9;
-            font-size: 1rem;
+        select,input{
+            width:100%;
+            padding:16px;
+            margin-bottom:20px;
+            border:2px solid #eee;
+            border-radius:12px;
+            background:#f9f9f9;
+            font-size:1rem;
             outline: none;
-            transition: all 0.2s;
         }
         
-        /* CURSORES ESPECÍFICOS */
         input { cursor: text; }
         select { cursor: pointer; }
 
-        select:focus, input:focus {
-            border-color: #0056b3;
-            background: white;
+        select:focus,input:focus{
+            border-color:#0056b3;
+            background:white;
         }
 
         /* BOTÃO */
-        .btn-submit {
-            width: 100%;
-            padding: 18px;
-            background: #0056b3;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer; /* Mãozinha no cursor */
+        .btn-submit{
+            width:100%;
+            padding:18px;
+            background:#0056b3;
+            color:white;
+            border:none;
+            border-radius:12px;
+            font-weight:700;
+            cursor:pointer;
             transition: background 0.3s, transform 0.1s;
         }
-        .btn-submit:hover {
-            background: #004494;
+        .btn-submit:hover{
+            background:#004494;
         }
         .btn-submit:active {
-            transform: scale(0.98); /* Efeito de clique */
+            transform: scale(0.98);
         }
 
         /* CARD DIREITA */
-        .card-info {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            width: 340px;
-            min-height: 250px;
+        .card-info{
+            background:rgba(255,255,255,0.08);
+            border:1px solid rgba(255,255,255,0.15);
+            backdrop-filter:blur(10px);
+            padding:30px;
+            border-radius:20px;
+            width:340px;
+            min-height:250px;
         }
-        .card-info h3 {
-            color: #4da6ff;
-            margin-bottom: 15px;
+        .card-info h3{
+            color:#4da6ff;
+            margin-bottom:15px;
         }
 
         /* RESPONSIVO */
         @media(max-width:900px){
-            .main-container {
-                flex-direction: column;
-                align-items: center;
+            .main-container{
+                flex-direction:column;
+                align-items:center;
             }
-            .card-white, .card-info {
-                width: 100%;
-                max-width: 420px;
+            .card-white,.card-info{
+                width:100%;
+                max-width:420px;
             }
         }
     </style>
@@ -127,23 +125,18 @@
 
 <div class="main-container">
 
-    <!-- TEXTO ESQUERDA -->
     <div class="text-content">
         <h1>Oportunidades acontecem.<br>Planeje e aproveite.</h1>
         <p>Transforme seus sonhos em patrimônio real com a estratégia financeira certa para você ou sua empresa.</p>
     </div>
 
-    <!-- CARD CENTRAL -->
     <div class="card-white">
         <h2>Simule seu Futuro</h2>
 
         <input type="text" placeholder="Seu Nome Completo" id="nomeCompleto">
-
         <input type="tel" placeholder="WhatsApp (DDD + Número)" id="telefone" maxlength="15">
-
         <input type="email" placeholder="Seu melhor e-mail" id="email">
 
-        <!-- SELECT PRINCIPAL -->
         <select id="categoriaSelect">
             <option value="" disabled selected>Selecione uma categoria</option>
             <option value="imoveis">Consórcio de Imóveis</option>
@@ -153,7 +146,7 @@
             <option value="investimentos">Investimentos & Outros</option>
         </select>
 
-        <!-- SELECT SECUNDÁRIO -->
+        <!-- SUBMENU DEVOLVIDO -->
         <div id="wrapperOpcao" style="display:none;">
             <select id="opcaoSelect">
                 <option value="" disabled selected>Selecione uma opção</option>
@@ -163,7 +156,6 @@
         <button class="btn-submit" id="btnEnviar">Simular Agora</button>
     </div>
 
-    <!-- CARD DIREITA -->
     <div class="card-info">
         <h3>Informações</h3>
         <p id="infoText">Selecione uma categoria e uma opção para ver detalhes.</p>
@@ -172,35 +164,44 @@
 </div>
 
 <script>
-<script>
-/* =========================
-   DADOS E CONFIGURAÇÕES
-========================= */
 const opcoes = {
-    imoveis: {
-        "Aquisição e Construção": "Use o consórcio para adquirir ou construir seu imóvel.",
-        "Reforma e Melhoria": "Ideal para reformas e ampliações planejadas.",
-        "Quitação de financiamento": "Antecipe a quitação do seu financiamento atual."
+    imoveis:{
+        "Aquisição e Construção":"Use o consórcio para adquirir ou construir seu imóvel.",
+        "Reforma e Melhoria":"Ideal para reformas e ampliações planejadas.",
+        "Quitação de financiamento":"Antecipe a quitação do seu financiamento atual."
     },
-    veiculos: {
-        "Carros e Motos": "Planeje a compra do seu veículo sem juros.",
-        "Barcos e Navios": "Consórcio para embarcações de todos os portes.",
-        "Maquinários Agrícolas": "Perfeito para produtores e empresas rurais."
+    veiculos:{
+        "Carros e Motos":"Planeje a compra do seu veículo sem juros.",
+        "Barcos e Navios":"Consórcio para embarcações de todos os portes.",
+        "Aviões e Drones":"Ideal para aeronaves leves e drones profissionais.",
+        "Maquinários Agrícolas":"Perfeito para produtores e empresas rurais.",
+        "Outros":"Outros veículos e equipamentos sob consulta."
     },
-    servicos: {
-        "Estética": "Procedimentos estéticos financiados sem juros.",
-        "Viagens": "Viaje com planejamento e economia.",
-        "Festas e Eventos": "Realize eventos especiais com tranquilidade."
+    servicos:{
+        "Implante Capilar":"Procedimentos estéticos financiados sem juros.",
+        "Cirurgias e procedimentos estéticos":"Planeje cirurgias com segurança financeira.",
+        "Viagens":"Viaje com planejamento e economia.",
+        "Festas de casamento e formaturas":"Realize eventos especiais com tranquilidade."
     },
-    outrosBens: {
-        "Móveis planejados": "Ideal para mobiliar sua casa com qualidade.",
-        "Placas solares": "Economia e sustentabilidade com energia solar.",
-        "Equipamentos": "Equipamentos modernos para seu negócio."
+    outrosBens:{
+        "Móveis planejados":"Ideal para mobiliar sua casa com qualidade.",
+        "Placas solares":"Economia e sustentabilidade com energia solar.",
+        "Equipamentos para academias":"Monte ou amplie sua academia.",
+        "Equipamentos odontológicos":"Equipamentos modernos para consultórios.",
+        "Equipamentos hospitalares":"Soluções para clínicas e hospitais.",
+        "Equipamentos para escritórios":"Mobília e equipamentos corporativos.",
+        "Outros":"Outros bens e equipamentos sob consulta."
     },
-    investimentos: {
-        "Alavancagem Financeira": "Multiplique seu capital com estratégia.",
-        "Aposentadoria Imobiliária": "Construa renda passiva com imóveis.",
-        "Cotas Contempladas": "Aproveite oportunidades já contempladas."
+    investimentos:{
+        "Aposentadoria Imobiliária":"Construa renda passiva com imóveis.",
+        "Cota Investimento":"Invista em cotas com potencial de valorização.",
+        "Cota Previdência":"Planejamento previdenciário inteligente.",
+        "Alavancagem Financeira":"Multiplique seu capital com estratégia.",
+        "Cotas Contempladas":"Aproveite oportunidades já contempladas.",
+        "Assunção de dívida":"Assuma cotas com saldo reduzido.",
+        "Home Equity":"Use seu imóvel como garantia para crédito.",
+        "Car Equity":"Use seu veículo como garantia.",
+        "Cota Equity":"Estratégia avançada de alavancagem."
     }
 };
 
@@ -210,16 +211,18 @@ const wrapperOpcao = document.getElementById("wrapperOpcao");
 const infoText = document.getElementById("infoText");
 const btnEnviar = document.getElementById("btnEnviar");
 
-/* =========================
-   LÓGICA DO SUB-MENU (Faz o menu aparecer)
-========================= */
+// MÁSCARA TELEFONE
+document.getElementById('telefone').addEventListener('input', (e) => {
+    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+    e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+});
+
+// LÓGICA SUBMENU
 categoriaSelect.addEventListener("change", () => {
     const categoria = categoriaSelect.value;
-    
-    if (!categoria || !opcoes[categoria]) return;
+    if (!categoria) return;
 
-    // Limpa e preenche o segundo select
-    opcaoSelect.innerHTML = '<option value="" disabled selected>Selecione uma opção</option>';
+    opcaoSelect.innerHTML = `<option value="" disabled selected>Selecione uma opção</option>`;
     
     Object.keys(opcoes[categoria]).forEach(item => {
         const opt = document.createElement("option");
@@ -228,7 +231,6 @@ categoriaSelect.addEventListener("change", () => {
         opcaoSelect.appendChild(opt);
     });
 
-    // Mostra o campo de opções e atualiza o texto lateral
     wrapperOpcao.style.display = "block";
     infoText.textContent = "Agora selecione uma opção específica acima.";
 });
@@ -236,16 +238,12 @@ categoriaSelect.addEventListener("change", () => {
 opcaoSelect.addEventListener("change", () => {
     const cat = categoriaSelect.value;
     const opt = opcaoSelect.value;
-    if (opcoes[cat] && opcoes[cat][opt]) {
-        infoText.textContent = opcoes[cat][opt];
-    }
+    if(cat && opt) infoText.textContent = opcoes[cat][opt];
 });
 
-/* =========================
-   BOTÃO DE ENVIO (WhatsApp + Make)
-========================= */
-btnEnviar.addEventListener("click", async (e) => {
-    e.preventDefault(); // IMPORTANTE: Impede o congelamento/refresh da página
+// ENVIO WHATSAPP + MAKE
+btnEnviar.addEventListener("click", (e) => {
+    e.preventDefault();
 
     const nome = document.getElementById("nomeCompleto").value.trim();
     const telefone = document.getElementById("telefone").value.trim();
@@ -253,26 +251,23 @@ btnEnviar.addEventListener("click", async (e) => {
     const categoria = categoriaSelect.value;
     const opcao = opcaoSelect.value;
 
-    if (!nome || !telefone || !categoria || !opcao) {
-        alert("Por favor, preencha todos os campos obrigatórios.");
+    if(!nome || !telefone || !categoria || !opcao){
+        alert("Preencha todos os campos.");
         return;
     }
 
-    // 1. Abre o WhatsApp primeiro
+    // ABRIR WHATSAPP
     const mensagem = `Olá! Me chamo ${nome}. Tenho interesse em ${categoria} - ${opcao}.`;
-    const whatsappURL = `https://wa.me/353832097328?text=${encodeURIComponent(mensagem)}`;
+    const whatsappURL = `https://wa.me/5519993283883?text=${encodeURIComponent(mensagem)}`;
     window.open(whatsappURL, "_blank");
 
-    // 2. Envia para o Make em segundo plano
-    try {
-        await fetch("https://hook.us2.make.com/vn65j0s5ofboyiyb1qv2mrx1piaoq9up", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nome, telefone, email, categoria, opcao })
-        });
-        console.log("Enviado com sucesso para a planilha.");
-    } catch (err) {
-        console.error("Erro ao enviar para o Make:", err);
-    }
+    // ENVIO MAKE (Segundo plano)
+    fetch("https://hook.us2.make.com/vn65j0s5ofboyiyb1qv2mrx1piaoq9up", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, telefone, email, categoria, opcao })
+    }).catch(err => console.log("Erro no Make"));
 });
 </script>
+</body>
+</html>
