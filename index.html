@@ -172,78 +172,54 @@
 </div>
 
 <script>
+<script>
 /* =========================
-   DADOS DAS OPÇÕES
+   DADOS E CONFIGURAÇÕES
 ========================= */
 const opcoes = {
-    imoveis:{
-        "Aquisição e Construção":"Use o consórcio para adquirir ou construir seu imóvel.",
-        "Reforma e Melhoria":"Ideal para reformas e ampliações planejadas.",
-        "Quitação de financiamento":"Antecipe a quitação do seu financiamento atual."
+    imoveis: {
+        "Aquisição e Construção": "Use o consórcio para adquirir ou construir seu imóvel.",
+        "Reforma e Melhoria": "Ideal para reformas e ampliações planejadas.",
+        "Quitação de financiamento": "Antecipe a quitação do seu financiamento atual."
     },
-    veiculos:{
-        "Carros e Motos":"Planeje a compra do seu veículo sem juros.",
-        "Barcos e Navios":"Consórcio para embarcações de todos os portes.",
-        "Aviões e Drones":"Ideal para aeronaves leves e drones profissionais.",
-        "Maquinários Agrícolas":"Perfeito para produtores e empresas rurais.",
-        "Outros":"Outros veículos e equipamentos sob consulta."
+    veiculos: {
+        "Carros e Motos": "Planeje a compra do seu veículo sem juros.",
+        "Barcos e Navios": "Consórcio para embarcações de todos os portes.",
+        "Maquinários Agrícolas": "Perfeito para produtores e empresas rurais."
     },
-    servicos:{
-        "Implante Capilar":"Procedimentos estéticos financiados sem juros.",
-        "Cirurgias e procedimentos estéticos":"Planeje cirurgias com segurança financeira.",
-        "Viagens":"Viaje com planejamento e economia.",
-        "Festas de casamento e formaturas":"Realize eventos especiais com tranquilidade."
+    servicos: {
+        "Estética": "Procedimentos estéticos financiados sem juros.",
+        "Viagens": "Viaje com planejamento e economia.",
+        "Festas e Eventos": "Realize eventos especiais com tranquilidade."
     },
-    outrosBens:{
-        "Móveis planejados":"Ideal para mobiliar sua casa com qualidade.",
-        "Placas solares":"Economia e sustentabilidade com energia solar.",
-        "Equipamentos para academias":"Monte ou amplie sua academia.",
-        "Equipamentos odontológicos":"Equipamentos modernos para consultórios.",
-        "Equipamentos hospitalares":"Soluções para clínicas e hospitais.",
-        "Equipamentos para escritórios":"Mobília e equipamentos corporativos.",
-        "Outros":"Outros bens e equipamentos sob consulta."
+    outrosBens: {
+        "Móveis planejados": "Ideal para mobiliar sua casa com qualidade.",
+        "Placas solares": "Economia e sustentabilidade com energia solar.",
+        "Equipamentos": "Equipamentos modernos para seu negócio."
     },
-    investimentos:{
-        "Aposentadoria Imobiliária":"Construa renda passiva com imóveis.",
-        "Cota Investimento":"Invista em cotas com potencial de valorização.",
-        "Cota Previdência":"Planejamento previdenciário inteligente.",
-        "Alavancagem Financeira":"Multiplique seu capital com estratégia.",
-        "Cotas Contempladas":"Aproveite oportunidades já contempladas.",
-        "Assunção de dívida":"Assuma cotas com saldo reduzido.",
-        "Home Equity":"Use seu imóvel como garantia para crédito.",
-        "Car Equity":"Use seu veículo como garantia.",
-        "Cota Equity":"Estratégia avançada de alavancagem."
+    investimentos: {
+        "Alavancagem Financeira": "Multiplique seu capital com estratégia.",
+        "Aposentadoria Imobiliária": "Construa renda passiva com imóveis.",
+        "Cotas Contempladas": "Aproveite oportunidades já contempladas."
     }
 };
 
-/* =========================
-   ELEMENTOS
-========================= */
 const categoriaSelect = document.getElementById("categoriaSelect");
 const opcaoSelect = document.getElementById("opcaoSelect");
 const wrapperOpcao = document.getElementById("wrapperOpcao");
 const infoText = document.getElementById("infoText");
 const btnEnviar = document.getElementById("btnEnviar");
-const nomeInput = document.getElementById("nomeCompleto");
-const telefoneInput = document.getElementById("telefone");
-const emailInput = document.getElementById("email");
 
 /* =========================
-   MÁSCARA DE TELEFONE
-========================= */
-telefoneInput.addEventListener('input', (e) => {
-    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-    e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-});
-
-/* =========================
-   LÓGICA DOS SELECTS
+   LÓGICA DO SUB-MENU (Faz o menu aparecer)
 ========================= */
 categoriaSelect.addEventListener("change", () => {
     const categoria = categoriaSelect.value;
-    if (!categoria) return;
+    
+    if (!categoria || !opcoes[categoria]) return;
 
-    opcaoSelect.innerHTML = `<option value="" disabled selected>Selecione uma opção</option>`;
+    // Limpa e preenche o segundo select
+    opcaoSelect.innerHTML = '<option value="" disabled selected>Selecione uma opção</option>';
     
     Object.keys(opcoes[categoria]).forEach(item => {
         const opt = document.createElement("option");
@@ -252,65 +228,51 @@ categoriaSelect.addEventListener("change", () => {
         opcaoSelect.appendChild(opt);
     });
 
+    // Mostra o campo de opções e atualiza o texto lateral
     wrapperOpcao.style.display = "block";
     infoText.textContent = "Agora selecione uma opção específica acima.";
 });
 
 opcaoSelect.addEventListener("change", () => {
-    const categoria = categoriaSelect.value;
-    const opcao = opcaoSelect.value;
-    if(categoria && opcao) {
-        infoText.textContent = opcoes[categoria][opcao];
+    const cat = categoriaSelect.value;
+    const opt = opcaoSelect.value;
+    if (opcoes[cat] && opcoes[cat][opt]) {
+        infoText.textContent = opcoes[cat][opt];
     }
 });
 
 /* =========================
-   ENVIO + WHATSAPP (OTIMIZADO)
+   BOTÃO DE ENVIO (WhatsApp + Make)
 ========================= */
 btnEnviar.addEventListener("click", async (e) => {
-    e.preventDefault(); // Impede o congelamento/refresh da página
+    e.preventDefault(); // IMPORTANTE: Impede o congelamento/refresh da página
 
-    const dados = {
-        nome: nomeInput.value.trim(),
-        telefone: telefoneInput.value.trim(),
-        email: emailInput.value.trim(),
-        categoria: categoriaSelect.value,
-        opcao: opcaoSelect.value
-    };
+    const nome = document.getElementById("nomeCompleto").value.trim();
+    const telefone = document.getElementById("telefone").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const categoria = categoriaSelect.value;
+    const opcao = opcaoSelect.value;
 
-    // Validação rápida
-    if(!dados.nome || !dados.telefone || !dados.categoria || !dados.opcao){
-        alert("Por favor, preencha todos os campos.");
+    if (!nome || !telefone || !categoria || !opcao) {
+        alert("Por favor, preencha todos os campos obrigatórios.");
         return;
     }
 
-    // 1. ABRIR WHATSAPP IMEDIATAMENTE
-    // Isso garante que a experiência do usuário seja fluida
-    const meuNumero = "5519993283883"; 
-    const mensagem = `Olá! Me chamo ${dados.nome}. Fiz uma simulação no site:\n*Interesse:* ${dados.categoria} - ${dados.opcao}`;
-    const whatsappURL = `https://wa.me/${meuNumero}?text=${encodeURIComponent(mensagem)}`;
+    // 1. Abre o WhatsApp primeiro
+    const mensagem = `Olá! Me chamo ${nome}. Tenho interesse em ${categoria} - ${opcao}.`;
+    const whatsappURL = `https://wa.me/353832097328?text=${encodeURIComponent(mensagem)}`;
     window.open(whatsappURL, "_blank");
 
-    // 2. ENVIAR PARA A PLANILHA (MAKE) EM SEGUNDO PLANO
-    // Usamos um bloco try/catch para que, se o Make der erro, a página NÃO congele
+    // 2. Envia para o Make em segundo plano
     try {
         await fetch("https://hook.us2.make.com/vn65j0s5ofboyiyb1qv2mrx1piaoq9up", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(dados)
+            body: JSON.stringify({ nome, telefone, email, categoria, opcao })
         });
-        console.log("Dados enviados para a planilha com sucesso!");
-    } catch (error) {
-        console.error("Erro ao enviar para a planilha, mas o WhatsApp foi aberto:", error);
+        console.log("Enviado com sucesso para a planilha.");
+    } catch (err) {
+        console.error("Erro ao enviar para o Make:", err);
     }
-});    
-    // REDIRECIONAR WHATSAPP (Substitua o número abaixo pelo SEU se desejar receber o lead)
-    const meuNumeroParaReceber = "5519999999999"; // Exemplo: 55 + DDD + Número
-    const mensagem = `Olá! Me chamo ${nome}. Fiz uma simulação:\n*Categoria:* ${categoria}\n*Opção:* ${opcao}`;
-    const whatsappURL = `https://wa.me/${meuNumeroParaReceber}?text=${encodeURIComponent(mensagem)}`;
-    
-    window.open(whatsappURL, "_blank");
 });
 </script>
-</body>
-</html>
