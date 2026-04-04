@@ -242,6 +242,7 @@ opcaoSelect.addEventListener("change", () => {
 });
 
 // ENVIO WHATSAPP + MAKE
+// ENVIO WHATSAPP + MAKE
 btnEnviar.addEventListener("click", (e) => {
     e.preventDefault();
 
@@ -256,18 +257,25 @@ btnEnviar.addEventListener("click", (e) => {
         return;
     }
 
-    // ABRIR WHATSAPP
+    // ABRIR WHATSAPP (IRLANDA)
     const mensagem = `Olá! Me chamo ${nome}. Tenho interesse em ${categoria} - ${opcao}.`;
     const whatsappURL = `https://wa.me/353832097328?text=${encodeURIComponent(mensagem)}`;
     window.open(whatsappURL, "_blank");
 
-    // ENVIO MAKE (Segundo plano)
+    // ENVIO MAKE
     fetch("https://hook.us2.make.com/vn65j0s5ofboyiyb1qv2mrx1piaoq9up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome, telefone, email, categoria, opcao })
-    }).catch(err => console.log("Erro no Make"));
+    })
+    .catch(err => console.log("Erro no Make"))
+    .finally(() => {
+        // LIMPA OS CAMPOS PARA A TELA NÃO FICAR CONGELADA
+        document.getElementById("nomeCompleto").value = "";
+        document.getElementById("telefone").value = "";
+        document.getElementById("email").value = "";
+        categoriaSelect.selectedIndex = 0;
+        wrapperOpcao.style.display = "none";
+        infoText.textContent = "Simulação enviada com sucesso!";
+    });
 });
-</script>
-</body>
-</html>
