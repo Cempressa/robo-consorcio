@@ -253,7 +253,7 @@ btnEnviar.addEventListener("click", (e) => {
     const opcao = opcaoSelect.value;
 
     if(!nome || !telefone || !categoria || !opcao){
-        alert("Por favor, preencha todos os campos.");
+        alert("Preencha todos os campos.");
         return;
     }
 
@@ -262,7 +262,8 @@ btnEnviar.addEventListener("click", (e) => {
     const whatsappURL = `https://wa.me/353832097328?text=${encodeURIComponent(mensagem)}`;
     window.open(whatsappURL, "_blank");
 
-    // 3. LIMPAR A TELA NA HORA (Resolve o "congelamento")
+    // 3. LIMPAR A TELA NA HORA (FORÇADO)
+    // Fazemos isso antes do fetch para garantir que funcione
     document.getElementById("nomeCompleto").value = "";
     document.getElementById("telefone").value = "";
     document.getElementById("email").value = "";
@@ -270,12 +271,12 @@ btnEnviar.addEventListener("click", (e) => {
     document.getElementById("wrapperOpcao").style.display = "none";
     infoText.textContent = "Simulação enviada com sucesso!";
 
-    // 4. ENVIAR PARA O MAKE (Já que ele dá sucesso, o link está ok)
+    // 4. ENVIAR PARA O MAKE
     fetch("https://hook.us2.make.com/vn65j0s5ofboyiyb1qv2mrx1piaoq9up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome, telefone, email, categoria, opcao })
     })
-    .then(response => console.log("Make recebeu os dados!"))
-    .catch(err => console.log("Erro no envio de fundo."));
+    .then(() => console.log("Dados enviados!"))
+    .catch(err => console.log("Erro no Make, mas a tela já limpou."));
 });
