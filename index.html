@@ -265,10 +265,10 @@ opcaoSelect.addEventListener("change", () => {
 });
 
 /* =========================
-   ENVIO + WHATSAPP (CORRIGIDO)
+   ENVIO + WHATSAPP (OTIMIZADO)
 ========================= */
 btnEnviar.addEventListener("click", async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Impede o congelamento/refresh da página
 
     const dados = {
         nome: nomeInput.value.trim(),
@@ -278,24 +278,33 @@ btnEnviar.addEventListener("click", async (e) => {
         opcao: opcaoSelect.value
     };
 
+    // Validação rápida
     if(!dados.nome || !dados.telefone || !dados.categoria || !dados.opcao){
         alert("Por favor, preencha todos os campos.");
         return;
     }
 
-    // 1. ABRIR WHATSAPP IMEDIATAMENTE (O cliente não espera)
-    const meuNumero = "353832097328"; 
-    const mensagem = `Olá! Me chamo ${dados.nome}. Tenho interesse em ${dados.categoria} - ${dados.opcao}.`;
+    // 1. ABRIR WHATSAPP IMEDIATAMENTE
+    // Isso garante que a experiência do usuário seja fluida
+    const meuNumero = "5519993283883"; 
+    const mensagem = `Olá! Me chamo ${dados.nome}. Fiz uma simulação no site:\n*Interesse:* ${dados.categoria} - ${dados.opcao}`;
     const whatsappURL = `https://wa.me/${meuNumero}?text=${encodeURIComponent(mensagem)}`;
     window.open(whatsappURL, "_blank");
 
-    // 2. ENVIAR PARA O MAKE EM SEGUNDO PLANO
-    fetch("https://hook.us2.make.com/vn65j0s5ofboyiyb1qv2mrx1piaoq9up", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados)
-    }).catch(err => console.error("Erro silencioso no Make:", err));
-});    // REDIRECIONAR WHATSAPP (Substitua o número abaixo pelo SEU se desejar receber o lead)
+    // 2. ENVIAR PARA A PLANILHA (MAKE) EM SEGUNDO PLANO
+    // Usamos um bloco try/catch para que, se o Make der erro, a página NÃO congele
+    try {
+        await fetch("https://hook.us2.make.com/vn65j0s5ofboyiyb1qv2mrx1piaoq9up", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        });
+        console.log("Dados enviados para a planilha com sucesso!");
+    } catch (error) {
+        console.error("Erro ao enviar para a planilha, mas o WhatsApp foi aberto:", error);
+    }
+});    
+    // REDIRECIONAR WHATSAPP (Substitua o número abaixo pelo SEU se desejar receber o lead)
     const meuNumeroParaReceber = "5519999999999"; // Exemplo: 55 + DDD + Número
     const mensagem = `Olá! Me chamo ${nome}. Fiz uma simulação:\n*Categoria:* ${categoria}\n*Opção:* ${opcao}`;
     const whatsappURL = `https://wa.me/${meuNumeroParaReceber}?text=${encodeURIComponent(mensagem)}`;
